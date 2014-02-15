@@ -48,6 +48,7 @@ class OperationsController extends AppController
      */
     public function toggleStatus($operationId)
     {
+        // hola;
         $user = $this->Auth->user();
         $this->loadModel('LogOperation');
         $this->LogOperation->addLog($operationId, $user['id'], '');
