@@ -1,0 +1,61 @@
+/* 
+    Created on : Jan 23, 2014, 9:09:52 AM
+    Author     : suf5slp
+*/
+
+.float-right
+{
+    float: right;
+}
+
+.float-left
+{
+    float: left;
+}
+
+tr.text-center th
+{
+    text-align: center !important;
+}
+
+body 
+{
+    padding-top: 51px;
+}
+
+.navbar
+{
+    background-color: #215F8B;
+}
+
+.navbar .logo
+{
+    float: right;
+}
+
+.navbar li a.img
+{
+    padding: 0px;
+}
+
+header
+{
+    margin-bottom: 0px !important;
+}
+
+#logoBosch .container
+{
+    background-image: url('../img/bosch.png');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+table td, table th
+{
+    text-transform: uppercase;
+}
+
+.lowercase
+{
+    text-transform: lowercase !important;
+}

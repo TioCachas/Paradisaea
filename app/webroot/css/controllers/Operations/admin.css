@@ -1,0 +1,10 @@
+.fa-eye, .fa-eye-slash
+{
+    cursor: pointer;
+}
+
+td.line, td.hour
+{
+    cursor: pointer;
+}
+

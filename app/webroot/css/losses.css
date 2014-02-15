@@ -1,0 +1,26 @@
+/*Codigo de colores para los tipos de perdidas en minutos*/
+
+.changeoverLosses
+{
+    background-color: rgb(102,255,255);
+}
+
+.techicalLosses
+{
+    background-color: rgb(83,142,213);
+}
+
+.organizationalLosses
+{
+    background-color: rgb(255,51,153);
+}
+
+.qualityLosses
+{
+    background-color: rgb(255,255,0);
+}
+
+.performanceLosses
+{
+    background-color: rgb(90,90,90);
+}
