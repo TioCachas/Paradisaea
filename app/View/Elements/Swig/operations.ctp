@@ -58,7 +58,7 @@ $urlOrganizational = $this->Html->url(array(
     </td>
     <td>
         <a href="<?php echo $urlOrganizational; ?>/{{ oId }}">
-            {{ o.QualityLosses }}
+            {{ oQualityLosses }}
         </a>
     </td>
     <td>

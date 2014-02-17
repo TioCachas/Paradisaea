@@ -5,16 +5,19 @@ Project.Collections.Operations = Backbone.Collection.extend({
     urlExport: urlExportOperations,
     fetch: function() {
         var collection = this;
+        this.target.find('div.loader').removeClass('hidden');
+        this.target.find('div.detail').addClass('hidden');
+        this.target.find('div.empty').addClass('hidden');
         var options = {success: function() {
                 if (collection.length > 0)
                 {
-                    collection.target.find('.detail').removeClass('hidden');
+                    collection.target.find('div.detail').removeClass('hidden');
                 }
                 else
                 {
-                    collection.target.find('.empty').removeClass('hidden');
+                    collection.target.find('div.empty').removeClass('hidden');
                 }
-                collection.target.find('.loader').addClass('hidden');
+                collection.target.find('div.loader').addClass('hidden');
             }};
         return Backbone.Collection.prototype.fetch.call(this, options);
     },
