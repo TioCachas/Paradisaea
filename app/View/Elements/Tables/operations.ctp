@@ -75,7 +75,8 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
 <div class="alert alert-info hidden empty">
     <?php echo __('No se encontrarón operaciones'); ?>
 </div>
-<div class="modal fade hour" tabindex="-1" role="dialog" aria-labelledby="modalHours" aria-hidden="true">
+<!--Dialogo de cambio de hora-->
+<div class="modal fade hour" tabindex="-1" role="dialog" aria-labelledby="modalHour" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -95,7 +96,7 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="comment">
+                        <label>
                             <?php echo __('Comentario'); ?>
                         </label>
                         <textarea class="comment form-control" rows="3"></textarea>
@@ -136,7 +137,8 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
         </div>
     </div>
 </div>
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--Dialogo de cambio de linea-->
+<div class="modal fade line" tabindex="-1" role="dialog" aria-labelledby="modelLine" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -146,8 +148,22 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
                 </h4>
             </div>
             <div class="modal-body">
-                <select class="form-control input-lg">
-                </select>
+                <form role="form">
+                    <div class="form-group">
+                        <label>
+                            <?php echo __('Linea de produccion'); ?>
+                        </label>
+                        <select class="form-control input-lg line">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <?php echo __('Comentario'); ?>
+                        </label>
+                        <textarea class="comment form-control" rows="3"></textarea>
+                        <p><?php echo __('Campo obligatorio'); ?></p>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="save btn btn-primary"><?php echo __('Guardar cambios'); ?></button>

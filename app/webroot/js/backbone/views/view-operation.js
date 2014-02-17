@@ -18,15 +18,15 @@ Project.Views.Operation = Backbone.View.extend({
         'click td.line': function()
         {
             selectedModel = this.model;
-            $('#modalLines .save').attr('disabled', 'disabled');
-            $('#modalLines select').attr('disabled', 'disabled');
-            $('#modalLines').modal('show');
-            var l = this.model.get('l');
-            var url = urlGetLines + '/' + l.id;
+            this.model.collection.target.find('div[role="dialog"].line textarea.comment').val('');
+            this.model.collection.target.find('div[role="dialog"].line select.line').html('').attr('disabled', 'disabled');
+            this.model.collection.target.find('div[role="dialog"].line .save').attr('disabled', 'disabled');
+            var lId = this.model.get('lId');
+            var url = urlGetLines + '/' + lId;
+            var target = this.model.collection.target;
             $.post(url, {}, function(code) {
-                $('#modalLines select').html(code);
-                $('#modalLines select').removeAttr('disabled');
-                $('#modalLines .save').removeAttr('disabled', 'disabled');
+                target.find('div[role="dialog"].line select.line').html(code).removeAttr('disabled');
+                target.find('div[role="dialog"].line').modal('show');
             });
         }
     },

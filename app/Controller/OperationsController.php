@@ -108,7 +108,7 @@ class OperationsController extends AppController {
             $data = $this->request->data;
             if (isset($data['c']) === true) {
                 $comment = trim($data['c']);
-                if ($comment != '') {
+                if ($comment !== '') {
                     $user = $this->Auth->user();
                     $this->loadModel('LogOperation');
                     $this->LogOperation->addLog($operationId, $user['id'], $comment);
@@ -135,7 +135,7 @@ class OperationsController extends AppController {
         if ($this->request->is('post')) {
             if (isset($data['h']) === true && isset($data['c']) === true) {
                 $comment = trim($data['c']);
-                if ($comment != '') {
+                if ($comment !== '') {
                     $hourId = $data['h'];
                     $user = $this->Auth->user();
                     $this->loadModel('LogOperation');
@@ -151,20 +151,31 @@ class OperationsController extends AppController {
         $this->viewClass = 'Json';
     }
 
+    /**
+     * Cambiamos la linea de una oepracion
+     * Invocada por AJAX
+     * @param string $operationId
+     * @result JSON con la nueva linea
+     */
     public function changeLine($operationId) {
         $data = $this->request->data;
-        $result = false;
-        if (isset($data['l']) === true) {
-            $user = $this->Auth->user();
-            $this->loadModel('LogOperation');
-            $this->LogOperation->addLog($operationId, $user['id'], '');
-            $lineId = $data['l'];
-            $this->Operation->changeLine($operationId, $lineId);
-            $this->loadModel('Line');
-            $line = $this->Line->findById($lineId);
-            $result = $line['Line']['name'];
+        $newLine = null;
+        if ($this->request->is('post')) {
+            if (isset($data['l']) === true && isset($data['c']) === true) {
+                $comment = trim($data['c']);
+                if ($comment !== '') {
+                    $lineId = $data['l'];
+                    $user = $this->Auth->user();
+                    $this->loadModel('LogOperation');
+                    $this->LogOperation->addLog($operationId, $user['id'], $comment);
+                    $this->Operation->changeLine($operationId, $lineId);
+                    $this->loadModel('Line');
+                    $line = $this->Line->findById($lineId);
+                    $newLine = $line['Line']['name'];
+                }
+            }
         }
-        $this->set(array('result' => $result, '_serialize' => 'result'));
+        $this->set(array('result' => $newLine, '_serialize' => 'result'));
         $this->viewClass = 'Json';
     }
 

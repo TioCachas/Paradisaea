@@ -3,6 +3,7 @@ $(document).ready(function()
     $('div[role="dialog"] textarea.comment').on('change', changeComment);
     $('div[role="dialog"].status button.save').on('click', changeStatus);
     $('div[role="dialog"].hour button.save').on('click', changeHour);
+    $('div[role="dialog"].line button.save').on('click', changeLine);
     $('#operations i.fa-download').on('click', exportOperations);
 });
 
@@ -45,6 +46,17 @@ function changeHour() {
     var dialog = $(this).parents('div[role="dialog"]');
     var hourId = dialog.find('select.hour').val();
     selectedModel.set('hId', hourId);
+    dialog.modal('hide');
+}
+
+/**
+ * Cambiamos la hora
+ * De aqui deberias ir a ver el evento de cambio de linea del modelo ;)
+ */
+function changeLine() {
+    var dialog = $(this).parents('div[role="dialog"]');
+    var lineId = dialog.find('select.line').val();
+    selectedModel.set('lId', lineId);
     dialog.modal('hide');
 }
 

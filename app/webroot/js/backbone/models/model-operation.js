@@ -36,20 +36,22 @@ Project.Models.Operation = Backbone.Model.extend({
             }
         }, this);
         this.on('change:lId', function() {
-            var o = this.get('o');
-            var l = this.get('l');
-            var url = urlChangeLine + '/' + o.id;
-            $('tr[data-id="' + o.id + '"] .status .fa').addClass('hidden');
-            $('tr[data-id="' + o.id + '"] .status .fa-refresh').removeClass('hidden');
-            $.post(url, {l: l.id}, function(newLineStr)
+            var comment = this.collection.target.find('div[role="dialog"].line textarea.comment').val();
+            if (comment !== '')
             {
-                var l = selectedModel.get('l');
-                l.name = newLineStr;
-                selectedModel.set('l.name', newLineStr);
-                $('tr[data-id="' + o.id + '"] .status .fa').removeClass('hidden');
-                $('tr[data-id="' + o.id + '"] .status .fa-refresh').addClass('hidden');
-                render(selectedModel);
-            }, 'json');
+                this.startSaveChanges();
+                var oId = this.get('oId');
+                var lId = this.get('lId');
+                var url = urlChangeLine + '/' + oId;
+                var model = this;
+                $.post(url, {l: lId, c: comment}, function(newLineStr)
+                {
+                    /// Muy importante para evitar lanzar un nuevo evento de cambio
+                    /// de linea
+                    model.attributes.lName = newLineStr;
+                    render(selectedModel);
+                }, 'json');
+            }
         }, this);
         this.on('change:o.production', function() {
             render(this);
