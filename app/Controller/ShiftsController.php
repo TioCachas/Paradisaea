@@ -16,7 +16,7 @@ class ShiftsController extends AppController {
     public function config() {
         $this->loadModel('Shift');
         $this->loadModel('Line');
-        $shifts = $this->Shift->getEnabled();
+        $shifts = $this->Shift->getAll();
         $lines = $this->Line->getEnabled();
         $this->set('shifts', $shifts);
         $this->set('lines', $lines);

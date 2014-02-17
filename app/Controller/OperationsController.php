@@ -190,14 +190,16 @@ class OperationsController extends AppController {
         $userSesion = $this->Auth->user();
         $userId = $userSesion['id'];
         $this->loadModel('Hour');
-        $lineId = $bosch->getConfiguration()->getShift();
-        $hours = $this->Hour->getEnabledByShift($lineId);
+        $shiftId = $bosch->getConfiguration()->getShift();
+        $lineId = $bosch->getConfiguration()->getLine();
+        $hours = $this->Hour->getByShift($shiftId);
         if (empty($hours) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_HOUR));
             return;
         }
         $this->loadModel('ModelLine');
-        $models = $this->ModelLine->getEnabledByLine($lineId);
+        $models = $this->ModelLine->getByLine($lineId);
+        var_dump($lineId);
         if (empty($models) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_MODEL));
             return;
@@ -205,12 +207,16 @@ class OperationsController extends AppController {
         $firstModel = $models[0];
         $this->loadModel('IndexModel');
         $indexes = $this->IndexModel->getEnabledByModel($firstModel['m']['id']);
+        var_dump($indexes);
+        die;
         if (empty($indexes) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_INDEX));
             return;
         }
         $this->loadModel('Workstation');
         $workstations = $this->Workstation->getEnabledByLine($lineId);
+        var_dump($lineId, $workstations);
+        die;
         if (empty($workstations) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_WORKSTATION));
             return;

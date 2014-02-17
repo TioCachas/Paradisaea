@@ -4,22 +4,12 @@ App::uses('AppModel', 'Model');
 
 class Shift extends AppModel {
 
-    const STATUS_ENABLED = 1;
-    const STATUS_DISABLED = 0;
-
     /**
-     * Inhabilitamos una operacion, al cambiar su estatus
-     * @param integer $id Id de la operacion que queremos deshabilitar
+     * Leemos todos los turnos
+     * @return array
      */
-    public function disabled($id) {
-        $this->query('
-            UPDATE shifts
-            SET status = ' . self::STATUS_DISABLED . '
-            WHERE id = ?', array($id));
-    }
-
-    public function getEnabled() {
-        return $this->findAllByStatus(self::STATUS_ENABLED);
+    public function getAll() {
+        return $this->find('all');
     }
 
 }
