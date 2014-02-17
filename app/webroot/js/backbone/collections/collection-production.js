@@ -1,23 +1,22 @@
 Project.Collections.Productions = Backbone.Collection.extend({
+    target: null, // objecto del dom $(selector) que indica el elemento que contiene a la representacion de la colleccion
     model: Project.Models.Production,
     url: urlGetProductions,
-    initialize: function() {
-        this.on('add', function(model) {
-            var view = new Project.Views.Production({model: model});
-            view.render();
-            view.$el.appendTo('#productions table.detail tbody');
-        }, this);
-        this.fetch({
-            success: function()
-            {
+    urlExport: urlExportOperations, // Link para exportar la collecion a csv
+    modelSelected: null, // Produccion sobre la que se dio clic para cambiar estatus, etc.
+    fetch: function() {
+        var collection = this;
+        this.target.find('div.loader').removeClass('hidden');
+        this.target.find('div.detail').addClass('hidden');
+        this.target.find('div.empty').addClass('hidden');
+        var options = {success: function() {
                 var total = 0;
                 var totalEnabled = 0;
                 var totalDisabled = 0;
-                window.collections.productions.each(function(m) {
-                    var p = m.get('p');
-                    var v = parseInt(p.value);
-                    var s = parseInt(p.status);
-                    if (s == 1)
+                collection.each(function(m) {
+                    var v = parseInt(m.get('pValue'));
+                    var s = parseInt(m.get('pStatus'));
+                    if (s === 1)
                     {
                         totalEnabled += v;
                     }
@@ -27,16 +26,24 @@ Project.Collections.Productions = Backbone.Collection.extend({
                     }
                     total += v;
                 });
-                if (window.collections.productions.length > 0)
+                if (collection.length > 0)
                 {
-                    $('#productions div.panel').removeClass('hidden');
+                    collection.target.find('div.detail').removeClass('hidden');
                 }
                 else
                 {
-                    $('#productions div.empty').removeClass('hidden');
+                    collection.target.find('div.empty').removeClass('hidden');
                 }
-                $('#productions div.loader').addClass('hidden');
-            }
-        });
+                collection.target.find('div.loader').addClass('hidden');
+            }};
+        return Backbone.Collection.prototype.fetch.call(this, options);
+    },
+    initialize: function() {
+        var collection = this;
+        this.on('add', function(model) {
+            var view = new Project.Views.Production({model: model});
+            view.render();
+            view.$el.appendTo(collection.target.find('.detail tbody'));
+        }, this);
     }
 });

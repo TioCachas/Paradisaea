@@ -53,7 +53,7 @@ Project.Models.Operation = Backbone.Model.extend({
                 }, 'json');
             }
         }, this);
-        this.on('change:o.production', function() {
+        this.on('change:oProduction', function() {
             render(this);
         }, this);
     },

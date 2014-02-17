@@ -1,18 +1,21 @@
 <?php $units = Units::symbolHtml(Units::UNITS); ?>
-{% if p.status == 0 %}
-<tr data-id="{{ p.id }}" class="danger">
+{% if pStatus == 0 %}
+<tr data-id="{{ pId }}" class="danger">
     {% else %}
-<tr data-id="{{ p.id }}" class="success">
+<tr data-id="{{ pId }}" class="success">
     {% endif %}
-    <td>{{ m.name }}</td>
-    <td>{{ i.name }}</td>
-    <td>{{ p.value }} <?php echo $units; ?></td>
-    <td>{{ p.creation_date }}</td>
+    <td>{{ mName }}</td>
+    <td>{{ iName }}</td>
+    <td>{{ pValue }} <?php echo $units; ?></td>
+    <td>{{ pCreationDate }}</td>
     <td>
-        {% if p.status == 0 %}
-        <i class="fa fa-eye" title="<?php echo __('Habilitar'); ?>"></i>
-        {% else %}
-        <i class="fa fa-eye-slash" title="<?php echo __('Deshabilitar'); ?>"></i>
-        {% endif %}
+        <span class="status">
+            {% if pStatus == 0 %}
+            <i class="fa fa-eye" title="<?php echo __('Habilitar'); ?>"></i>
+            {% else %}
+            <i class="fa fa-eye-slash" title="<?php echo __('Deshabilitar'); ?>"></i>
+            {% endif %}
+            <i class="fa fa-refresh fa-spin hidden"></i>
+        </span>
     </td>
 </tr>

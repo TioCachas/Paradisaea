@@ -42,6 +42,12 @@ class OperationsController extends AppController {
         $this->viewClass = 'Json';
     }
 
+    public function getById($operationId = null) {
+        $operations = $this->Operation->getById($operationId);
+        $this->set(array('operations' => $operations, '_serialize' => 'operations'));
+        $this->viewClass = 'Json';
+    }
+
     /**
      * Exportamos las operaciones HABILITADAS de un dia de trabajo
      * Invocada por AJAX
@@ -104,7 +110,7 @@ class OperationsController extends AppController {
      */
     public function toggleStatus($operationId) {
         $newStatus = null;
-        if ($this->request->is('post')) {
+        if ($this->request->is('post') === true) {
             $data = $this->request->data;
             if (isset($data['c']) === true) {
                 $comment = trim($data['c']);

@@ -97,7 +97,7 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
                     </div>
                     <div class="form-group">
                         <label>
-                            <?php echo __('Comentario'); ?>
+                            <?php echo __('Justificacion'); ?>
                         </label>
                         <textarea class="comment form-control" rows="3"></textarea>
                         <p><?php echo __('Campo obligatorio'); ?></p>
@@ -124,7 +124,7 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
                 <form role="form">
                     <div class="form-group">
                         <label for="comment">
-                            <?php echo __('Comentario'); ?>
+                            <?php echo __('Justificacion'); ?>
                         </label>
                         <textarea class="comment form-control" rows="3"></textarea>
                         <p><?php echo __('Campo obligatorio'); ?></p>
@@ -158,7 +158,7 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
                     </div>
                     <div class="form-group">
                         <label>
-                            <?php echo __('Comentario'); ?>
+                            <?php echo __('Justificacion'); ?>
                         </label>
                         <textarea class="comment form-control" rows="3"></textarea>
                         <p><?php echo __('Campo obligatorio'); ?></p>

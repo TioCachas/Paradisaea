@@ -31,18 +31,19 @@ class Production extends AppModel {
         $params = array($operationId);
         $operations = $this->query("
             SELECT 
-                p.id
-              , p.value
-              , p.status
-              , p.creation_date
-              , m.name
-              , i.name
+                p.id pId
+              , p.value pValue
+              , p.status pStatus
+              , p.creation_date pCreationDate
+              , p.operation_id pOperationId -- Lo devolvemos para tener una referencia a la operacion
+              , m.name mName
+              , i.name iName
             FROM productions p
             INNER JOIN models m ON p.model_id = m.id
             INNER JOIN indexes i ON p.index_id = i.id
             WHERE p.operation_id = ?
             ORDER BY p.creation_date DESC, m.name ASC", $params);
-        return $operations;
+        return $this->flatArray($operations);
     }
 
 }

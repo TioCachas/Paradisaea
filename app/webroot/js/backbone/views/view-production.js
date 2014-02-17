@@ -1,18 +1,11 @@
 Project.Views.Production = Backbone.View.extend({
     events: {
-        'click .fa-eye': function(e) {
-            var p = this.model.get('p');
-            p.status = 1;
-            this.model.set('p.status', 1);
-            //var url = urlToggleStatus + '/' + id;
-            //$.post(url);
-        },
-        'click .fa-eye-slash': function() {
-            var p = this.model.get('p');
-            p.status = 0;
-            this.model.set('p.status', 0);
-//            var url = urlToggleStatus + '/' + id;
-//            $.post(url);
+        'click .fa-eye, .fa-eye-slash': function()
+        {
+            window.collections.productions.selectedModel = this.model;
+            this.model.collection.target.find('div[role="dialog"].status textarea.comment').val('');
+            this.model.collection.target.find('div[role="dialog"].status button.save').attr('disabled', 'disabled');
+            this.model.collection.target.find('div[role="dialog"].status').modal('show');
         }
     },
     initialize: function()

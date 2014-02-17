@@ -1,41 +1,52 @@
 Project.Models.Production = Backbone.Model.extend({
     initialize: function() {
-        this.on('change:p.status', function() {
-            var view = new Project.Views.Production({model: this});
-            var m = this.get('p');
-            view.render();
-            $('tr[data-id="' + m.id + '"]').replaceWith(view.$el);
-            var total = 0;
-            var totalEnabled = 0;
-            var totalDisabled = 0;
-            window.collections.productions.each(function(model) {
-                var p = model.get('p');
-                var v = parseInt(p.value);
-                var s = parseInt(p.status);
-                if (s == 1)
+        this.on('change:pStatus', function() {
+            var comment = this.collection.target.find('div[role="dialog"].status textarea.comment').val();
+            if (comment !== '')
+            {
+                this.startSaveChanges();
+                var pId = this.get('pId');
+                var url = window.routers.productions.toggleStatus + '/' + pId;
+                var model = this;
+                $.post(url, {c: comment}, function(newStatus)
                 {
-                    totalEnabled += v;
-                }
-                else
-                {
-                    totalDisabled += v;
-                }
-                total += v;
-            });
-            this.updateOperation(totalEnabled);
+                    /// Muy importante para evitar lanzar un nuevo evento de cambio
+                    /// de estatus
+                    model.attributes.pStatus = newStatus;
+                    renderProduction(model);
+                    var totalEnabled = 0;
+                    window.collections.productions.each(function(production) {
+                        var v = parseInt(production.get('pValue'));
+                        var s = parseInt(production.get('pStatus'));
+                        if (s == 1)
+                        {
+                            totalEnabled += v;
+                        }
+                    });
+                    if (window.collections.operations !== undefined)
+                    {
+                        var operation = window.collections.operations.first();
+                        if (operation !== undefined)
+                        {
+                            operation.set('oProduction', totalEnabled);
+                        }
+                    }
+                }, 'json');
+            }
         }, this);
     },
-    updateOperation: function(totalEnabled)
+    startSaveChanges: function()
     {
-        if (window.collections.operations !== undefined)
-        {
-            var operation = window.collections.operations.first();
-            if (operation !== undefined)
-            {
-                var oJSON = operation.toJSON();
-                oJSON.o.production = totalEnabled;
-                operation.set('o.production', totalEnabled);
-            }
-        }
+        var pId = this.get('pId');
+        $('tr[data-id="' + pId + '"] .status .fa').addClass('hidden');
+        $('tr[data-id="' + pId + '"] .status .fa-spin').removeClass('hidden');
     }
 });
+
+function renderProduction(m)
+{
+    var view = new Project.Views.Production({model: m});
+    var pId = m.get('pId');
+    view.render();
+    $('tr[data-id="' + pId + '"]').replaceWith(view.$el);
+}
