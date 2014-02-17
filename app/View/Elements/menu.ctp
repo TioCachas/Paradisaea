@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo $this->Html->url(array('controller' => 'Operations', 'action' => 'form')); ?>">
+                    <a href="<?php echo $this->Html->url(array('controller' => 'Operations', 'action' => 'admin')); ?>">
                         <i class='fa fa-home'></i>
                         <?php echo __('Operaciones'); ?>
                     </a>
