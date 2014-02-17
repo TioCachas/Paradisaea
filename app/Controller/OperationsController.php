@@ -98,15 +98,27 @@ class OperationsController extends AppController {
     }
 
     /**
-     * Cambiamos el estatus de una produccion
+     * Cambiamos el estatus de una operacion.
+     * Retornamos el nuevo estatus de la operacion o null en otros casos.
      * Invocada por AJAX
      */
     public function toggleStatus($operationId) {
-        $user = $this->Auth->user();
-        $this->loadModel('LogOperation');
-        $this->LogOperation->addLog($operationId, $user['id'], '');
-        $this->Operation->toggleStatus($operationId);
-        $this->set(array('success' => true, '_serialize' => 'success'));
+        $newStatus = null;
+        if ($this->request->is('post')) {
+            if (isset($this->request->data['c']) === true) {
+                $comment = trim($this->request->data['c']);
+                if ($comment != '') {
+                    $user = $this->Auth->user();
+                    $this->loadModel('LogOperation');
+                    $this->LogOperation->addLog($operationId, $user['id'], $comment);
+                    $this->Operation->toggleStatus($operationId);
+                    $this->Operation->id = $operationId;
+                    $operation = $this->Operation->read();
+                    $newStatus = (int) $operation['Operation']['status'];
+                }
+            }
+        }
+        $this->set(array('success' => $newStatus, '_serialize' => 'success'));
         $this->viewClass = 'Json';
     }
 

@@ -3,14 +3,9 @@ Project.Views.Operation = Backbone.View.extend({
         'click .fa-eye, .fa-eye-slash': function()
         {
             selectedModel = this.model;
-            this.model.collection.target.find('.modal.status .comment').val('');
-            this.model.collection.target.find('.modal.status .save').attr('disabled', 'disabled');
-            this.model.collection.target.find('.modal.status').modal('show');
-//        var oId = this.model.get('oId');
-//        var oStatus = this.model.get('oStatus');
-//        $('tr[data-id="' + oId + '"] .status .fa').addClass('hidden');
-//        $('tr[data-id="' + oId + '"] .status .fa-refresh').removeClass('hidden');
-//        this.model.set('oStatus', oStatus === '1' ? 0 : 1);
+            this.model.collection.target.find('div[role="dialog"].status textarea.comment').val('');
+            this.model.collection.target.find('div[role="dialog"].status button.save').attr('disabled', 'disabled');
+            this.model.collection.target.find('div[role="dialog"].status').modal('show');
         },
         'click td.hour': function()
         {

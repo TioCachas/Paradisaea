@@ -14,7 +14,9 @@ $urlExportOperations = $this->Html->url(array('controller' => 'Operations', 'act
     </div>
 </form>
 <br/>
-<?php echo $this->element('Tables/Operations'); ?>
+<div id="operations">
+    <?php echo $this->element('Tables/Operations'); ?>
+</div>
 <?php $this->start('jsVars'); ?>
 <script type="text/javascript">
     var urlGetOperations = <?php echo json_encode($urlGetOperations); ?>;
