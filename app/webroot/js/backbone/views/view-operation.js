@@ -1,15 +1,27 @@
 Project.Views.Operation = Backbone.View.extend({
     events: {
-        'click .fa-eye': 'toggleStatus',
-        'click .fa-eye-slash': 'toggleStatus',
+        'click .fa-eye, .fa-eye-slash': function()
+        {
+            selectedModel = this.model;
+            this.model.collection.target.find('.modal.status .comment').val('');
+            this.model.collection.target.find('.modal.status .save').attr('disabled', 'disabled');
+            this.model.collection.target.find('.modal.status').modal('show');
+//        var oId = this.model.get('oId');
+//        var oStatus = this.model.get('oStatus');
+//        $('tr[data-id="' + oId + '"] .status .fa').addClass('hidden');
+//        $('tr[data-id="' + oId + '"] .status .fa-refresh').removeClass('hidden');
+//        this.model.set('oStatus', oStatus === '1' ? 0 : 1);
+        },
         'click td.hour': function()
         {
             selectedModel = this.model;
-            $('#commentHour').val('');
-            $('#modalHours .save').attr('disabled', 'disabled');
-            $('#modalHours').modal('show');
-        },
-        'click td.line': function()
+            this.collection.target.find('.modal.hours .hour').val('');
+            this.collection.target.find('.modal.hours .save').attr('disabled', 'disabled');
+            this.collection.target.find('.modal.hours').modal('show');
+        }
+        ,
+        'click td.line'
+                : function()
         {
             selectedModel = this.model;
             $('#modalLines .save').attr('disabled', 'disabled');
@@ -31,15 +43,6 @@ Project.Views.Operation = Backbone.View.extend({
     render: function() {
         var data = this.model.toJSON();
         this.setElement(this.template(data));
-        $('[data-toggle="tooltip"]').tooltip('show');
         return this;
-    },
-    toggleStatus: function()
-    {
-        var o = this.model.get('o');
-        $('tr[data-id="' + o.id + '"] .status .fa').addClass('hidden');
-        $('tr[data-id="' + o.id + '"] .status .fa-refresh').removeClass('hidden');
-        o.status = o.status == '1' ? 0 : 1;
-        this.model.set('o.status', o.status);
     }
 });

@@ -5,6 +5,7 @@ $urlToggleStatus = $this->Html->url(array('controller' => 'Productions', 'action
 <div id="productions">
     <div class="text-center loader">
         <i class="fa fa-refresh fa-spin fa-5x"></i>
+        <p><?php echo __("Buscando producciones..."); ?></p>
     </div>
     <div class="panel panel-primary hidden">
         <div class="panel-heading">

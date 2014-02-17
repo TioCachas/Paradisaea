@@ -1,31 +1,29 @@
 Project.Models.Operation = Backbone.Model.extend({
     initialize: function() {
-        this.on('change:o.status', function() {
-            var o = this.get('o');
-            var url = urlToggleStatus + '/' + o.id;
-            var m = this;
+        this.on('change:oStatus', function() {
+            var oId = this.get('oId');
+            var url = urlToggleStatus + '/' + oId;
+            var model = this;
             $.post(url, {}, function()
             {
-                render(m);
+                render(model);
             });
         }, this);
-        this.on('change:h.id', function() {
-            var o = this.get('o');
-            var h = this.get('h');
-            var url = urlChangeHour + '/' + o.id;
-            $('tr[data-id="' + o.id + '"] .status .fa').addClass('hidden');
-            $('tr[data-id="' + o.id + '"] .status .fa-refresh').removeClass('hidden');
-            $.post(url, {h: h.id, c: h.comment}, function(newHourStr)
+        this.on('change:hId', function() {
+            var oId = this.get('oId');
+            var hId = this.get('hId');
+            var url = urlChangeHour + '/' + oId;
+            $('tr[data-id="' + oId + '"] .status .fa').addClass('hidden');
+            $('tr[data-id="' + oId + '"] .status .fa-refresh').removeClass('hidden');
+            $.post(url, {h: hId, c: hComment}, function(newHourStr)
             {
-                var a = selectedModel.get('a');
-                a.hour = newHourStr;
-                selectedModel.set('a.hour', newHourStr);
-                $('tr[data-id="' + o.id + '"] .status .fa').removeClass('hidden');
-                $('tr[data-id="' + o.id + '"] .status .fa-refresh').addClass('hidden');
+                selectedModel.set('hour', newHourStr);
+                $('tr[data-id="' + oId + '"] .status .fa').removeClass('hidden');
+                $('tr[data-id="' + oId + '"] .status .fa-refresh').addClass('hidden');
                 render(selectedModel);
             }, 'json');
         }, this);
-        this.on('change:l.id', function() {
+        this.on('change:lId', function() {
             var o = this.get('o');
             var l = this.get('l');
             var url = urlChangeLine + '/' + o.id;
@@ -49,9 +47,8 @@ Project.Models.Operation = Backbone.Model.extend({
 
 function render(m)
 {
-    console.log(1);
     var view = new Project.Views.Operation({model: m});
-    var m = m.get('o');
+    var oId = m.get('oId');
     view.render();
-    $('tr[data-id="' + m.id + '"]').replaceWith(view.$el);
+    $('tr[data-id="' + oId + '"]').replaceWith(view.$el);
 }

@@ -1,6 +1,8 @@
 <?php
 $this->Html->script('controllers/Operations/admin', array('block' => 'scriptBottom'));
 $this->Html->css('controllers/Operations/admin', array('block' => 'stylesTop'));
+$urlGetOperations = $this->Html->url(array('controller' => 'Operations', 'action' => 'getByWorkDate'));
+$urlExportOperations = $this->Html->url(array('controller' => 'Operations', 'action' => 'exportByWorkDate'));
 ?>
 <form class="form-inline" role="form">
     <div class="form-group">
@@ -12,15 +14,10 @@ $this->Html->css('controllers/Operations/admin', array('block' => 'stylesTop'));
     </div>
 </form>
 <br/>
-<div class="hidden text-center" id="loadingOperations">
-    <i class="fa fa-refresh fa-spin fa-5x"></i>
-</div>
-<div class="panel panel-primary hidden" id="operations">
-    <div class="panel-heading"><?php echo __('Operaciones encontradas'); ?></div>
-    <div class="table-responsive">
-        <?php echo $this->element('Tables/Operations'); ?>
-    </div>
-</div>
-<div class="alert alert-info hidden" id="emptyOperations">
-    <?php echo __('No se encontrarón operaciones'); ?>
-</div>
+<?php echo $this->element('Tables/Operations'); ?>
+<?php $this->start('jsVars'); ?>
+<script type="text/javascript">
+    var urlGetOperations = <?php echo json_encode($urlGetOperations); ?>;
+    var urlExportOperations = <?php echo json_encode($urlExportOperations); ?>;
+</script>
+<?php $this->end(); ?>

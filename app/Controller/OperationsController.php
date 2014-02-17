@@ -26,9 +26,13 @@ class OperationsController extends AppController
         $this->set('description', __('Administración de operaciones'));
     }
 
-    public function getByWorkDate()
+    /**
+     * Buscamos las operaciones de un dia de trabajo.
+     * Invocado por AJAX
+     * @param string $workDate Fecha válida en formato Y-m-d
+     */
+    public function getByWorkDate($workDate = null)
     {
-        $workDate = $this->request->query['date'];
         $dt = null;
         try
         {
@@ -43,12 +47,61 @@ class OperationsController extends AppController
         $this->viewClass = 'Json';
     }
 
+    public function exportByWorkDate($workDate = null)
+    {
+        $dt = null;
+        try
+        {
+            $dt = new DateTime($workDate);
+        }
+        catch (Exception $exc)
+        {
+            $dt = new DateTime();
+        }
+        $operations = $this->Operation->getByWorkDate($dt->format('Y-m-d'));
+        $dataFlit = array();
+        foreach ($operations as $o)
+        {
+            $x = array();
+            $x[] = $o['lName'];
+            $x[] = $o['hour'];
+            $x[] = $o['user'];
+            $x[] = $o['oProduction'];
+            $x[] = $o['oScrap'];
+            $x[] = $o['oProduction'];
+            $x[] = $o['oRework'];
+            $x[] = $o['oChangeover'];
+            $x[] = $o['oTechnicalLosses'];
+            $x[] = $o['oOrganizationalLosses'];
+            $x[] = $o['oQualityLosses'];
+            $x[] = $o['oPerformanceLosses'];
+            $x[] = $o['oCreationDate'];
+            $dataFlit[] = $x;
+        }
+        $_serialize = 'dataFlit';
+        $_header = array(
+            __('Linea'),
+            __('Hora de trabajo'),
+            __('Usuario'),
+            __('Piezas OK'),
+            __('Scrap'),
+            __('Retrabajo'),
+            __('Retrabajo'),
+            __('Retrabajo'),
+            __('Retrabajo'),
+            __('Retrabajo'),);
+        $this->viewClass = 'CsvView.Csv';
+        $this->set(compact('dataFlit', '_serialize', '_header'));
+        $nameFile = __('operaciones') . '-' . $workDate . '.csv';
+        $this->response->download($nameFile);
+    }
+
     /**
      * Cambiamos el estatus de una produccion
+     * Invocada por AJAX
      */
     public function toggleStatus($operationId)
     {
-        // hola;
         $user = $this->Auth->user();
         $this->loadModel('LogOperation');
         $this->LogOperation->addLog($operationId, $user['id'], '');

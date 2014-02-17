@@ -155,29 +155,29 @@ class Operation extends AppModel
         $params = array($workDate);
         $operations = $this->query("
             SELECT 
-                  l.name
-                , l.id
+                  l.name lName
+                , l.id lId
                 , CONCAT(h.start, ' - ', h.end) hour
                 , CONCAT(u.name, ' ', u.last_name) user
-                , h.id
-                , o.production
-                , o.scrap
-                , o.rework
-                , o.changeover
-                , o.technical_losses
-                , o.organizational_losses
-                , o.quality_losses
-                , o.performance_losses
-                , o.id
-                , o.status
-                , o.creation_date
+                , h.id hId
+                , o.production oProduction
+                , o.scrap oScrap
+                , o.rework oRework
+                , o.changeover oChangeover
+                , o.technical_losses oTechnicalLosses
+                , o.organizational_losses oOrganizationalLosses
+                , o.quality_losses oQualityLosses
+                , o.performance_losses oPerformanceLosses
+                , o.id oId
+                , o.status oStatus
+                , o.creation_date oCreationDate
             FROM operations o
             INNER JOIN us3rs_m0n1t0r u ON u.id = o.user_id
             INNER JOIN production_lines l ON o.line_id = l.id
             INNER JOIN hours h ON o.hour_id = h.id
             WHERE o.work_date = ?
             ORDER BY o.creation_date DESC, l.name ASC", $params);
-        return $this->changeIntegerKeys($operations);
+        return $this->flatArray($operations);
     }
 
     /**

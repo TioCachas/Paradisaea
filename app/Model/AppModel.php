@@ -32,37 +32,25 @@ App::uses('Model', 'Model');
 class AppModel extends Model
 {
 
-    public function beforeSave($options = array())
+    /**
+     * Aplanamos un array con los resultados de la execución de una query
+     * @example 
+     * Entrada [ 'a': ['b'=>1, 'c'=> 2] ]
+     * Salida ['b'=>1, 'c'=> 2]
+     * @param array $collection
+     * @return array
+     */
+    protected function flatArray($collection)
     {
-        //var_dump($this->data);
-    }
-
-    protected function chgIntegerKeys($array)
-    {
-        if (is_array($array) === false)
-            return $array;
-        $result = array();
-        $letters = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-            'm', 'n', 'o', 'p', 'q');
-        foreach ($array as $key => $element)
-        {
-            if (is_int($key) === true)
-            {
-                $key = $letters[$key];
-            }
-            $result[$key] = $element;
-        }
-        return $result;
-    }
-
-    protected function changeIntegerKeys($array)
-    {
-        $result = array();
-        foreach ($array as $key => $element)
-        {
-            $result[$key] = $this->chgIntegerKeys($element);
-        }
-        return $result;
+        $flatArray = array();
+        array_walk($collection, function($record) use (&$flatArray) {
+                    $flatRecord = array();
+                    array_walk($record, function($element) use (&$flatRecord) {
+                                $flatRecord = array_merge($flatRecord, $element);
+                            });
+                    $flatArray[] = $flatRecord;
+                });
+        return $flatArray;
     }
 
 }

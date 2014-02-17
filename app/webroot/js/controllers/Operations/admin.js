@@ -1,5 +1,6 @@
 $(document).ready(function() {
     window.collections.operations = new Project.Collections.Operations();
+    window.collections.operations.target = $('#operations');
     $("#workDate").datepicker({
         changeMonth: true,
         changeYear: true,
@@ -9,27 +10,53 @@ $(document).ready(function() {
         maxDate: "today"
     });
 
-    $('#modalHours .comment').change(function()
+    /**
+     * Checamos el comentario y si su valor es diferente a cadena vacia entonces
+     * activamos el boton de guardar.
+     * IMPORTANTE!!! 
+     * Esta función afecta a todos los dialgos que contengan un campo comentario
+     * tener cuidado al cambiar está función ya que afecta a todos los dialogos.
+     */
+    $('div[role="dialog"] .comment').on('change', function()
     {
-        var v = $(this).val().trim();
+        var comment = $(this).val().trim();
         var dialog = $(this).parents('div[role="dialog"]');
         dialog.find('.save').attr('disabled', 'disabled');
-        if (v != '')
+        if (comment !== '')
         {
             dialog.find('.save').removeAttr('disabled');
         }
     });
 
-    $('#modalHours .save').click(function() {
-        var comment = $('#commentHour').val();
-        if (comment != '')
+    $('#operations i.fa-download').click(function() {
+        $(location).attr('href', window.collections.operations.urlExport);
+    });
+
+    $('div[role="dialog"] .status .save').click(function() {
+        var dialog = $(this).parents('div[role="dialog"]');
+        var comment = dialog.find('.comment').val();
+        if (comment !== '')
         {
-            var v = $('#modalHours select').val();
+            var hourId = dialog.find('.hour').val();
             var h = selectedModel.get('h');
-            h.id = v;
+            h.id = hourId;
             h.comment = comment;
-            selectedModel.set('h.id', v);
-            $('#modalHours').modal('hide');
+            selectedModel.set('h.id', hourId);
+            dialog.modal('hide');
+        }
+    });
+
+    $('.modal.hours .save').click(function() {
+        var dialog = $(this).parents('div[role="dialog"]');
+        var comment = dialog.find('.comment').val();
+        if (comment !== '')
+        {
+            var hourId = dialog.find('.hour').val();
+            var h = selectedModel.get('h');
+            h.id = hourId;
+            h.comment = comment;
+            selectedModel.set('h.id', hourId);
+            dialog.modal('hide');
         }
     });
 
@@ -44,28 +71,12 @@ $(document).ready(function() {
 
     $('#workDate').change(function()
     {
-        $('#loadingOperations').removeClass('hidden');
-        $('#operations').addClass('hidden');
-        $('#emptyOperations').addClass('hidden');
-        window.collections.operations.fetch(
-                {
-                    data:
-                            {
-                                date: $(this).val()
-                            },
-                    success: function()
-                    {
-                        if (window.collections.operations.length > 0)
-                        {
-                            $('#operations').removeClass('hidden');
-                        }
-                        else
-                        {
-                            $('#emptyOperations').removeClass('hidden');
-                        }
-                        $('#loadingOperations').addClass('hidden');
-                    }
-                }
-        );
+        $('#operations .loader').removeClass('hidden');
+        $('#operations .detail').addClass('hidden');
+        $('#operations .empty').addClass('hidden');
+        var workDate = $(this).val();
+        window.collections.operations.url = urlGetOperations + '/' + workDate;
+        window.collections.operations.urlExport = urlExportOperations + '/' + workDate;
+        window.collections.operations.fetch();
     });
 });

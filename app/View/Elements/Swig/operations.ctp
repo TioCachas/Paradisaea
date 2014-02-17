@@ -12,63 +12,63 @@ $urlTechnical = $this->Html->url(array(
 $urlOrganizational = $this->Html->url(array(
     'controller' => 'Productions', 'action' => 'admin'));
 ?>
-{% if o.status == 0 %}
-<tr data-id="{{ o.id }}" class="danger">
+{% if oStatus == 0 %}
+<tr data-id="{{ oId }}" class="danger">
     {% else %}
-<tr data-id="{{ o.id }}" class="success">
+<tr data-id="{{ oId }}" class="success">
     {% endif %}
-    <td class='line'>{{ l.name }}</td>
+    <td class='line'>{{ lName }}</td>
     <td class='hour'>
-        {{ a.hour }}
+        {{ hour }}
         <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
     <td>
-        {{ a.user }}
+        {{ user }}
     </td>
-    <td>{{ o.creation_date }}</td>
+    <td>{{ oCreationDate }}</td>
     <td>
-        <a href="<?php echo $urlProductions; ?>/{{ o.id }}">
-            {{ o.production }}
+        <a href="<?php echo $urlProductions; ?>/{{ oId }}">
+            {{ oProduction }}
         </a>
     </td>
     <td>
-        <a href="<?php echo $urlScrap; ?>/{{ o.id }}">
-            {{ o.scrap }}
+        <a href="<?php echo $urlScrap; ?>/{{ oId }}">
+            {{ oScrap }}
         </a>
     </td>
     <td>
-        <a href="<?php echo $urlRework; ?>/{{ o.id }}">
-            {{ o.rework }}
+        <a href="<?php echo $urlRework; ?>/{{ oId }}">
+            {{ oRework }}
         </a>
     </td>
     <td>
-        <a href="<?php echo $urlChangeover; ?>/{{ o.id }}">
-            {{ o.changeover }}
+        <a href="<?php echo $urlChangeover; ?>/{{ oId }}">
+            {{ oChangeover }}
         </a>
     </td>
     <td>
-        <a href="<?php echo $urlTechnical; ?>/{{ o.id }}">
-            {{ o.technical_losses }}
+        <a href="<?php echo $urlTechnical; ?>/{{ oId }}">
+            {{ oTechnicalLosses }}
         </a>
     </td>
     <td>
-        <a href="<?php echo $urlOrganizational; ?>/{{ o.id }}">
-            {{ o.organizational_losses }}
+        <a href="<?php echo $urlOrganizational; ?>/{{ oId }}">
+            {{ oOrganizationalLosses }}
         </a>
     </td>
     <td>
-        <a href="<?php echo $urlOrganizational; ?>/{{ o.id }}">
-            {{ o.quality_losses }}
+        <a href="<?php echo $urlOrganizational; ?>/{{ oId }}">
+            {{ o.QualityLosses }}
         </a>
     </td>
     <td>
-        <a href="<?php echo $urlOrganizational; ?>/{{ o.id }}">
-            {{ o.performance_losses }}
+        <a href="<?php echo $urlOrganizational; ?>/{{ oId }}">
+            {{ oPerformanceLosses }}
         </a>
     </td>
     <td>
         <span class="status">
-            {% if o.status == 0 %}
+            {% if oStatus == 0 %}
             <i class="fa fa-eye" title="<?php echo __('Habilitar'); ?>"></i>
             {% else %}
             <i class="fa fa-eye-slash" title="<?php echo __('Deshabilitar'); ?>"></i>
