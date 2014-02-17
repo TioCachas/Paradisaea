@@ -22,7 +22,7 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
     <div class="panel panel-primary hidden detail">
         <div class="panel-heading">
             <?php echo __('Operacion(es)'); ?>
-            <i class="fa fa-download fa-inverse fa-2x pull-right cursorPointer"></i>
+            <i class="fa fa-download fa-inverse fa-2x pull-right cursorPointer" title="<?php echo __("Descargar operaciones habilitadas"); ?>"></i>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-condensed table-hover">

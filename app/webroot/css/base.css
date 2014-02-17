@@ -59,3 +59,8 @@ table td, table th
 {
     text-transform: lowercase !important;
 }
+
+.cursorPointer
+{
+    cursor: pointer !important;
+}

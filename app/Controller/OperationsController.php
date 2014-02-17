@@ -3,8 +3,8 @@
 App::uses('Controller', 'Controller');
 App::uses('Bosch', 'Model');
 
-class OperationsController extends AppController
-{
+class OperationsController extends AppController {
+
     public $helpers = array('TableOperations');
 
     const ERROR_HOUR = 1;
@@ -20,8 +20,7 @@ class OperationsController extends AppController
 //        parent::beforeFilter();
 //    }
 
-    public function admin()
-    {
+    public function admin() {
         $this->set('title', __('Operaciones'));
         $this->set('description', __('Administración de operaciones'));
     }
@@ -31,15 +30,11 @@ class OperationsController extends AppController
      * Invocado por AJAX
      * @param string $workDate Fecha válida en formato Y-m-d
      */
-    public function getByWorkDate($workDate = null)
-    {
+    public function getByWorkDate($workDate = null) {
         $dt = null;
-        try
-        {
+        try {
             $dt = new DateTime($workDate);
-        }
-        catch (Exception $exc)
-        {
+        } catch (Exception $exc) {
             $dt = new DateTime();
         }
         $operations = $this->Operation->getByWorkDate($dt->format('Y-m-d'));
@@ -47,36 +42,40 @@ class OperationsController extends AppController
         $this->viewClass = 'Json';
     }
 
-    public function exportByWorkDate($workDate = null)
-    {
+    /**
+     * Exportamos las operaciones HABILITADAS de un dia de trabajo
+     * Invocada por AJAX
+     * @param string $workDate Debe contener una fecha en formato valido (Y-m-d)
+     * en caso de que el valor del parametro sea incorrecto se retorna un archivo
+     * sin operaciones.
+     */
+    public function exportByWorkDate($workDate = null) {
         $dt = null;
-        try
-        {
+        $operations = null;
+        try {
             $dt = new DateTime($workDate);
+            $operations = $this->Operation->getByWorkDate($dt->format('Y-m-d'));
+        } catch (Exception $exc) {
+            $operations = array();
         }
-        catch (Exception $exc)
-        {
-            $dt = new DateTime();
-        }
-        $operations = $this->Operation->getByWorkDate($dt->format('Y-m-d'));
         $dataFlit = array();
-        foreach ($operations as $o)
-        {
-            $x = array();
-            $x[] = $o['lName'];
-            $x[] = $o['hour'];
-            $x[] = $o['user'];
-            $x[] = $o['oProduction'];
-            $x[] = $o['oScrap'];
-            $x[] = $o['oProduction'];
-            $x[] = $o['oRework'];
-            $x[] = $o['oChangeover'];
-            $x[] = $o['oTechnicalLosses'];
-            $x[] = $o['oOrganizationalLosses'];
-            $x[] = $o['oQualityLosses'];
-            $x[] = $o['oPerformanceLosses'];
-            $x[] = $o['oCreationDate'];
-            $dataFlit[] = $x;
+        foreach ($operations as $o) {
+            if ($o['oStatus'] == 1) {
+                $x = array();
+                $x[] = $o['lName'];
+                $x[] = $o['hour'];
+                $x[] = $o['user'];
+                $x[] = $o['oProduction'];
+                $x[] = $o['oScrap'];
+                $x[] = $o['oRework'];
+                $x[] = $o['oChangeover'];
+                $x[] = $o['oTechnicalLosses'];
+                $x[] = $o['oOrganizationalLosses'];
+                $x[] = $o['oQualityLosses'];
+                $x[] = $o['oPerformanceLosses'];
+                $x[] = $o['oCreationDate'];
+                $dataFlit[] = $x;
+            }
         }
         $_serialize = 'dataFlit';
         $_header = array(
@@ -86,10 +85,12 @@ class OperationsController extends AppController
             __('Piezas OK'),
             __('Scrap'),
             __('Retrabajo'),
-            __('Retrabajo'),
-            __('Retrabajo'),
-            __('Retrabajo'),
-            __('Retrabajo'),);
+            __('Perdidas por cambio de modelo'),
+            __('Perdidas tecnicas'),
+            __('Perdidas organizacionales'),
+            __('Perdidas de calidad'),
+            __('Perdidas de desempeño'),
+            __('Fecha de captura'),);
         $this->viewClass = 'CsvView.Csv';
         $this->set(compact('dataFlit', '_serialize', '_header'));
         $nameFile = __('operaciones') . '-' . $workDate . '.csv';
@@ -100,8 +101,7 @@ class OperationsController extends AppController
      * Cambiamos el estatus de una produccion
      * Invocada por AJAX
      */
-    public function toggleStatus($operationId)
-    {
+    public function toggleStatus($operationId) {
         $user = $this->Auth->user();
         $this->loadModel('LogOperation');
         $this->LogOperation->addLog($operationId, $user['id'], '');
@@ -110,12 +110,10 @@ class OperationsController extends AppController
         $this->viewClass = 'Json';
     }
 
-    public function changeHour($operationId)
-    {
+    public function changeHour($operationId) {
         $data = $this->request->data;
         $result = false;
-        if (isset($data['h']) === true && isset($data['c']) === true)
-        {
+        if (isset($data['h']) === true && isset($data['c']) === true) {
             $user = $this->Auth->user();
             $hourId = $data['h'];
             $comment = trim($data['c']);
@@ -130,12 +128,10 @@ class OperationsController extends AppController
         $this->viewClass = 'Json';
     }
 
-    public function changeLine($operationId)
-    {
+    public function changeLine($operationId) {
         $data = $this->request->data;
         $result = false;
-        if (isset($data['l']) === true)
-        {
+        if (isset($data['l']) === true) {
             $user = $this->Auth->user();
             $this->loadModel('LogOperation');
             $this->LogOperation->addLog($operationId, $user['id'], '');
@@ -149,46 +145,40 @@ class OperationsController extends AppController
         $this->viewClass = 'Json';
     }
 
-    public function form()
-    {
+    public function form() {
         $bosch = $this->Session->read('configuration');
         $userSesion = $this->Auth->user();
         $userId = $userSesion['id'];
         $this->loadModel('Hour');
         $lineId = $bosch->getConfiguration()->getShift();
         $hours = $this->Hour->getEnabledByShift($lineId);
-        if (empty($hours) === true)
-        {
+        if (empty($hours) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_HOUR));
             return;
         }
         $this->loadModel('ModelLine');
         $models = $this->ModelLine->getEnabledByLine($lineId);
-        if (empty($models) === true)
-        {
+        if (empty($models) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_MODEL));
             return;
         }
         $firstModel = $models[0];
         $this->loadModel('IndexModel');
         $indexes = $this->IndexModel->getEnabledByModel($firstModel['m']['id']);
-        if (empty($indexes) === true)
-        {
+        if (empty($indexes) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_INDEX));
             return;
         }
         $this->loadModel('Workstation');
         $workstations = $this->Workstation->getEnabledByLine($lineId);
-        if (empty($workstations) === true)
-        {
+        if (empty($workstations) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_WORKSTATION));
             return;
         }
         $firstWorkstation = $workstations[0];
         $this->loadModel('Defect');
         $defects = $this->Defect->getEnabledByWorkstation($firstWorkstation['Workstation']['id']);
-        if (empty($defects) === true)
-        {
+        if (empty($defects) === true) {
             $this->redirect(array('action' => 'error', self::ERROR_DEFECTS));
             return;
         }
@@ -201,15 +191,13 @@ class OperationsController extends AppController
         $this->set('description', __('Ingresa la produccion y scrap'));
     }
 
-    public function error($codeError)
-    {
+    public function error($codeError) {
         $this->set('title', __('Error'));
         $this->set('description', __('Error en la operacion'));
         $this->set('codeError', $codeError);
     }
 
-    public function get()
-    {
+    public function get() {
         $userSesion = $this->Auth->user();
         $userId = $userSesion['id'];
         $operations = $this->Operation->getCurrentsByUserId($userId);
@@ -217,15 +205,13 @@ class OperationsController extends AppController
         $this->viewClass = 'Json';
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $this->Operation->delete($id);
         $this->set(array('success' => true, '_serialize' => 'success'));
         $this->viewClass = 'Json';
     }
 
-    public function create()
-    {
+    public function create() {
         $bosch = $this->Session->read('configuration');
         $lineId = $bosch->getConfiguration()->getLine();
         $userSesion = $this->Auth->user();
