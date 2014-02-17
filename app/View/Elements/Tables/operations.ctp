@@ -75,8 +75,7 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
 <div class="alert alert-info hidden empty">
     <?php echo __('No se encontrarón operaciones'); ?>
 </div>
-<!-- Dialogos modales-->
-<div class="modal fade hours" tabindex="-1" role="dialog" aria-labelledby="modalHours" aria-hidden="true">
+<div class="modal fade hour" tabindex="-1" role="dialog" aria-labelledby="modalHours" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -110,6 +109,7 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
         </div>
     </div>
 </div>
+<!--Dialogo de cambio de estatus-->
 <div class="modal fade status" tabindex="-1" role="dialog" aria-labelledby="modalStatus" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -136,7 +136,7 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
         </div>
     </div>
 </div>
-<div class="modal fade" id="modalLines" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

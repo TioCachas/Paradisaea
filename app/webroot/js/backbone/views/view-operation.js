@@ -10,13 +10,12 @@ Project.Views.Operation = Backbone.View.extend({
         'click td.hour': function()
         {
             selectedModel = this.model;
-            this.collection.target.find('.modal.hours .hour').val('');
-            this.collection.target.find('.modal.hours .save').attr('disabled', 'disabled');
-            this.collection.target.find('.modal.hours').modal('show');
-        }
-        ,
-        'click td.line'
-                : function()
+            this.model.collection.target.find('div[role="dialog"].hour select.hour').val('');
+            this.model.collection.target.find('div[role="dialog"].hour textarea.comment').val('');
+            this.model.collection.target.find('div[role="dialog"].hour .save').attr('disabled', 'disabled');
+            this.model.collection.target.find('div[role="dialog"].hour').modal('show');
+        },
+        'click td.line': function()
         {
             selectedModel = this.model;
             $('#modalLines .save').attr('disabled', 'disabled');

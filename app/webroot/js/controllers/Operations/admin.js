@@ -10,20 +10,6 @@ $(document).ready(function() {
         maxDate: "today"
     });
 
-    $('.modal.hours .save').click(function() {
-        var dialog = $(this).parents('div[role="dialog"]');
-        var comment = dialog.find('.comment').val();
-        if (comment !== '')
-        {
-            var hourId = dialog.find('.hour').val();
-            var h = selectedModel.get('h');
-            h.id = hourId;
-            h.comment = comment;
-            selectedModel.set('h.id', hourId);
-            dialog.modal('hide');
-        }
-    });
-
     $('#modalLines .save').click(function() {
         $(this).attr('disabled', 'disabled');
         var v = $('#modalLines select').val();

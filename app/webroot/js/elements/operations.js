@@ -1,7 +1,8 @@
 $(document).ready(function()
 {
     $('div[role="dialog"] textarea.comment').on('change', changeComment);
-    $('div[role="dialog"].status button.save').on('click', saveStatus);
+    $('div[role="dialog"].status button.save').on('click', changeStatus);
+    $('div[role="dialog"].hour button.save').on('click', changeHour);
     $('#operations i.fa-download').on('click', exportOperations);
 });
 
@@ -28,11 +29,22 @@ function changeComment()
  * Cambiamos el estatus y mostramos el dialogo.
  * De aqui deberias ir a ver el evento de cambio de estatus del modelo ;)
  */
-function saveStatus() {
+function changeStatus() {
     var dialog = $(this).parents('div[role="dialog"]');
     var oStatus = parseInt(selectedModel.get('oStatus'));
     var newStatus = oStatus === 0 ? 1 : 0;
     selectedModel.set('oStatus', newStatus);
+    dialog.modal('hide');
+}
+
+/**
+ * Cambiamos la hora
+ * De aqui deberias ir a ver el evento de cambio de hora del modelo ;)
+ */
+function changeHour() {
+    var dialog = $(this).parents('div[role="dialog"]');
+    var hourId = dialog.find('select.hour').val();
+    selectedModel.set('hId', hourId);
     dialog.modal('hide');
 }
 

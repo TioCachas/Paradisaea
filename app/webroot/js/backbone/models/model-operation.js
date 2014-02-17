@@ -18,18 +18,22 @@ Project.Models.Operation = Backbone.Model.extend({
             }
         }, this);
         this.on('change:hId', function() {
-            var oId = this.get('oId');
-            var hId = this.get('hId');
-            var url = urlChangeHour + '/' + oId;
-            $('tr[data-id="' + oId + '"] .status .fa').addClass('hidden');
-            $('tr[data-id="' + oId + '"] .status .fa-refresh').removeClass('hidden');
-            $.post(url, {h: hId, c: hComment}, function(newHourStr)
+            var comment = this.collection.target.find('div[role="dialog"].hour textarea.comment').val();
+            if (comment !== '')
             {
-                selectedModel.set('hour', newHourStr);
-                $('tr[data-id="' + oId + '"] .status .fa').removeClass('hidden');
-                $('tr[data-id="' + oId + '"] .status .fa-refresh').addClass('hidden');
-                render(selectedModel);
-            }, 'json');
+                this.startSaveChanges();
+                var oId = this.get('oId');
+                var hId = this.get('hId');
+                var url = urlChangeHour + '/' + oId;
+                var model = this;
+                $.post(url, {h: hId, c: comment}, function(newHourStr)
+                {
+                    /// Muy importante para evitar lanzar un nuevo evento de cambio
+                    /// de hora
+                    model.attributes.hour = newHourStr;
+                    render(model);
+                }, 'json');
+            }
         }, this);
         this.on('change:lId', function() {
             var o = this.get('o');

@@ -105,8 +105,9 @@ class OperationsController extends AppController {
     public function toggleStatus($operationId) {
         $newStatus = null;
         if ($this->request->is('post')) {
-            if (isset($this->request->data['c']) === true) {
-                $comment = trim($this->request->data['c']);
+            $data = $this->request->data;
+            if (isset($data['c']) === true) {
+                $comment = trim($data['c']);
                 if ($comment != '') {
                     $user = $this->Auth->user();
                     $this->loadModel('LogOperation');
@@ -122,21 +123,31 @@ class OperationsController extends AppController {
         $this->viewClass = 'Json';
     }
 
+    /**
+     * Cambiamos la hora de una operacion
+     * Invocada por AJAX
+     * @param string $operationId
+     * @result JSON con la nueva hora
+     */
     public function changeHour($operationId) {
         $data = $this->request->data;
-        $result = false;
-        if (isset($data['h']) === true && isset($data['c']) === true) {
-            $user = $this->Auth->user();
-            $hourId = $data['h'];
-            $comment = trim($data['c']);
-            $this->loadModel('LogOperation');
-            $this->LogOperation->addLog($operationId, $user['id'], $comment);
-            $this->Operation->changeHour($operationId, $hourId);
-            $this->loadModel('Hour');
-            $hour = $this->Hour->findById($hourId);
-            $result = $hour['Hour']['start'] . ' - ' . $hour['Hour']['end'];
+        $newHour = null;
+        if ($this->request->is('post')) {
+            if (isset($data['h']) === true && isset($data['c']) === true) {
+                $comment = trim($data['c']);
+                if ($comment != '') {
+                    $hourId = $data['h'];
+                    $user = $this->Auth->user();
+                    $this->loadModel('LogOperation');
+                    $this->LogOperation->addLog($operationId, $user['id'], $comment);
+                    $this->Operation->changeHour($operationId, $hourId);
+                    $this->loadModel('Hour');
+                    $hour = $this->Hour->findById($hourId);
+                    $newHour = $hour['Hour']['start'] . ' - ' . $hour['Hour']['end'];
+                }
+            }
         }
-        $this->set(array('result' => $result, '_serialize' => 'result'));
+        $this->set(array('result' => $newHour, '_serialize' => 'result'));
         $this->viewClass = 'Json';
     }
 
