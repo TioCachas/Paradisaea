@@ -9,10 +9,6 @@ $urlChangeHour = $this->Html->url(array('controller' => 'Operations', 'action' =
 $urlChangeLine = $this->Html->url(array('controller' => 'Operations', 'action' => 'changeLine'));
 $urlGetLines = $this->Html->url(array('controller' => 'Lines', 'action' => 'getLinesSelfArea'));
 $urlToggleStatus = $this->Html->url(array('controller' => 'Operations', 'action' => 'toggleStatus'));
-$urlChangeHour = json_encode($urlChangeHour);
-$urlChangeLine = json_encode($urlChangeLine);
-$urlGetLines = json_encode($urlGetLines);
-$urlToggleStatus = json_encode($urlToggleStatus);
 $minutesSymbol = Units::symbol(Units::MINUTES);
 ?>
 <div class="hidden text-center loader">
@@ -162,10 +158,10 @@ $minutesSymbol = Units::symbol(Units::MINUTES);
 <?php $this->TioCachas->templateSwig('rowOperation', 'operations'); ?>
 <?php $this->start('jsVars'); ?>
 <script type="text/javascript">
-    var urlToggleStatus = <?php echo $urlToggleStatus; ?>;
-    var urlChangeHour = <?php echo $urlChangeHour; ?>;
-    var urlChangeLine = <?php echo $urlChangeLine; ?>;
-    var urlGetLines = <?php echo $urlGetLines; ?>;
+    var urlToggleStatus = <?php echo json_encode($urlToggleStatus); ?>;
+    var urlChangeHour = <?php echo json_encode($urlChangeHour); ?>;
+    var urlChangeLine = <?php echo json_encode($urlChangeLine); ?>;
+    var urlGetLines = <?php echo json_encode($urlGetLines); ?>;
     var selectedModel = null;
 </script>
 <?php $this->end(); ?>
