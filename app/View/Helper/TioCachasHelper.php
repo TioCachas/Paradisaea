@@ -3,6 +3,14 @@ App::uses('AppHelper', 'View/Helper');
 
 class TioCachasHelper extends AppHelper
 {
+    public function templateClassSwig($element)
+    {
+        ?>
+        <script type="text/template" class=template">
+        <?php echo $this->_View->element('Swig/' . $element); ?>
+        </script>
+        <?php
+    }
 
     public function templateSwig($id, $element)
     {

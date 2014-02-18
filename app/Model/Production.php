@@ -41,7 +41,13 @@ class Production extends AppModel
               , p.operation_id pOperationId -- Lo devolvemos para tener una referencia a la operacion
               , m.name mName
               , i.name iName
+              , o.work_date oWorkDate
+              , CONCAT(h.start, ' - ', h.end) hour
+              , l.name lName
             FROM productions p
+            INNER JOIN operations o ON o.id = p.operation_id
+            INNER JOIN hours h ON h.id = o.hour_id
+            INNER JOIN production_lines l ON l.id = o.line_id
             INNER JOIN models m ON p.model_id = m.id
             INNER JOIN indexes i ON p.index_id = i.id
             WHERE p.operation_id = ? AND p.status IN (" . implode(',', $statusArray) . ")

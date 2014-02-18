@@ -108,12 +108,24 @@ class ProductionsController extends AppController
             $this->redirect(array('action' => 'error', self::ERROR_INDEX));
             return;
         }
-        $productions = $this->Production->getByOperationId($operationId, array(Production::STATUS_ENABLED));
+        $this->set('operationId', $operationId);
         $this->set('models', $models);
         $this->set('indexes', $indexes);
-        $this->set('productions', $productions);
         $this->set('title', __('Piezas OK'));
         $this->set('description', __('Crear registro de piezas OK'));
     }
-
+    
+    /**
+     * Buscamos los registros de piezas ok que se encuentren habilitados
+     * Invocada por AJAX
+     * @param integer $operationId
+     * @result JSON
+     */
+    public function getByOperationForUser($operationId)
+    {
+        $productions = $this->Production->getByOperationId($operationId, array(Production::STATUS_ENABLED));
+        $this->set(array('productions' => $productions, '_serialize' => 'productions'));
+        $this->viewClass = 'Json';
+    }
+    
 }
