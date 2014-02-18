@@ -9,14 +9,16 @@ class TableOperationsHelper extends AppHelper {
             <thead>
                 <tr>
                     <th><?php echo __('Linea'); ?></th>
+                    <th><?php echo __('Dia de trabajo'); ?></th>
                     <th><?php echo __('Hora'); ?></th>
-                    <th><?php echo __('Modelo'); ?></th>
                     <th><?php echo __('Produccion'); ?></th>
                     <th><?php echo __('Scrap'); ?></th>
                     <th><?php echo __('Retrabajo'); ?></th>
-                    <th><?php echo __('Changeover'); ?></th>
-                    <th><?php echo __('Technical losses'); ?></th>
-                    <th><?php echo __('Organizational losses'); ?></th>
+                    <th><?php echo __('Cambio de modelo'); ?></th>
+                    <th><?php echo __('Perdidas tecnicas'); ?></th>
+                    <th><?php echo __('Perdidas organizacionales'); ?></th>
+                    <th><?php echo __('Perdidas de calidad'); ?></th>
+                    <th><?php echo __('Perdidas de rendimiento'); ?></th>
                 </tr>
             </thead>
             <tbody>

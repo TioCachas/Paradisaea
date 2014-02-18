@@ -19,11 +19,32 @@
                         <?php echo __('Inicio'); ?>
                     </a>
                 </li>
-                <li>
-                    <a href="<?php echo $this->Html->url(array('controller' => 'Operations', 'action' => 'admin')); ?>">
-                        <i class='fa fa-home'></i>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class='fa fa-user'></i>
                         <?php echo __('Operaciones'); ?>
+                        <b class="caret"></b>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="<?php
+                            echo $this->Html->url(array(
+                                'controller' => 'Operations', 'action' => 'form'));
+                            ?>">
+                                <i class='fa fa-cogs'></i>
+                                <?php echo __('Crear'); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php
+                            echo $this->Html->url(array(
+                                'controller' => 'Operations', 'action' => 'admin'));
+                            ?>">
+                                <i class='fa fa-edit'></i>
+                                <?php echo __('Administrar'); ?>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="#">
@@ -39,35 +60,46 @@
                         ?>
                         <?php if ($bosch->getConfiguration()->getShiftText() !== null): ?>
                             <li>
-                                <a href="<?php echo $this->Html->url(array('controller' => 'Shifts', 'action' => 'config')); ?>">
-                                    <?php echo $bosch->getConfiguration()->getShiftText(); ?>
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'Shifts', 'action' => 'config'));
+                                ?>">
+                                       <?php echo $bosch->getConfiguration()->getShiftText(); ?>
                                 </a>
                             </li>
                         <?php endif; ?>
                         <?php if ($bosch->getConfiguration()->getLineText() !== null): ?>
                             <li>
-                                <a href="<?php echo $this->Html->url(array('controller' => 'Shifts', 'action' => 'config')); ?>">
-                                    <?php echo $bosch->getConfiguration()->getLineText(); ?>
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'Shifts', 'action' => 'config'));
+                                ?>">
+                                       <?php echo $bosch->getConfiguration()->getLineText(); ?>
                                 </a>
                             </li>
                         <?php endif; ?>
                     <?php endif; ?>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-
                             <i class='fa fa-user'></i>
                             <?php echo $authUser['name'] ?>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="<?php echo $this->Html->url(array('controller' => 'Shifts', 'action' => 'config')); ?>">
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'Shifts', 'action' => 'config'));
+                                ?>">
                                     <i class='fa fa-cogs'></i>
                                     <?php echo __('Turno'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?php echo $this->Html->url(array('controller' => 'Users', 'action' => 'changePassForm')); ?>">
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'Users', 'action' => 'changePassForm'));
+                                ?>">
                                     <i class='fa fa-edit'></i>
                                     <?php echo __('Cambiar contraseña'); ?>
                                 </a>
@@ -87,7 +119,10 @@
                     </li>
                 <?php else: ?>
                     <li>
-                        <a href="<?php echo $this->Html->url(array('controller' => 'Sesion', 'action' => 'index')); ?>">
+                        <a href="<?php
+                        echo $this->Html->url(array(
+                            'controller' => 'Sesion', 'action' => 'index'));
+                        ?>">
                             <i class='fa fa-sign-in'></i>
                             <?php echo __('Ingresar'); ?>
                         </a>

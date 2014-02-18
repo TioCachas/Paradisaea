@@ -14,5 +14,10 @@ class LinesController extends AppController
         $this->set('lines', $lines);
         $this->layout = 'ajax';
     }
+    
+    public function admin()
+    {
+      //  $this->Line->
+    }
 
 }

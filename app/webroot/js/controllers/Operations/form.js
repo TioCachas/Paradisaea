@@ -9,6 +9,15 @@ var blockSave = false;
 
 $(document).ready(function()
 {
+    $("#workDate").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd',
+        altField: "#alternate",
+        altFormat: "DD, d MM",
+        maxDate: "today"
+    });
+
     $('#production').focus();
 
     $('input').keyup(function(e) {
@@ -50,7 +59,7 @@ $(document).ready(function()
             $('#indexLoading').addClass('hidden');
         });
     });
-    
+
     $('#workstation').change(function() {
         var id = $(this).val();
         var url = urlGetDefects + '/' + id;
@@ -71,8 +80,8 @@ $(document).ready(function()
             var tr = renderTr(o);
             $('#tableRecords tbody').append(tr);
         });
-        calculateResumen();
-        renderResumen();
+//        calculateResumen();
+//        renderResumen();
         toggleTableRecords();
     }, 'json');
 });
@@ -96,8 +105,8 @@ function saveOperation()
             $('#production').focus();
             $('#saveOperation').attr('disabled', 'disabled');
             window.operations.push(operation);
-            groupByModel(operation);
-            renderResumen();
+//            groupByModel(operation);
+//            renderResumen();
         });
     }
     else
@@ -189,42 +198,54 @@ function renderResumen()
 function renderTr(operation)
 {
     var tr = $('<tr>');
-    tr.attr('rid', operation['o']['id']);
+    tr.attr('rid', operation.oId);
 
     var td = $('<td>');
-    td.text(operation['l']['line']);
+    td.text(operation.lName);
     tr.append(td);
 
     td = $('<td>');
-    td.text(operation[0]['hour']);
+    td.text(operation.oWorkDate);
     tr.append(td);
 
     td = $('<td>');
-    td.text(operation['m']['model']);
+    td.text(operation.hour);
+    tr.append(td);
+
+    var a = $('<a>');
+    a.attr('href', urlCaptureProduction + '/' + operation.oId);
+    a.text(operation.oProduction);
+
+    td = $('<td class="production cursorPointer">');
+    td.append(a);
     tr.append(td);
 
     td = $('<td>');
-    td.text(operation['o']['production']);
+    td.text(operation.oScrap);
     tr.append(td);
 
     td = $('<td>');
-    td.text(operation['o']['scrap']);
+    td.text(operation.oRework);
     tr.append(td);
 
     td = $('<td>');
-    td.text(operation['o']['rework']);
+    td.text(operation.oChangeover);
     tr.append(td);
 
     td = $('<td>');
-    td.text(operation['o']['changeover']);
+    td.text(operation.oTechnicalLosses);
     tr.append(td);
 
     td = $('<td>');
-    td.text(operation['o']['technical_losses']);
+    td.text(operation.oOrganizationalLosses);
     tr.append(td);
 
     td = $('<td>');
-    td.text(operation['o']['organizational_losses']);
+    td.text(operation.oQualityLosses);
+    tr.append(td);
+
+    td = $('<td>');
+    td.text(operation.oPerformanceLosses);
     tr.append(td);
 
     return tr;

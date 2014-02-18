@@ -8,30 +8,38 @@ class Operation extends AppModel
     const STATUS_DISABLED = 0;
 
     /**
-     * Insertamos una operacion con el valor de la produccion y del scrap.
-     * @param integer $hourId
-     * @param integer $modelId
-     * @param integer $production
-     * @param integer $scrap
-     * @param integer $rework
-     * @param integer $userId
-     * @param integer $lineId
+     * Creamos una operación
+     * @param type $userId
+     * @param type $lineId
+     * @param type $hourId
+     * @param type $changeover
+     * @param type $technicalLosses
+     * @param type $organizationalLosses
+     * @param type $qualityLosses
+     * @param type $performanceLosses
+     * @param type $workDate
      */
-    public function insert($hourId, $modelId, $production, $scrap, $rework, $userId, $lineId, $changeover, $technicalLosses, $organizationalLosses)
+    public function insert($userId, $lineId, $hourId, $scrap, $rework, $changeover, $technicalLosses, $organizationalLosses, $qualityLosses, $performanceLosses, $workDate)
     {
         $data = array();
-        $data['hour_id'] = $hourId;
-        $data['model_id'] = $modelId;
-        $data['production'] = $production;
-        $data['scrap'] = $scrap;
-        $data['rework'] = $rework;
         $data['user_id'] = $userId;
         $data['line_id'] = $lineId;
+        $data['hour_id'] = $hourId;
+        $data['production'] = 0;
+        $data['scrap'] = $scrap;
+        $data['rework'] = $rework;
         $data['changeover'] = $changeover;
         $data['technical_losses'] = $technicalLosses;
         $data['organizational_losses'] = $organizationalLosses;
+        $data['quality_losses'] = $qualityLosses;
+        $data['performance_losses'] = $performanceLosses;
+        $data['work_date'] = $workDate;
         $data['status'] = self::STATUS_ENABLED;
         $this->save($data);
+        $dt = new DateTime();
+        $data['creation_date'] = $dt->format('Y-m-d H:i:s');
+        $data['id'] = $this->getLastInsertID();
+        return $data;
     }
 
     /**
@@ -82,32 +90,33 @@ class Operation extends AppModel
      * @param integer $userId Buscamos las operaciones de este usuario
      * @return array Arreglo con las operaciones del usuario.
      */
-    public function getCurrentsByUserId($userId)
+    public function getCurrentsByUserId($userId, $statusArray = array(self::STATUS_DISABLED,
+        self::STATUS_ENABLED))
     {
         $operations = $this->query('
             SELECT 
-                  o.id
-                , l.name line
+                  o.id oId
+                , l.name lName
+                , o.work_date oWorkDate
                 , concat( DATE_FORMAT(h.start, "%H:%i"), " - ", DATE_FORMAT(h.end, "%H:%i") ) hour
-                , h.id hour_id
-                , m.name model
-                , o.production
-                , o.scrap
-                , o.rework
-                , o.changeover
-                , o.technical_losses
-                , o.organizational_losses
+                , o.production oProduction
+                , o.scrap oScrap
+                , o.rework oRework
+                , o.changeover oChangeover
+                , o.technical_losses oTechnicalLosses
+                , o.organizational_losses oOrganizationalLosses
+                , o.quality_losses oQualityLosses
+                , o.performance_losses oPerformanceLosses
             FROM operations o
             INNER JOIN production_lines l ON l.id = o.line_id
             INNER JOIN hours h ON h.id = o.hour_id
-            INNER JOIN models m ON m.id = o.model_id
             WHERE 
-                    o.status = ' . self::STATUS_ENABLED . '
+                    o.status IN (' . implode(',', $statusArray) . ')
                 AND o.user_id = ?        
                 AND DATE(o.creation_date) = DATE(NOW())
             ORDER BY o.creation_date DESC', array(
             $userId));
-        return $operations;
+        return $this->flatArray($operations);
     }
 
     /**
@@ -126,7 +135,7 @@ class Operation extends AppModel
             $endDate->format('Y-m-d'));
         $operations = $this->query('
             SELECT 
-                  DATE(creation_date) dateOperation
+                  work_date dateOperation
                 , SUM(production) sumProduction
                 , SUM(scrap) sumScrap
                 , SUM(rework) sumRework
@@ -139,7 +148,7 @@ class Operation extends AppModel
                     AND line_id = ?
                     AND DATE(creation_date) >= DATE(?)
                     AND DATE(creation_date) <= DATE(?)
-            GROUP BY line_id, DATE( creation_date )
+            GROUP BY line_id, work_date
             ORDER BY dateOperation', $params);
         return $operations;
     }
@@ -191,10 +200,8 @@ class Operation extends AppModel
         $operations = $this->query("
             SELECT 
                   l.name lName
-                , l.id lId
                 , CONCAT(h.start, ' - ', h.end) hour
                 , CONCAT(u.name, ' ', u.last_name) user
-                , h.id hId
                 , o.production oProduction
                 , o.scrap oScrap
                 , o.rework oRework
@@ -229,8 +236,9 @@ class Operation extends AppModel
             FROM operations o
             INNER JOIN production_lines l ON o.line_id = l.id
             WHERE o.id = ?
-            LIMIT 1", array($id));
-        if(isset($operation[0]))
+            LIMIT 1", array(
+            $id));
+        if (isset($operation[0]))
         {
             $o = $operation[0];
             $strName = $o[0]['name'];

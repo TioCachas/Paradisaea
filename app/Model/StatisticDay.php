@@ -21,19 +21,19 @@ class StatisticDay {
 
     public function __construct($operations, $pot, $target, $oeeTarget) {
         $dt = new DateTime($this->date);
-        $this->date = $operations['dateOperation'];
+        $this->date = $operations['operations']['dateOperation'];
         $this->pot = $pot;
         $this->target = $target;
-        $this->production = $operations['sumProduction'];
+        $this->production = $operations[0]['sumProduction'];
         $this->oee = $this->production / $this->target;
-        $this->scrap = $operations['sumScrap'];
-        $this->rework = $operations['sumRework'];
+        $this->scrap = $operations[0]['sumScrap'];
+        $this->rework = $operations[0]['sumRework'];
         $this->qualityLosses = ($this->scrap + $this->rework) / $this->target;
-        $this->changeoverMin = $operations['sumChangeover'];
+        $this->changeoverMin = $operations[0]['sumChangeover'];
         $this->changeoverLosses = $this->changeoverMin / $this->pot;
-        $this->technicalLossesMin = $operations['sumTechnicalLosses'];
+        $this->technicalLossesMin = $operations[0]['sumTechnicalLosses'];
         $this->technicalLosses = $this->technicalLossesMin / $this->pot;
-        $this->organizationalLossesMin = $operations['sumOrganizationalLosses'];
+        $this->organizationalLossesMin = $operations[0]['sumOrganizationalLosses'];
         $this->organizationalLosses = $this->organizationalLossesMin / $this->pot;
         $this->performanceLosses = 1 - ($this->oee + $this->qualityLosses + $this->changeoverLosses + $this->technicalLosses + $this->organizationalLosses);
         $this->oeeTarget = $oeeTarget;

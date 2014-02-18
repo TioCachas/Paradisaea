@@ -47,8 +47,8 @@ class StatisticDays {
             $oeeTarget = $config['oee_target'];
             $this->operations[$keyOperations] = null; // Creamos toda el periodo de tiempo
             foreach ($operationsGroupByDate as $key => $operationsByDate) {
-                if ($keyOperations == $operationsByDate[0]['dateOperation']) {
-                    $statisticDay = new StatisticDay($operationsByDate[0], $pot, $target, $oeeTarget);
+                if ($keyOperations == $operationsByDate['operations']['dateOperation']) {
+                    $statisticDay = new StatisticDay($operationsByDate, $pot, $target, $oeeTarget);
                     $this->operations[$keyOperations] = $statisticDay;
                     break;
                 }
@@ -112,7 +112,6 @@ class StatisticDays {
                     <?php $this->echoRow(__('Organizational losses [%]'), 'organizationalLosses', Units::PERCENT, true, true, true); ?>
                     <?php $this->echoRow(__('Performance losses [%]'), 'performanceLosses', Units::PERCENT); ?>
                     <?php $this->echoRow(__('OEE-Target [%]'), 'oeeTarget', Units::PERCENT); ?>
-                    <tr><td colspan="5"></td></tr>
                 </tbody>
             </table>
         </div>
@@ -244,7 +243,7 @@ class StatisticDays {
                     <?php
                 else:
                     ?>
-                    <td>1000</td>
+                    <td></td>
                 <?php
                 endif;
             endforeach;

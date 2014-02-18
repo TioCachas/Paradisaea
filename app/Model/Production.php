@@ -2,8 +2,8 @@
 
 App::uses('AppModel', 'Model');
 
-class Production extends AppModel {
-
+class Production extends AppModel
+{
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
 
@@ -17,8 +17,9 @@ class Production extends AppModel {
     {
         $this->query('
             UPDATE productions
-            SET status = IF(status = 1, '.self::STATUS_DISABLED.', '.self::STATUS_ENABLED.')
-            WHERE id = ?', array($id));
+            SET status = IF(status = 1, ' . self::STATUS_DISABLED . ', ' . self::STATUS_ENABLED . ')
+            WHERE id = ?', array(
+            $id));
     }
 
     /**
@@ -27,7 +28,9 @@ class Production extends AppModel {
      * @param integer $operationId
      * @return array
      */
-    public function getByOperationId($operationId) {
+    public function getByOperationId($operationId, $statusArray = array(self::STATUS_ENABLED,
+        self::STATUS_DISABLED))
+    {
         $params = array($operationId);
         $operations = $this->query("
             SELECT 
@@ -41,9 +44,20 @@ class Production extends AppModel {
             FROM productions p
             INNER JOIN models m ON p.model_id = m.id
             INNER JOIN indexes i ON p.index_id = i.id
-            WHERE p.operation_id = ?
+            WHERE p.operation_id = ? AND p.status IN (" . implode(',', $statusArray) . ")
             ORDER BY p.creation_date DESC, m.name ASC", $params);
         return $this->flatArray($operations);
+    }
+
+    public function insert($operationId, $modelId, $indexId, $value)
+    {
+        $data = array();
+        $data['operation_id'] = $operationId;
+        $data['model_id'] = $modelId;
+        $data['index_id'] = $indexId;
+        $data['value'] = $value;
+        $data['status'] = self::STATUS_ENABLED;
+        $this->save($data);
     }
 
 }

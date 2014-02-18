@@ -3,9 +3,11 @@
 App::uses('AppController', 'Controller');
 App::uses('Bosch', 'Model');
 
-class ProductionsController extends AppController {
+class ProductionsController extends AppController
+{
 
-    public function admin($operationId) {
+    public function admin($operationId)
+    {
         $this->loadModel('Operation');
         $this->set('operationId', $operationId);
         $this->set('title', __('Piezas OK'));
@@ -17,7 +19,8 @@ class ProductionsController extends AppController {
      * a una operacion.
      * @param string $operationId
      */
-    public function getByOperation($operationId) {
+    public function getByOperation($operationId)
+    {
         $productions = $this->Production->getByOperationId($operationId);
         $this->set(array('productions' => $productions, '_serialize' => 'productions'));
         $this->viewClass = 'Json';
@@ -29,13 +32,17 @@ class ProductionsController extends AppController {
      * @param string $productionId
      * @return JSON El nuevo estatus de la operacion
      */
-    public function toggleStatus($productionId) {
+    public function toggleStatus($productionId)
+    {
         $newStatus = null;
-        if ($this->request->is('post') === true) {
+        if ($this->request->is('post') === true)
+        {
             $data = $this->request->data;
-            if (isset($data['c']) === true) {
+            if (isset($data['c']) === true)
+            {
                 $comment = trim($data['c']);
-                if ($comment !== '') {
+                if ($comment !== '')
+                {
                     $user = $this->Auth->user();
                     $this->Production->toggleStatus($productionId);
                     $this->Production->id = $productionId;
@@ -52,13 +59,16 @@ class ProductionsController extends AppController {
      * Exportamos las piezas OK que esten habilitadas
      * @param string $operationId
      */
-    public function exportByOperation($operationId) {
+    public function exportByOperation($operationId)
+    {
         $this->loadModel('Operation');
         $nameOperation = $this->Operation->getName($operationId);
         $data = $this->Production->getByOperationId($operationId);
         $dataFlit = array();
-        foreach ($data as $d) {
-            if ($d['pStatus'] == Production::STATUS_ENABLED) {
+        foreach ($data as $d)
+        {
+            if ($d['pStatus'] == Production::STATUS_ENABLED)
+            {
                 $x = array();
                 $x[] = $d['mName'];
                 $x[] = $d['iName'];
@@ -77,6 +87,33 @@ class ProductionsController extends AppController {
         $this->set(compact('dataFlit', '_serialize', '_header'));
         $nameFile = __('producciones') . '-' . $nameOperation . '.csv';
         $this->response->download($nameFile);
+    }
+
+    public function createForm($operationId)
+    {
+        if ($this->request->is('post') === true)
+        {
+            $data = $this->request['data'];
+            $this->Production->insert($operationId, $data['model'], $data['index'], $data['value']);
+        }
+        $bosch = $this->Session->read('configuration');
+        $lineId = $bosch->getConfiguration()->getLine();
+        $this->loadModel('ModelLine');
+        $models = $this->ModelLine->getByLine($lineId);
+        $firstModel = $models[0];
+        $this->loadModel('IndexModel');
+        $indexes = $this->IndexModel->getEnabledByModel($firstModel['m']['id']);
+        if (empty($indexes) === true)
+        {
+            $this->redirect(array('action' => 'error', self::ERROR_INDEX));
+            return;
+        }
+        $productions = $this->Production->getByOperationId($operationId, array(Production::STATUS_ENABLED));
+        $this->set('models', $models);
+        $this->set('indexes', $indexes);
+        $this->set('productions', $productions);
+        $this->set('title', __('Piezas OK'));
+        $this->set('description', __('Crear registro de piezas OK'));
     }
 
 }

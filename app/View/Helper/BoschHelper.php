@@ -37,7 +37,7 @@ class BoschHelper extends AppHelper
         foreach ($workstations as $k => $workstation)
         {
             ?>
-            <option value="<?php echo Id::e($workstation['Workstation']['id']); ?>">
+            <option value="<?php echo $workstation['Workstation']['id']; ?>">
                 <?php echo $workstation['Workstation']['name'] ?>
             </option>
             <?php
@@ -53,7 +53,7 @@ class BoschHelper extends AppHelper
         foreach ($defects as $k => $defect)
         {
             ?>
-            <option value="<?php echo Id::e($defect['Defect']['id']); ?>">
+            <option value="<?php echo $defect['Defect']['id']; ?>">
                 <?php echo $defect['Defect']['name'] ?>
             </option>
             <?php
