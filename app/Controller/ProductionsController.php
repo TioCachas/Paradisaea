@@ -108,7 +108,10 @@ class ProductionsController extends AppController
             $this->redirect(array('action' => 'error', self::ERROR_INDEX));
             return;
         }
+        $this->loadModel('Production');
+        $productions = $this->Production->getByOperationId($operationId);
         $this->set('operationId', $operationId);
+        $this->set('productions', $productions);
         $this->set('models', $models);
         $this->set('indexes', $indexes);
         $this->set('title', __('Piezas OK'));

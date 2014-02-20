@@ -10,7 +10,7 @@ class Hour extends AppModel {
      * @return array
      */
     public function getByShift($shiftId) {
-        return $this->findAllByShiftId($shiftId);
+        return $this->findAllByShiftId($shiftId, array(), array('number' => 'ASC'));
     }
 
     /**
@@ -18,7 +18,7 @@ class Hour extends AppModel {
      * @return array
      */
     public function getAll() {
-        return $this->find('all', array('order' => 'start ASC'));
+        return $this->find('all', array('order' => 'number ASC'));
     }
 
 }

@@ -1,4 +1,3 @@
-<?php $this->TioCachas->addJsBackbone('production-user'); ?>
 <?php $this->Html->script('controllers/Productions/capture', array('block' => 'scriptBottom')); ?>
 <div id="productions">
     <form class="form-inline" role="form" id="formOperation" method="post">
@@ -52,15 +51,18 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Aqui se insertan las operaciones -->
+                <?php foreach ($productions as $p): ?>
+                    <tr>
+                        <td><?php echo $p['lName']; ?></td>
+                        <td><?php echo $p['oWorkDate']; ?></td>
+                        <td><?php echo $p['hour']; ?></td>
+                        <td><?php echo $p['mName']; ?></td>
+                        <td><?php echo $p['iName']; ?></td>
+                        <td><?php echo $p['pValue']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </fieldset>
     <?php $this->TioCachas->templateClassSwig('production-user'); ?>
 </div>
-<?php $urlGetProductions = $this->Html->url(array('controller' => 'Productions', 'action' => 'getByOperationForUser', $operationId)); ?>
-<?php $this->start('jsVars'); ?>
-<script type="text/javascript">
-    var urlGetProductions = <?php echo json_encode($urlGetProductions); ?>;
-</script>
-<?php $this->end(); ?>

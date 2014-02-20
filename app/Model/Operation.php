@@ -2,8 +2,8 @@
 
 App::uses('AppModel', 'Model');
 
-class Operation extends AppModel
-{
+class Operation extends AppModel {
+
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
 
@@ -19,8 +19,7 @@ class Operation extends AppModel
      * @param type $performanceLosses
      * @param type $workDate
      */
-    public function insert($userId, $lineId, $hourId, $scrap, $rework, $changeover, $technicalLosses, $organizationalLosses, $qualityLosses, $performanceLosses, $workDate)
-    {
+    public function insert($userId, $lineId, $hourId, $scrap, $rework, $target, $changeover, $technicalLosses, $organizationalLosses, $qualityLosses, $performanceLosses, $workDate) {
         $data = array();
         $data['user_id'] = $userId;
         $data['line_id'] = $lineId;
@@ -28,6 +27,7 @@ class Operation extends AppModel
         $data['production'] = 0;
         $data['scrap'] = $scrap;
         $data['rework'] = $rework;
+        $data['target'] = $target;
         $data['changeover'] = $changeover;
         $data['technical_losses'] = $technicalLosses;
         $data['organizational_losses'] = $organizationalLosses;
@@ -48,8 +48,7 @@ class Operation extends AppModel
      * disabled => enabled
      * @param string $id
      */
-    public function toggleStatus($id)
-    {
+    public function toggleStatus($id) {
         $this->query('
             UPDATE operations
             SET status = IF(status = 1, ' . self::STATUS_DISABLED . ', ' . self::STATUS_ENABLED . ')
@@ -62,8 +61,7 @@ class Operation extends AppModel
      * @param string $id
      * @param string $hourId
      */
-    public function changeHour($id, $hourId)
-    {
+    public function changeHour($id, $hourId) {
         $this->query('
             UPDATE operations
             SET hour_id = ?
@@ -76,8 +74,7 @@ class Operation extends AppModel
      * @param string $id
      * @param string $lineId
      */
-    public function changeLine($id, $lineId)
-    {
+    public function changeLine($id, $lineId) {
         $this->query('
             UPDATE operations
             SET line_id = ?
@@ -91,8 +88,7 @@ class Operation extends AppModel
      * @return array Arreglo con las operaciones del usuario.
      */
     public function getCurrentsByUserId($userId, $statusArray = array(self::STATUS_DISABLED,
-        self::STATUS_ENABLED))
-    {
+        self::STATUS_ENABLED)) {
         $operations = $this->query('
             SELECT 
                   o.id oId
@@ -107,6 +103,8 @@ class Operation extends AppModel
                 , o.organizational_losses oOrganizationalLosses
                 , o.quality_losses oQualityLosses
                 , o.performance_losses oPerformanceLosses
+                , h.id hId
+                , o.target oTarget
             FROM operations o
             INNER JOIN production_lines l ON l.id = o.line_id
             INNER JOIN hours h ON h.id = o.hour_id
@@ -114,8 +112,43 @@ class Operation extends AppModel
                     o.status IN (' . implode(',', $statusArray) . ')
                 AND o.user_id = ?        
                 AND DATE(o.creation_date) = DATE(NOW())
-            ORDER BY o.creation_date DESC', array(
+            ORDER BY h.number ASC', array(
             $userId));
+        return $this->flatArray($operations);
+    }
+
+    /**
+     * Obtenemos la informacion necesaria para el panel de captura de las operaciones
+     * @param string $lineId
+     * @param string $shiftId
+     * @param string $workDate
+     * @return array
+     */
+    public function getDashboardCapture($lineId, $shiftId, $workDate) {
+        $operations = $this->query('
+            SELECT 
+                  o.id oId
+                , o.work_date oWorkDate
+                , concat( DATE_FORMAT(h.start, "%H:%i"), " - ", DATE_FORMAT(h.end, "%H:%i") ) hour
+                , o.production oProduction
+                , o.scrap oScrap
+                , o.rework oRework
+                , o.changeover oChangeover
+                , o.technical_losses oTechnicalLosses
+                , o.organizational_losses oOrganizationalLosses
+                , o.quality_losses oQualityLosses
+                , o.performance_losses oPerformanceLosses
+                , h.id hId
+                , o.target oTarget
+            FROM operations o
+            INNER JOIN hours h ON h.id = o.hour_id
+            WHERE 
+                    o.status = ' . self::STATUS_ENABLED . '
+                AND o.line_id = ?
+                AND h.shift_id = ?
+                AND o.work_date = ?        
+            ORDER BY h.number ASC', array(
+            $lineId, $shiftId, $workDate));
         return $this->flatArray($operations);
     }
 
@@ -127,8 +160,7 @@ class Operation extends AppModel
      * @param DateTime $endDate
      * @return array
      */
-    public function getOperationsByLineGroupByDate($lineId, $startDate, $endDate)
-    {
+    public function getOperationsByLineGroupByDate($lineId, $startDate, $endDate) {
         $params = array(
             $lineId,
             $startDate->format('Y-m-d'),
@@ -159,8 +191,42 @@ class Operation extends AppModel
      * @param type $workDate
      * @return type
      */
-    public function getByWorkDate($workDate)
-    {
+    public function getByWorkDateAndUser($workDate, $userId) {
+        $params = array($workDate, $userId);
+        $operations = $this->query("
+            SELECT 
+                  l.name lName
+                , l.id lId
+                , CONCAT(h.start, ' - ', h.end) hour
+                , CONCAT(u.name, ' ', u.last_name) user
+                , h.id hId
+                , o.production oProduction
+                , o.scrap oScrap
+                , o.rework oRework
+                , o.changeover oChangeover
+                , o.technical_losses oTechnicalLosses
+                , o.organizational_losses oOrganizationalLosses
+                , o.quality_losses oQualityLosses
+                , o.performance_losses oPerformanceLosses
+                , o.id oId
+                , o.status oStatus
+                , o.creation_date oCreationDate
+            FROM operations o
+            INNER JOIN us3rs_m0n1t0r u ON u.id = o.user_id
+            INNER JOIN production_lines l ON o.line_id = l.id
+            INNER JOIN hours h ON o.hour_id = h.id
+            WHERE o.work_date = ? AND o.user_id = ?
+            ORDER BY o.creation_date DESC, l.name ASC", $params);
+        return $this->flatArray($operations);
+    }
+
+    /**
+     * Obtenemos las operaciones por dia de trabajo. Las operaciones se ordenan 
+     * por linea y fecha de las operaciones (primero las mas recientes)
+     * @param type $workDate
+     * @return type
+     */
+    public function getByWorkDate($workDate) {
         $params = array($workDate);
         $operations = $this->query("
             SELECT 
@@ -194,8 +260,7 @@ class Operation extends AppModel
      * @param string $id
      * @return type
      */
-    public function getById($id)
-    {
+    public function getById($id) {
         $params = array($id);
         $operations = $this->query("
             SELECT 
@@ -228,8 +293,7 @@ class Operation extends AppModel
      * @param string $id
      * @return string
      */
-    public function getName($id)
-    {
+    public function getName($id) {
         $strName = '';
         $operation = $this->query("
             SELECT CONCAT(l.name, '-', o.work_date) name
@@ -238,12 +302,44 @@ class Operation extends AppModel
             WHERE o.id = ?
             LIMIT 1", array(
             $id));
-        if (isset($operation[0]))
-        {
+        if (isset($operation[0])) {
             $o = $operation[0];
             $strName = $o[0]['name'];
         }
         return $strName;
+    }
+
+    /**
+     * Creamos los registros "vacios" de las operaciones para una linea de produccion
+     * en un dia especifico, solo se crean los que no existan.
+     * @param string $userId
+     * @param string $lineId
+     * @param string $workDate Formato Y-m-d
+     */
+    public function createDashboardCapture($userId, $lineId, $workDate) {
+        $params = array(
+            ':line' => $lineId,
+            ':workDate' => $workDate,
+            ':user' => $userId,
+        );
+        $this->query("
+            INSERT INTO operations(id, user_id, line_id, hour_id, target, work_date, status)
+            SELECT 
+                UUID()
+              , :user
+              , :line 
+              , h.id
+              , cl.target
+              , :workDate
+              , " . self::STATUS_ENABLED . "
+            FROM hours h 
+            INNER JOIN config_lines cl ON cl.line_id = :line
+                AND cl.hour_id = h.id
+            LEFT JOIN operations o ON 
+                    o.hour_id = h.id 
+                AND o.work_date = :workDate 
+                AND o.line_id = :line
+            WHERE o.id IS NULL", $params);
     }
 
 }
