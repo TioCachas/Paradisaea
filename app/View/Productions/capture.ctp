@@ -1,8 +1,10 @@
 <?php $this->Html->script('controllers/Productions/capture', array('block' => 'scriptBottom')); ?>
-<div id="productions">
-    <form class="form-inline" role="form" id="formOperation" method="post">
-        <fieldset>
-            <legend><?php echo __('Agregar'); ?></legend>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <?php echo __('Agregar pieza(s) OK'); ?>
+    </div>
+    <div class="panel-body">
+        <form class="form-inline" role="form" id="formOperation" method="post">
             <?php $textModel = __('Modelo'); ?>
             <div class="form-group">
                 <label for="model" class="control-label"><?php echo $textModel; ?></label>
@@ -34,11 +36,13 @@
                 <br/>
                 <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
             </div>
-        </fieldset>
-    </form>
-    <br/>
-    <fieldset>
-        <legend><?php echo __('Listar'); ?></legend>
+    </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <?php echo __('Pieza(s) OK'); ?>
+    </div>
+    <div class="table-responsive">
         <table class="table table-bordered table-condensed table-striped ">
             <thead>
                 <tr>
@@ -63,6 +67,8 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </fieldset>
-    <?php $this->TioCachas->templateClassSwig('production-user'); ?>
+    </div>
 </div>
+<a class="btn btn-lg btn-primary" href="<?php echo $this->Html->url(array('controller' => 'Operations', 'action' => 'capture', $operation['work_date'])); ?>">
+    Regresar
+</a>

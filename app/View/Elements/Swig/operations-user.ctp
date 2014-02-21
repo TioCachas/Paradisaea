@@ -19,33 +19,45 @@ $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
         <?php echo $symbolHtmlUnits; ?>
     </td>
     {% if oProduction >= oTarget %}
-    <td class="text-right"  title="<?php echo __('Piezas OK'); ?>">
-        <a href="<?php echo $this->Html->url(array('controller' => 'Productions', 'action' => 'createForm')); ?>/{{oId}}">
+    <td class="text-right">
+        <a href="<?php echo $this->Html->url(array('controller' => 'Productions', 'action' => 'capture')); ?>/{{oId}}" title="<?php echo __('Piezas OK'); ?>">
             {{ oProduction }}
             <?php echo $symbolHtmlUnits; ?>
-            <i class="fa fa-thumbs-o-up pull-right"></i>
         </a>
+        <div class="progress" title="{{oProduction/oTarget*100}}%">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ oProduction }}" aria-valuemin="0" aria-valuemax="{{ oTarget }}" style="width: {{ oProduction/oTarget*100 }}%">
+            </div>
+        </div>
     </td>
     {% else %}
-    <td class="text-right" title="<?php echo __('Piezas OK'); ?>">
-        <a href="<?php echo $this->Html->url(array('controller' => 'Productions', 'action' => 'createForm')); ?>/{{oId}}">
+    <td class="text-right">
+        <a href="<?php echo $this->Html->url(array('controller' => 'Productions', 'action' => 'capture')); ?>/{{oId}}" title="<?php echo __('Piezas OK'); ?>">
             {{ oProduction }}
             <?php echo $symbolHtmlUnits; ?>
-            <i class="fa fa-thumbs-o-down pull-right"></i>
         </a>
+        <div class="progress" title="{{oProduction/oTarget*100}}%">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ oProduction }}" aria-valuemin="0" aria-valuemax="{{ oTarget }}" style="width: {{ oProduction/oTarget*100 }}%">
+            </div>
+        </div>
     </td>
     {% endif %}
     {% if sumPzOk >= sumTarget %}
     <td class="text-right"  title="<?php echo __('Acumulado de piezas OK'); ?>">
         {{ sumPzOk }}
         <?php echo $symbolHtmlUnits; ?>
-        <i class="fa fa-thumbs-o-up pull-right"></i>
+        <div class="progress" title="{{sumPzOk/sumTarget*100}}%">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ sumPzOk }}" aria-valuemin="0" aria-valuemax="{{ sumTarget }}" style="width: {{ sumPzOk/sumTarget*100 }}%">
+            </div>
+        </div>
     </td>
     {% else %}
     <td class="text-right" title="<?php echo __('Acumulado de piezas OK'); ?>">
         {{ sumPzOk }}
         <?php echo $symbolHtmlUnits; ?>
-        <i class="fa fa-thumbs-o-down pull-right"></i>
+        <div class="progress" title="{{sumPzOk/sumTarget*100}}%">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ sumPzOk }}" aria-valuemin="0" aria-valuemax="{{ sumTarget }}" style="width: {{ sumPzOk/sumTarget*100 }}%">
+            </div>
+        </div>
     </td>
     {% endif %}
     <td class="text-right" title="<?php echo __('Scrap'); ?>">

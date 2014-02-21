@@ -10,7 +10,7 @@ $urlCreateProduction = $this->Html->url(array('controller' => 'Productions', 'ac
     <div class="form-group">
         <label class="col-sm-2 control-label text-left" for="workDate"><?php echo __('Dia de trabajo'); ?></label>
         <div class="col-sm-2">
-            <input required="requiered" type="text" class="form-control input-lg" id="workDate" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo strftime('%Y-%m-%d'); ?>">
+            <input required="requiered" type="text" class="form-control input-lg" id="workDate" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
         </div>
     </div>
 </form>
@@ -30,6 +30,7 @@ $urlCreateProduction = $this->Html->url(array('controller' => 'Productions', 'ac
     </div>
     <?php $this->TioCachas->templateClassSwig('operations-user'); ?>
 </div>
+
 <script type="text/javascript">
     var urlCaptureProduction = <?php echo json_encode($urlCreateProduction); ?>;
     var urlList = <?php echo json_encode($urlList); ?>;

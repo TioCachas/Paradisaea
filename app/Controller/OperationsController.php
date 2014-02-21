@@ -5,6 +5,15 @@ App::uses('Bosch', 'Model');
 
 class OperationsController extends AppController {
 
+    public function beforeFilter() {
+//        $this->Security->allowedControllers = array('Operations');
+//        $this->Security->allowedActions = array('getDashboardCapture');
+//        $this->Security->
+//        //$this->Security->allowedControllers = array('Operations');
+//        //$this->Security->unlockedActions = array('getDashboardCapture');
+//        parent::beforeFilter();
+    }
+
     public $helpers = array('TableOperations');
 
     const ERROR_HOUR = 1;
@@ -200,53 +209,14 @@ class OperationsController extends AppController {
         $this->viewClass = 'Json';
     }
 
-    public function form() {
+    public function capture($workDate = null) {
         $bosch = $this->Session->read('configuration');
         if (($bosch instanceof Bosch) === false) {
             $this->redirect(array('controller' => 'Shifts', 'action' => 'config'));
             return;
         }
-        $userSesion = $this->Auth->user();
-        $userId = $userSesion['id'];
-        $this->loadModel('Hour');
-        $shiftId = $bosch->getConfiguration()->getShift();
-        $lineId = $bosch->getConfiguration()->getLine();
-        $hours = $this->Hour->getByShift($shiftId);
-        if (empty($hours) === true) {
-            $this->redirect(array('action' => 'error', self::ERROR_HOUR));
-            return;
-        }
-        $this->loadModel('ModelLine');
-        $models = $this->ModelLine->getByLine($lineId);
-        if (empty($models) === true) {
-            $this->redirect(array('action' => 'error', self::ERROR_MODEL));
-            return;
-        }
-        $firstModel = $models[0];
-        $this->loadModel('IndexModel');
-        $indexes = $this->IndexModel->getEnabledByModel($firstModel['m']['id']);
-        if (empty($indexes) === true) {
-            $this->redirect(array('action' => 'error', self::ERROR_INDEX));
-            return;
-        }
-        $this->loadModel('Workstation');
-        $workstations = $this->Workstation->getEnabledByLine($lineId);
-        if (empty($workstations) === true) {
-            $this->redirect(array('action' => 'error', self::ERROR_WORKSTATION));
-            return;
-        }
-//        $firstWorkstation = $workstations[0];
-//        $this->loadModel('Defect');
-//        $defects = $this->Defect->getEnabledByWorkstation($firstWorkstation['Workstation']['id']);
-//        if (empty($defects) === true) {
-//            $this->redirect(array('action' => 'error', self::ERROR_DEFECTS));
-//            return;
-//        }
-        $this->set('hours', $hours);
-        $this->set('models', $models);
-        $this->set('indexes', $indexes);
-        $this->set('workstations', $workstations);
-        // $this->set('defects', $defects);
+        $workDate = $workDate === null ? strftime('%Y-%m-%d') : $workDate;
+        $this->set('workDate', $workDate);
         $this->set('title', __('Captura de operacion'));
         $this->set('description', __('Ingresa la produccion y scrap'));
     }
@@ -258,7 +228,7 @@ class OperationsController extends AppController {
     }
 
     public function getDashboardCapture($workDate) {
-        
+        $this->request->onlyAllow(array('post', 'get'));
         $bosch = $this->Session->read('configuration');
         if (($bosch instanceof Bosch) === false) {
             $this->redirect(array('controller' => 'Shifts', 'action' => 'config'));
@@ -289,19 +259,19 @@ class OperationsController extends AppController {
         $piezasOKAcumulado = 0;
         array_walk($operations, function(&$o) use(&$sum, &$targetAcumulado, &$piezasOKAcumulado) {
             $o['sumTarget'] = $targetAcumulado = $targetAcumulado + $o['oTarget'];
-            $o['sumPzOk'] = $piezasOKAcumulado= $piezasOKAcumulado + $o['oProduction'];
-            
-            $sum['sumTarget'] =  $o['sumTarget'];
-            $sum['sumPzOk'] =  $o['sumPzOk'];
-            $sum['oTarget'] +=  $o['oTarget'];
-            $sum['oProduction'] +=  $o['oProduction'];
-            $sum['oScrap'] +=  $o['oScrap'];
-            $sum['oRework'] +=  $o['oRework'];
-            $sum['oChangeover'] +=  $o['oChangeover'];
-            $sum['oTechnicalLosses'] +=  $o['oTechnicalLosses'];
-            $sum['oOrganizationalLosses'] +=  $o['oOrganizationalLosses'];
-            $sum['oQualityLosses'] +=  $o['oQualityLosses'];
-            $sum['oPerformanceLosses'] +=  $o['oPerformanceLosses'];
+            $o['sumPzOk'] = $piezasOKAcumulado = $piezasOKAcumulado + $o['oProduction'];
+
+            $sum['sumTarget'] = $o['sumTarget'];
+            $sum['sumPzOk'] = $o['sumPzOk'];
+            $sum['oTarget'] += $o['oTarget'];
+            $sum['oProduction'] += $o['oProduction'];
+            $sum['oScrap'] += $o['oScrap'];
+            $sum['oRework'] += $o['oRework'];
+            $sum['oChangeover'] += $o['oChangeover'];
+            $sum['oTechnicalLosses'] += $o['oTechnicalLosses'];
+            $sum['oOrganizationalLosses'] += $o['oOrganizationalLosses'];
+            $sum['oQualityLosses'] += $o['oQualityLosses'];
+            $sum['oPerformanceLosses'] += $o['oPerformanceLosses'];
         });
         $result = array();
         $result['operations'] = $operations;

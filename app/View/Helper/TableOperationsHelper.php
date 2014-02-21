@@ -29,7 +29,7 @@ class TableOperationsHelper extends AppHelper {
                     <th class="scrap" title="<?php echo __('Scrap'); ?>">
                         <i class="fa fa-trash-o"></i>
                     </th>
-                    <th class="reword" title="<?php echo __('Retrabajo'); ?>">
+                    <th class="rework" title="<?php echo __('Retrabajo'); ?>">
                         <i class="fa fa-repeat"></i>
                     </th>
                     <th class="changeoverLosses" title="<?php echo __('Cambio de modelo') . $minutesSymbol; ?>">

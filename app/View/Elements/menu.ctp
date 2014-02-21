@@ -29,7 +29,7 @@
                         <li>
                             <a href="<?php
                             echo $this->Html->url(array(
-                                'controller' => 'Operations', 'action' => 'form'));
+                                'controller' => 'Operations', 'action' => 'capture'));
                             ?>">
                                 <i class='fa fa-cogs'></i>
                                 <?php echo __('Crear'); ?>

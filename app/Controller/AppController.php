@@ -33,6 +33,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller
 {
     public $components = array(
+        //'Security',
         'Session',
         'Auth' => array(
             'loginAction' => array(
@@ -74,6 +75,12 @@ class AppController extends Controller
     {
         parent::__construct($request, $response);
         $this->layout = 'base';
+    }
+    
+    protected function checkModels()
+    {
+        $bosch = $this->Session->read('configuration');
+        $lineId = $bosch->getConfiguration()->getLine();
     }
 
 }
