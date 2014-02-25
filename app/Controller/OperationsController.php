@@ -1,17 +1,17 @@
 <?php
 
-App::uses('Controller', 'Controller');
+App::uses('CaptureController', 'Controller');
 App::uses('Bosch', 'Model');
 
-class OperationsController extends AppController {
+class OperationsController extends CaptureController {
 
     public function beforeFilter() {
-//        $this->Security->allowedControllers = array('Operations');
-//        $this->Security->allowedActions = array('getDashboardCapture');
-//        $this->Security->
-//        //$this->Security->allowedControllers = array('Operations');
-//        //$this->Security->unlockedActions = array('getDashboardCapture');
-//        parent::beforeFilter();
+        $this->Security->allowedControllers = array('Operations');
+        $this->Security->allowedActions = array('index, login');
+        $this->Security->csrfCheck = false;
+        //$this->Security->allowedControllers = array('Operations');
+        //$this->Security->unlockedActions = array('getDashboardCapture');
+        parent::beforeFilter();
     }
 
     public $helpers = array('TableOperations');
@@ -228,7 +228,7 @@ class OperationsController extends AppController {
     }
 
     public function getDashboardCapture($workDate) {
-        $this->request->onlyAllow(array('post', 'get'));
+        $this->request->onlyAllow('post');
         $bosch = $this->Session->read('configuration');
         if (($bosch instanceof Bosch) === false) {
             $this->redirect(array('controller' => 'Shifts', 'action' => 'config'));
@@ -257,9 +257,13 @@ class OperationsController extends AppController {
         );
         $targetAcumulado = 0;
         $piezasOKAcumulado = 0;
-        array_walk($operations, function(&$o) use(&$sum, &$targetAcumulado, &$piezasOKAcumulado) {
+        $scrapAcumulado = 0;
+        $reworkAcumulado = 0;
+        array_walk($operations, function(&$o) use(&$sum, &$targetAcumulado, &$piezasOKAcumulado, &$scrapAcumulado, &$reworkAcumulado) {
             $o['sumTarget'] = $targetAcumulado = $targetAcumulado + $o['oTarget'];
             $o['sumPzOk'] = $piezasOKAcumulado = $piezasOKAcumulado + $o['oProduction'];
+            $o['sumScrap'] = $scrapAcumulado = $scrapAcumulado + $o['oScrap'];
+            $o['sumRework'] = $reworkAcumulado = $reworkAcumulado + $o['oRework'];
 
             $sum['sumTarget'] = $o['sumTarget'];
             $sum['sumPzOk'] = $o['sumPzOk'];

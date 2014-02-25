@@ -129,7 +129,8 @@ class Operation extends AppModel {
             SELECT 
                   o.id oId
                 , o.work_date oWorkDate
-                , concat( DATE_FORMAT(h.start, "%H:%i"), " - ", DATE_FORMAT(h.end, "%H:%i") ) hour
+                , DATE_FORMAT(h.start, "%H:%i") hStart 
+                , DATE_FORMAT(h.end, "%H:%i") hEnd
                 , o.production oProduction
                 , o.scrap oScrap
                 , o.rework oRework
@@ -138,6 +139,7 @@ class Operation extends AppModel {
                 , o.organizational_losses oOrganizationalLosses
                 , o.quality_losses oQualityLosses
                 , o.performance_losses oPerformanceLosses
+                , o.planed_operating_time oPot
                 , h.id hId
                 , o.target oTarget
             FROM operations o
@@ -323,7 +325,7 @@ class Operation extends AppModel {
             ':user' => $userId,
         );
         $this->query("
-            INSERT INTO operations(id, user_id, line_id, hour_id, target, work_date, status)
+            INSERT INTO operations(id, user_id, line_id, hour_id, target, work_date, planed_operating_time, status)
             SELECT 
                 UUID()
               , :user
@@ -331,6 +333,7 @@ class Operation extends AppModel {
               , h.id
               , cl.target
               , :workDate
+              , (TIME_TO_SEC(h.end) - TIME_TO_SEC(h.start))/60
               , " . self::STATUS_ENABLED . "
             FROM hours h 
             INNER JOIN config_lines cl ON cl.line_id = :line

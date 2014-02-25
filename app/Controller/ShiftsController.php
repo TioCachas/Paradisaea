@@ -6,6 +6,15 @@ App::uses('Bosch', 'Model');
 class ShiftsController extends AppController {
 
     public $helpers = array('Bosch');
+    
+    public function beforeFilter()
+    {
+//        $this->Security->allowedControllers = array('Shifts');
+//        $this->Security->allowedActions = array('config');
+        $this->Security->csrfCheck = false;
+        $this->Security->validatePost = false;
+        parent::beforeFilter();
+    }
 
     public function __construct($request = null, $response = null) {
         $this->set('title', __('Turnos'));

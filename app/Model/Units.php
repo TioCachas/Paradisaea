@@ -26,7 +26,7 @@ class Units
                 $name = __('minutos');
                 break;
             case self::UNITS:
-                $symbol = __('pz');
+                $symbol = __('pza');
                 $name = __('piezas');
                 break;
             case self::PERCENT:

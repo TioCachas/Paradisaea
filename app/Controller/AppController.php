@@ -33,7 +33,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller
 {
     public $components = array(
-        //'Security',
+        'Security',
         'Session',
         'Auth' => array(
             'loginAction' => array(

@@ -20,7 +20,7 @@ class ModelLine extends AppModel {
             INNER JOIN models m ON m.id = ml.model_id
             WHERE line_id = ?
             ORDER BY m.name ASC', array($lineId));
-        return $mls;
+        return $this->flatArray($mls);
     }
 
 }

@@ -41,3 +41,25 @@ div.progress
     margin: 0px !important;
     height: 3px !important;
 }
+
+.bosch.greaterOrEqualThat
+{
+    /*background-color: rgb(42,148,126);*/
+    color: rgb(42,148,126);
+}
+
+.bosch.lessThat
+{
+    /*background-color: #f00;*/
+    color: #f00;
+}
+
+/*.bosch.lessThat a
+{
+    color: #fff !important;
+}*/
+
+table.bosch td:hover
+{
+    border-color: #215F8B !important;
+}

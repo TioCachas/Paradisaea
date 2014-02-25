@@ -18,7 +18,7 @@
         <?php echo $this->fetch('stylesTop'); ?>
     </head>
     <body>
-        <?php echo $this->element('menu'); ?>
+        <?php echo $this->element('Capture/menu'); ?>
         <div class="jumbotron" id="logoBosch">
             <div class="container">
                 <h1>
@@ -40,6 +40,7 @@
         <?php echo $this->Html->script('vendors/backbone/min') . PHP_EOL; ?>
         <?php echo $this->Html->script('vendors/bootstrap/min') . PHP_EOL; ?>
         <?php echo $this->Html->script('vendors/jqueryui/min') . PHP_EOL; ?>
+        <?php echo $this->Html->script('capture') . PHP_EOL; ?>
         <?php echo $this->fetch('scriptBottom') . PHP_EOL; ?>
         <script type="text/javascript">
             jQuery(function($) {
@@ -63,15 +64,15 @@
                     yearSuffix: ''};
                 $.datepicker.setDefaults($.datepicker.regional['es']);
             });
-            
+
             function renderOptions(target, options)
             {
                 $(target).html('');
-                options.forEach(function(o){
+                options.forEach(function(o) {
                     var option = $('<option>');
                     option.val(o.value);
                     option.html(o.text);
-                    target.append(option);
+                    $(target).append(option);
                 });
             }
         </script>

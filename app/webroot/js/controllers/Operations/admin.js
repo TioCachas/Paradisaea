@@ -1,6 +1,7 @@
 $(document).ready(function() {
     window.collections.operations = new Project.Collections.Operations();
     window.collections.operations.target = $('#operations');
+    
     $("#workDate").datepicker({
         changeMonth: true,
         changeYear: true,

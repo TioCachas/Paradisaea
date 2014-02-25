@@ -55,9 +55,14 @@ table td, table th
     text-transform: uppercase;
 }
 
-.lowercase
+.lowercase, .lowercase td, .lowercase th
 {
     text-transform: lowercase !important;
+}
+
+.noTextTransform, .noTextTransform td, .noTextTransform th
+{
+    text-transform: none !important;
 }
 
 .cursorPointer

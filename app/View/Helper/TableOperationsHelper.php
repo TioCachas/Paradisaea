@@ -3,49 +3,58 @@ App::uses('AppHelper', 'View/Helper');
 
 class TableOperationsHelper extends AppHelper {
 
-    public function render() {
+    public function render($workDate) {
         $minutesSymbol = Units::symbol(Units::MINUTES);
         ?>
-        <table class="table table-bordered table-condensed table-hover" id='tableRecords'>
+        <table class="table table-bordered table-condensed noTextTransform bosch" id='dashboardCapture'>
             <thead>
-                <tr class="text-center">
-                    <th title="<?php echo __('Hora'); ?>">
-                        <i class="fa fa-clock-o"></i>
+                <tr class="header">
+                    <th colspan="6"><?php echo __('Hoja de seguimiento de piezas por hora'); ?></th>
+                    <th colspan="3"></th>
+                    <th colspan="2">
+                        <input type="text" class="pull-right form-control" id="workDate" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
                     </th>
-                    <th title="<?php echo __('Piezas objetivo'); ?>">
-                        <i class="fa fa-flag"></i>
+                </tr>
+                <tr class="subheader">
+                    <th colspan="2"><?php echo __('Hora'); ?></th>
+                    <th colspan="1"><?php echo __('Objetivo (basado en 100% de OEE)'); ?></th>
+                    <th colspan="1"><?php echo __('Actual'); ?></th>
+                    <th colspan="2"><?php echo __('Calidad [piezas]'); ?></th>
+                    <th colspan="5"><?php echo __('Disponibilidad de perdidas [minutos]'); ?></th>
+                </tr>
+                <tr class="text-center subheader">
+                    <th>
+                        <?php echo __('Inicio'); ?>
                     </th>
-                    <th title="<?php echo __('Acumulado piezas objetivo'); ?>">
-                        <i class="fa fa-plus-square"></i>
-                        <i class="fa fa-flag"></i>
+                    <th>
+                        <?php echo __('Fin'); ?>
                     </th>
-                    <th class="production" title="<?php echo __('Piezas OK'); ?>">
-                        <i class="fa fa-check"></i>
+                    <th>
+                        <?php echo __('Piezas / Acumulado'); ?>
                     </th>
-                    <th class="sumProduction" title="<?php echo __('Acumulado piezas OK'); ?>">
-                        <i class="fa fa-plus-square"></i>
-                        <i class="fa fa-check"></i>
+                    <th>
+                        <?php echo __('Piezas / Acumulado'); ?>
                     </th>
-                    <th class="scrap" title="<?php echo __('Scrap'); ?>">
-                        <i class="fa fa-trash-o"></i>
+                    <th>
+                        <?php echo __('Scrap / Acumulado'); ?>
                     </th>
-                    <th class="rework" title="<?php echo __('Retrabajo'); ?>">
-                        <i class="fa fa-repeat"></i>
+                    <th>
+                        <?php echo __('Retrabajo / Acumulado'); ?>
                     </th>
-                    <th class="changeoverLosses" title="<?php echo __('Cambio de modelo') . $minutesSymbol; ?>">
-                        <i class="fa fa-exchange"></i>
+                    <th>
+                        <?php echo __('Cambio de modelo'); ?>
                     </th>
-                    <th class="techicalLosses" title="<?php echo __('Tecnicas') . $minutesSymbol; ?>">
-                        <i class="fa fa-wrench fa-inverse"></i>
+                    <th>
+                        <?php echo __('Tecnicas'); ?>
                     </th>
-                    <th class="organizationalLosses" title="<?php echo __('Organizacional') . $minutesSymbol; ?>">
-                        <i class="fa fa-users fa-inverse"></i>
+                    <th>
+                        <?php echo __('Organizacional'); ?>
                     </th>
-                    <th class="qualityLosses" title="<?php echo __('Calidad') . $minutesSymbol; ?>">
-                        <i class="fa fa-thumbs-o-down"></i>
+                    <th>
+                        <?php echo __('Calidad'); ?>
                     </th>
-                    <th class="performanceLosses" title="<?php echo __('Desempeño') . $minutesSymbol; ?>">
-                        <i class="fa fa-bar-chart-o fa-inverse"></i>
+                    <th>
+                        <?php echo __('Desempeño'); ?>
                     </th>
                 </tr>
             </thead>
