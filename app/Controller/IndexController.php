@@ -10,8 +10,7 @@ class IndexController extends AppController {
     }
 
     public function index() {
-        $this->set('title', __('Bosch'));
-        $this->set('description', __('Sistema para Bosch'));
+        $this->set('title', __('Robert Bosch San Luis Potosi'));
         $this->layout = 'base';
     }
 

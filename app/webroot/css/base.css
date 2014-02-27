@@ -1,7 +1,21 @@
-/* 
-    Created on : Jan 23, 2014, 9:09:52 AM
-    Author     : suf5slp
-*/
+@font-face
+{
+    font-family: 'Bosch';
+    src: url(../fonts/vendors/bosch/bosch.eot);
+    src: url(../fonts/vendors/bosch/bosch.otf);
+    src: url(../fonts/vendors/bosch/bosch.svg);
+    src: url(../fonts/vendors/bosch/bosch.ttf);
+    src: url(../fonts/vendors/bosch/bosch.woff);
+}
+
+body
+{
+    font-family: 'Bosch' !important;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+    font-family: 'Bosch' !important;
+}
 
 .float-right
 {
@@ -23,31 +37,9 @@ body
     padding-top: 51px;
 }
 
-.navbar
-{
-    background-color: #215F8B;
-}
-
-.navbar .logo
-{
-    float: right;
-}
-
-.navbar li a.img
-{
-    padding: 0px;
-}
-
 header
 {
     margin-bottom: 0px !important;
-}
-
-#logoBosch .container
-{
-    background-image: url('../img/bosch.png');
-    background-repeat: no-repeat;
-    background-position: center right;
 }
 
 table td, table th
@@ -68,4 +60,20 @@ table td, table th
 .cursorPointer
 {
     cursor: pointer !important;
+}
+
+.backgroundGrayBosch
+{
+    background-color: rgb(221,221,221);
+}
+
+#titles.jumbotron
+{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#titles.jumbotron h1
+{
+    font-size: 40px;
 }

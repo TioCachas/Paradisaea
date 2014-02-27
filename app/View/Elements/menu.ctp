@@ -1,4 +1,4 @@
-<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+<header class="navbar navbar-fixed-top bs-docs-nav" role="banner">
     <div class="container">
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
@@ -48,6 +48,7 @@
                 </li>
                 <li>
                     <a href="#">
+                        <i class='fa fa-question'></i>
                         <?php echo __('Ayuda'); ?>
                     </a>
                 </li>

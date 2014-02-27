@@ -1,0 +1,20 @@
+footer
+{
+    background-color: #ddd;
+    bottom: 0;
+    height: 60px;
+    position: absolute;
+    width: 100%;
+}
+
+footer>div.container
+{
+    background-image: url('../img/bosch.png');
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+footer .copyright
+{
+    margin: 20px 0 0 0;
+}

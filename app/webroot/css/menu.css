@@ -1,0 +1,19 @@
+.navbar
+{
+    background-color: rgb(0,50,100);
+}
+
+.navbar li a.img
+{
+    padding: 0px;
+}
+
+.navbar a{
+    color: #fff;
+}
+
+.nav>li>a:hover
+{
+    background-color: rgb(0,50,100) !important;
+    text-decoration: underline;
+}
