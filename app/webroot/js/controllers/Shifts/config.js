@@ -8,7 +8,8 @@ function getModels()
 {
     var line = $('#inputLine').val();
     var url = urlGetModels + '/' + line;
-    $.post(url, {}, function(options) {
+    $.getJSON(url, {}, function(options) {
+        $('button').removeAttr('disabled');
         renderOptions($('#inputModel'), options);
     });
 }

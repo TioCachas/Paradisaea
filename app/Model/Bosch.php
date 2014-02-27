@@ -1,12 +1,12 @@
 <?php
 
-App::uses('Configuration', 'Model');
+App::uses('ConfigCapture', 'Model');
 
 class Bosch {
 
     private $configuration;
 
-    public function setConfiguration(Configuration $configuration) {
+    public function setConfiguration(ConfigCapture $configuration) {
         $this->configuration = $configuration;
     }
 

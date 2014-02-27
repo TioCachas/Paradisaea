@@ -34,6 +34,15 @@ $urlGetModels = $this->Html->url(array('controller' => 'ModelsLines', 'action' =
         </select>
     </div>
 </div>
+<div class="form-group">
+    <label for="inputModel" class="col-sm-2 col-lg-1 control-label">
+    </label>
+    <div class="col-sm-9 col-lg-5">
+        <button class='btn btn-primary btn-lg' disabled="disabled">
+            <?php echo __('Iniciar turno'); ?>
+        </button>
+    </div>
+</div>
 <?php
 $this->Form->end();
 $this->start('jsVars');

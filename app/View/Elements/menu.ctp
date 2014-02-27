@@ -3,22 +3,15 @@
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+                <i class='fa fa-bars fa-2x'></i>
             </button>
-            <a href="../" class="navbar-brand">
+            <a href="<?php $this->Html->url('/', true); ?>" class="navbar-brand">
+                <i class='fa fa-home'></i>
                 <?php echo __('Daily Monitor'); ?>
             </a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">
-                        <i class='fa fa-home'></i>
-                        <?php echo __('Inicio'); ?>
-                    </a>
-                </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class='fa fa-user'></i>

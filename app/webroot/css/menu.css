@@ -17,3 +17,8 @@
     background-color: rgb(0,50,100) !important;
     text-decoration: underline;
 }
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus{
+    background-color: #ddd !important;
+    color: #000 !important;
+}
