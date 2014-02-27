@@ -9,8 +9,10 @@ class TableOperationsHelper extends AppHelper {
         <table class="table table-bordered table-condensed noTextTransform bosch" id='dashboardCapture'>
             <thead>
                 <tr class="header">
-                    <th colspan="6"><?php echo __('Hoja de seguimiento de piezas por hora'); ?></th>
-                    <th colspan="3"></th>
+                    <th colspan="7"><?php echo __('Hoja de seguimiento de piezas por hora'); ?></th>
+                    <th colspan="3">
+                        <i class='fa fa-bar-chart-o pull-right fa-2x'></i>
+                    </th>
                     <th colspan="2">
                         <input type="text" class="pull-right form-control" id="workDate" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
                     </th>
@@ -19,6 +21,7 @@ class TableOperationsHelper extends AppHelper {
                     <th colspan="2"><?php echo __('Hora'); ?></th>
                     <th colspan="1"><?php echo __('Objetivo (basado en 100% de OEE)'); ?></th>
                     <th colspan="1"><?php echo __('Actual'); ?></th>
+                    <th colspan="1"><?php echo __('Piezas/hora'); ?></th>
                     <th colspan="2"><?php echo __('Calidad [piezas]'); ?></th>
                     <th colspan="5"><?php echo __('Disponibilidad de perdidas [minutos]'); ?></th>
                 </tr>
@@ -36,24 +39,27 @@ class TableOperationsHelper extends AppHelper {
                         <?php echo __('Piezas / Acumulado'); ?>
                     </th>
                     <th>
+                        <?php echo __('Avence'); ?>
+                    </th>
+                    <th class='scrap'>
                         <?php echo __('Scrap / Acumulado'); ?>
                     </th>
-                    <th>
+                    <th class='rework'>
                         <?php echo __('Retrabajo / Acumulado'); ?>
                     </th>
-                    <th>
+                    <th class='changeoverLosses'>
                         <?php echo __('Cambio de modelo'); ?>
                     </th>
-                    <th>
+                    <th class='techicalLosses'>
                         <?php echo __('Tecnicas'); ?>
                     </th>
-                    <th>
+                    <th class='organizationalLosses'>
                         <?php echo __('Organizacional'); ?>
                     </th>
-                    <th>
+                    <th class='qualityLosses'>
                         <?php echo __('Calidad'); ?>
                     </th>
-                    <th>
+                    <th class='performanceLosses'>
                         <?php echo __('Desempeño'); ?>
                     </th>
                 </tr>

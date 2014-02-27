@@ -15,9 +15,24 @@ $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
         {{ oTarget }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumTarget }}&nbsp;<?php echo $symbolHtmlUnits; ?>
     </td>
     <td class="text-right productions">
-        <span>
+        <a href='<?php echo $this->Html->url(array('controller' => 'Productions', 'action' => 'capture')); ?>/{{oId}}'>
             {{ oProduction }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumPzOk }}&nbsp;<?php echo $symbolHtmlUnits; ?>
-        </span>
+        </a>
+    </td>
+    <td>
+        {% if oProduction >= oTarget %}
+        <div class="progress" title="{{oProduction/oTarget*100}}%">
+            <div class="text-center progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ oProduction }}" aria-valuemin="0" aria-valuemax="{{ oTarget }}" style="width: {{ oProduction/oTarget*100 }}%">
+                {{oProduction/oTarget*100}}%
+            </div>
+        </div>
+        {% else %}
+        <div class="progress" title="{{oProduction/oTarget*100}}%">
+            <div class="text-center progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{ oProduction }}" aria-valuemin="0" aria-valuemax="{{ oTarget }}" style="width: {{ oProduction/oTarget*100 }}%">
+                {{oProduction/oTarget*100}}%
+            </div>
+        </div>
+        {% endif %}
     </td>
     <td class="text-right" title="<?php echo __('Scrap'); ?>">
         {{ oScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>

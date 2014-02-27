@@ -6,8 +6,9 @@ App::uses('Bosch', 'Model');
 class ProductionsController extends AppController {
     
     public function beforeFilter() {
-        $this->Security->requireGet(array('capture'));
         //$this->Security->allowedControllers(array('capture'=>'Operations'));
+        $this->Security->validatePost = false;
+        $this->Security->csrfCheck = false;
         parent::beforeFilter();
     }
 
@@ -90,7 +91,7 @@ class ProductionsController extends AppController {
      * @param string $operationId
      */
     public function capture($operationId) {
-        
+        $this->request->onlyAllow(array('get', 'post'));
         $this->loadModel('Operation');
         $this->Operation->id = $operationId;
         $operation = $this->Operation->read();
@@ -107,7 +108,7 @@ class ProductionsController extends AppController {
             $models = $this->ModelLine->getByLine($lineId);
             $firstModel = $models[0];
             $this->loadModel('IndexModel');
-            $indexes = $this->IndexModel->getEnabledByModel($firstModel['m']['id']);
+            $indexes = $this->IndexModel->getEnabledByModel($firstModel['id']);
             if (empty($indexes) === true) {
                 $this->redirect(array('action' => 'error', self::ERROR_INDEX));
                 return;

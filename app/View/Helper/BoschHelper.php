@@ -66,8 +66,8 @@ class BoschHelper extends AppHelper
         foreach ($models as $k => $model)
         {
             ?>
-            <option value="<?php echo $model['m']['id'] ?>">
-                <?php echo $model['m']['name'] ?>
+            <option value="<?php echo $model['id'] ?>">
+                <?php echo $model['name'] ?>
             </option>
             <?php
         }

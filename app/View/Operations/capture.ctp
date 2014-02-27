@@ -1,20 +1,16 @@
 <?php
 $this->Html->script('controllers/Operations/capture', array('block' => 'scriptBottom'));
+$this->Html->script('vendors/kendo/kendo.all.min', array('block' => 'scriptBottom'));
+$this->Html->css('vendors/kendo/kendo.common.min', array('block' => 'stylesTop'));
+$this->Html->css('vendors/kendo/kendo.default.min', array('block' => 'stylesTop'));
+$this->Html->css('vendors/kendo/kendo.dataviz.min', array('block' => 'stylesTop'));
+$this->Html->css('vendors/kendo/kendo.dataviz.default.min', array('block' => 'stylesTop'));
 $this->Html->css('losses', array('block' => 'stylesTop'));
 $this->Html->css('controllers/Operations/capture', array(
     'block' => 'stylesTop'));
 $urlList = $this->Html->url(array('controller' => 'Operations', 'action' => 'getDashboardCapture'));
 $urlCreateProduction = $this->Html->url(array('controller' => 'Productions', 'action' => 'createForm'));
 ?>
-<!--<form class="form-horizontal" role="form">
-    <div class="form-group">
-        <label class="col-sm-2 control-label text-left" for="workDate"><?php echo __('Dia de trabajo'); ?></label>
-        <div class="col-sm-2">
-            <input required="requiered" type="text" class="form-control input-lg" id="workDate" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
-        </div>
-    </div>
-</form>-->
-<br/>
 <div id="shift">
     <div class="hidden text-center loader">
         <i class="fa fa-refresh fa-spin fa-5x"></i>
@@ -37,6 +33,9 @@ $urlCreateProduction = $this->Html->url(array('controller' => 'Productions', 'ac
         </form>
     </div>
     <?php $this->TioCachas->templateClassSwig('operations-user'); ?>
+</div>
+<div class="chart-wrapper" id='windowChart'>
+    <div id="chart"></div>
 </div>
 <script type="text/javascript">
     var urlCaptureProduction = <?php echo json_encode($urlCreateProduction); ?>;
