@@ -1,0 +1,9 @@
+table.table{
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+td.productions
+{
+    cursor: pointer !important;
+}

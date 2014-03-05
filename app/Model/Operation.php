@@ -142,13 +142,17 @@ class Operation extends AppModel {
                 , o.planed_operating_time oPot
                 , h.id hId
                 , o.target oTarget
+                , IFNULL(GROUP_CONCAT(DISTINCT m.name),"") models
             FROM operations o
             INNER JOIN hours h ON h.id = o.hour_id
+            LEFT JOIN productions p ON p.operation_id = o.id
+            LEFT JOIN models m ON p.model_id = m.id
             WHERE 
                     o.status = ' . self::STATUS_ENABLED . '
                 AND o.line_id = ?
                 AND h.shift_id = ?
                 AND o.work_date = ?        
+            GROUP BY o.id
             ORDER BY h.number ASC', array(
             $lineId, $shiftId, $workDate));
         return $this->flatArray($operations);
@@ -248,6 +252,7 @@ class Operation extends AppModel {
                 , o.id oId
                 , o.status oStatus
                 , o.creation_date oCreationDate
+                , o.work_date oWorkDate
             FROM operations o
             INNER JOIN us3rs_m0n1t0r u ON u.id = o.user_id
             INNER JOIN production_lines l ON o.line_id = l.id

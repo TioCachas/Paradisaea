@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 App::uses('Bosch', 'Model');
 
 class ProductionsController extends AppController {
-    
+
     public function beforeFilter() {
         //$this->Security->allowedControllers(array('capture'=>'Operations'));
         $this->Security->validatePost = false;
@@ -91,6 +91,7 @@ class ProductionsController extends AppController {
      * @param string $operationId
      */
     public function capture($operationId) {
+        $this->layout = 'empty';
         $this->request->onlyAllow(array('get', 'post'));
         $this->loadModel('Operation');
         $this->Operation->id = $operationId;
@@ -114,7 +115,7 @@ class ProductionsController extends AppController {
                 return;
             }
             $this->loadModel('Production');
-            $productions = $this->Production->getByOperationId($operationId);
+            $productions = $this->Production->getByOperationId($operationId, array(Production::STATUS_ENABLED));
             $this->set('operation', $operation['Operation']);
             $this->set('productions', $productions);
             $this->set('models', $models);
@@ -122,6 +123,11 @@ class ProductionsController extends AppController {
             $this->set('title', __('Piezas OK'));
             $this->set('description', __('Crear registro de piezas OK'));
         }
+    }
+
+    public function getByOperationAndHour() {
+        $this->loadModel('Production');
+        $productions = $this->Production->getByOperationId($operationId, Production::STATUS_ENABLED);
     }
 
     /**

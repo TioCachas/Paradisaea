@@ -1,9 +1,9 @@
 <?php
 
-App::uses('CaptureController', 'Controller');
+App::uses('AppController', 'Controller');
 App::uses('Bosch', 'Model');
 
-class OperationsController extends CaptureController {
+class OperationsController extends AppController {
 
     public function beforeFilter() {
         $this->Security->allowedControllers = array('Operations');
@@ -281,6 +281,37 @@ class OperationsController extends CaptureController {
         $result['operations'] = $operations;
         $result['sum'] = $sum;
         $this->set(array('result' => $result, '_serialize' => 'result'));
+        $this->viewClass = 'Json';
+    }
+
+    public function getDashboardCaptureSingle($workDate, $oId) {
+        $this->request->onlyAllow('get');
+        $operation = false;
+        if ($workDate !== null && $oId !== null) {
+            $bosch = $this->Session->read('configuration');
+            if (($bosch instanceof Bosch) === true) {
+                $shiftId = $bosch->getConfiguration()->getShift();
+                $lineId = $bosch->getConfiguration()->getLine();
+                $operations = $this->Operation->getDashboardCapture($lineId, $shiftId, $workDate);
+                $targetAcumulado = 0;
+                $piezasOKAcumulado = 0;
+                $scrapAcumulado = 0;
+                $reworkAcumulado = 0;
+                array_walk($operations, function(&$o) use(&$sum, &$targetAcumulado, &$piezasOKAcumulado, &$scrapAcumulado, &$reworkAcumulado) {
+                    $o['sumTarget'] = $targetAcumulado = $targetAcumulado + $o['oTarget'];
+                    $o['sumPzOk'] = $piezasOKAcumulado = $piezasOKAcumulado + $o['oProduction'];
+                    $o['sumScrap'] = $scrapAcumulado = $scrapAcumulado + $o['oScrap'];
+                    $o['sumRework'] = $reworkAcumulado = $reworkAcumulado + $o['oRework'];
+                });
+                $operationsFilter = array_filter($operations, function($e)use($oId) {
+                    return $e['oId'] == $oId;
+                });
+                if (count($operationsFilter) > 0) {
+                    $operation = reset($operationsFilter);
+                }
+            }
+        }
+        $this->set(array('result' => $operation, '_serialize' => 'result'));
         $this->viewClass = 'Json';
     }
 

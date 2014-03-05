@@ -26,7 +26,6 @@ class ShiftsController extends AppController {
         $lines = $this->Line->getEnabled();
         $this->set('shifts', $shifts);
         $this->set('lines', $lines);
-        $this->Session->write('referer', $this->request->referer(true));
     }
 
     /**
@@ -52,7 +51,7 @@ class ShiftsController extends AppController {
                 $bosch = new Bosch();
                 $bosch->setConfiguration(new ConfigCapture($shiftId, $shift['Shift']['name'], $lineId, $line['Line']['name'], $model, $model['ModelB']['id']));
                 $this->Session->write('configuration', $bosch);
-                $this->checkReferer();
+                $this->redirect(array('controller' => 'Operations', 'action' => 'capture'));
                 return;
             }
         }
@@ -61,16 +60,6 @@ class ShiftsController extends AppController {
          * permitir un nuevo intento.
          */
         $this->redirect('config');
-    }
-
-    /**
-     * Realizamos una redireccion en caso de que exista un referer.
-     */
-    private function checkReferer() {
-        $urlReferer = $this->Session->read('referer');
-        if ($urlReferer !== null) {
-            $this->redirect($urlReferer);
-        }
     }
 
 }

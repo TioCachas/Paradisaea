@@ -4,14 +4,10 @@ $urlProductions = $this->Html->url(array(
 $symbolHtmlUnits = Units::symbolHtml(Units::UNITS);
 $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
 ?>
-{% if parseInt(oProduction) >= parseInt(oTarget) %}
-<tr data-id="{{ oId }}" class="bosch greaterOrEqualThat">
-    {% else %}
-<tr data-id="{{ oId }}" class="bosch lessThat">
-    {% endif %}
-    <td>{{ hStart }}</td>
-    <td>{{ hEnd }}</td>
-    <td>{{ models }}</td>
+<tr class="subheader">
+    <td colspan="3">
+        <?php echo __("Total del turno"); ?>
+    </td>
     <td class="text-right target" title="<?php echo __('Piezas objetivo'); ?>">
         {{ oTarget }}&nbsp;<?php echo $symbolHtmlUnits; ?>
     </td>
@@ -19,10 +15,7 @@ $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
         {{ sumTarget }}&nbsp;<?php echo $symbolHtmlUnits; ?>        
     </td>
     <td class="text-right productions">
-        <span>
-            {{ oProduction }}&nbsp;<?php echo $symbolHtmlUnits; ?>
-        </span>
-        <i class="fa fa-refresh fa-spin hidden"></i>
+        {{ oProduction }}&nbsp;<?php echo $symbolHtmlUnits; ?>
     </td>
     <td class="text-right">
         {{ sumPzOk }}&nbsp;<?php echo $symbolHtmlUnits; ?>

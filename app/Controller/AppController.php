@@ -40,19 +40,19 @@ class AppController extends Controller
                 'controller' => 'Sesion',
                 'action' => 'Index'
             ),
-            'loginRedirect' => array(
-                'controller' => 'Sesion',
-                'action' => 'Welcome'
-            ),
-            'logoutRedirect' => array(
-                'controller' => 'Sesion',
-                'action' => 'Logout'
-            ),
-            'unauthorizedRedirect' => array(
-                'controller' => 'Sesion',
-                'action' => 'Rechazado'
-            ),
-            'authError' => 'Did you really think you are allowed to see that?',
+//            'loginRedirect' => array(
+//                'controller' => 'Sesion',
+//                'action' => 'Welcome'
+//            ),
+//            'logoutRedirect' => array(
+//                'controller' => 'Sesion',
+//                'action' => 'Logout'
+//            ),
+//            'unauthorizedRedirect' => array(
+//                'controller' => 'Sesion',
+//                'action' => 'Rechazado'
+//            ),
+//            'authError' => 'Did you really think you are allowed to see that?',
             'authenticate' => array(
                 'Form' => array(
                     'userModel' => 'User',

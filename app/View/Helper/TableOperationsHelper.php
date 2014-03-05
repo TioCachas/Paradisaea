@@ -9,8 +9,8 @@ class TableOperationsHelper extends AppHelper {
         <table class="table table-bordered table-condensed noTextTransform bosch" id='dashboardCapture'>
             <thead>
                 <tr class="header">
-                    <th colspan="7"><?php echo __('Hoja de seguimiento de piezas por hora'); ?></th>
-                    <th colspan="3">
+                    <th colspan="8"><?php echo __('Hoja de seguimiento de piezas por hora'); ?></th>
+                    <th colspan="5">
                         <i class='fa fa-bar-chart-o pull-right fa-2x'></i>
                     </th>
                     <th colspan="2">
@@ -19,8 +19,9 @@ class TableOperationsHelper extends AppHelper {
                 </tr>
                 <tr class="subheader">
                     <th colspan="2"><?php echo __('Hora'); ?></th>
-                    <th colspan="1"><?php echo __('Objetivo (basado en 100% de OEE)'); ?></th>
-                    <th colspan="1"><?php echo __('Actual'); ?></th>
+                    <th colspan="1" rowspan="2"><?php echo __('Modelo'); ?></th>
+                    <th colspan="2"><?php echo __('Objetivo (basado en 100% de OEE)'); ?></th>
+                    <th colspan="2"><?php echo __('Actual'); ?></th>
                     <th colspan="1"><?php echo __('Piezas/hora'); ?></th>
                     <th colspan="2"><?php echo __('Calidad [piezas]'); ?></th>
                     <th colspan="5"><?php echo __('Disponibilidad de perdidas [minutos]'); ?></th>
@@ -33,10 +34,16 @@ class TableOperationsHelper extends AppHelper {
                         <?php echo __('Fin'); ?>
                     </th>
                     <th>
-                        <?php echo __('Piezas / Acumulado'); ?>
+                        <?php echo __('Piezas'); ?>
                     </th>
                     <th>
-                        <?php echo __('Piezas / Acumulado'); ?>
+                        <?php echo __('Acumulado'); ?>
+                    </th>
+                    <th>
+                        <?php echo __('Piezas'); ?>
+                    </th>
+                    <th>
+                        <?php echo __('Acumulado'); ?>
                     </th>
                     <th>
                         <?php echo __('Avence'); ?>

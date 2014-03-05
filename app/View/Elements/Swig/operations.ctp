@@ -25,7 +25,7 @@ $urlOrganizational = $this->Html->url(array(
     <td>
         {{ user }}
     </td>
-    <td>{{ oCreationDate }}</td>
+    <td>{{ oWorkDate }}</td>
     <td>
         <a href="<?php echo $urlProductions; ?>/{{ oId }}">
             {{ oProduction }}

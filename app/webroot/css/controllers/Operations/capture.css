@@ -1,9 +1,9 @@
-tr.subheader th
+tr.subheader th, tfoot td
 {
     background-color: rgb(200,200,200);
     color: #000;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: middle !important;
 }
 
 tr.header th
@@ -11,7 +11,7 @@ tr.header th
     background-color: #215F8B;
     color: #fff;
     text-align: left;
-    vertical-align: middle;
+    vertical-align: middle !important;
 }
 
 table#dashboardCapture, table#dashboardCapture td, table#dashboardCapture th
@@ -19,7 +19,6 @@ table#dashboardCapture, table#dashboardCapture td, table#dashboardCapture th
     border: 2px solid #000 !important;
 }
 
-td.target
-{
-    color: #00f;
+td a{
+    color: inherit;
 }

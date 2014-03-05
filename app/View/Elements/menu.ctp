@@ -5,7 +5,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class='fa fa-bars fa-2x'></i>
             </button>
-            <a href="<?php $this->Html->url('/', true); ?>" class="navbar-brand">
+            <a href="<?php echo Router::url('/', true); ?>" class="navbar-brand">
                 <i class='fa fa-home'></i>
                 <?php echo __('Daily Monitor'); ?>
             </a>

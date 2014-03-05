@@ -26,10 +26,15 @@ class SesionController extends AppController
         $this->request->onlyAllow('post');
         $ip = $this->request->clientIp();
         $userAgent = $this->request->header('User-Agent');
-        $this->addLog($post['us3r'], $ip, $userAgent);
+//        $this->addLog($post['us3r'], $ip, $userAgent);
+        
         if ($this->Auth->login())
         {
-            return $this->redirect($this->Auth->redirectUrl());
+            $user = $this->Auth->user();
+            $this->loadModel('Category');
+            $category = $this->Category->getById($user['category_id']);
+            $this->redirect(array('controller'=>$category['Category']['controller'], 'action'=>$category['Category']['action']), null, true);
+            return;
         }
         $this->set('title', __('Acceder'));
         $this->set('description', __('Panel para ingreso de usuarios'));
