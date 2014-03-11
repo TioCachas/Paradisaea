@@ -1,9 +1,8 @@
 <?php
 
 App::uses('AppController', 'Controller');
-App::uses('Scrap', 'Model');
 
-class ScrapsController extends AppController {
+class ReworksController extends AppController {
 
     public function beforeFilter() {
         $this->Security->validatePost = false;
@@ -22,9 +21,9 @@ class ScrapsController extends AppController {
         $this->Operation->id = $operationId;
         $operation = $this->Operation->read();
         if (isset($operation['Operation']) === true) {
-            $scraps = $this->Scrap->getByOperationId($operationId, array(Scrap::STATUS_ENABLED));
+            $reworks = $this->Rework->getByOperationId($operationId, array(Rework::STATUS_ENABLED));
             $this->set('operation', $operation['Operation']);
-            $this->set('scraps', $scraps);
+            $this->set('reworks', $reworks);
         }
     }
 
@@ -41,7 +40,7 @@ class ScrapsController extends AppController {
             $value = $params['v'];
             $operationId = $params['o'];
             $comment = $params['c'];
-            $newRecord = $this->Scrap->insert($operationId, $value, $comment);
+            $newRecord = $this->Rework->insert($operationId, $value, $comment);
         }
         $this->set(array('record' => $newRecord, '_serialize' => 'record'));
         $this->viewClass = 'Json';
@@ -59,7 +58,7 @@ class ScrapsController extends AppController {
         $success = false;
         if (isset($params['i'])) {
             $pId = $params['i'];
-            $this->Scrap->toggleStatus($pId);
+            $this->Rework->toggleStatus($pId);
             $success = true;
         }
         $this->set(array('success' => $success, '_serialize' => 'success'));

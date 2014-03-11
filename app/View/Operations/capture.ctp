@@ -9,6 +9,7 @@ $urlListSingle = $this->Html->url(array('controller' => 'Operations', 'action' =
 $urlGetLinesAndShifts = $this->Html->url(array('controller' => 'Users', 'action' => 'getLinesAndShifts'));
 $urlProductionsCapture = $this->Html->url(array('controller' => 'Productions', 'action' => 'capture'));
 $urlScrapCapture = $this->Html->url(array('controller' => 'Scraps', 'action' => 'capture'));
+$urlReworkCapture = $this->Html->url(array('controller' => 'Reworks', 'action' => 'capture'));
 ?>
 <div id="shift">
     <div class="table-responsive">
@@ -34,4 +35,5 @@ $urlScrapCapture = $this->Html->url(array('controller' => 'Scraps', 'action' => 
     var urlGetLinesAndShifts = <?php echo json_encode($urlGetLinesAndShifts); ?>;
     var urlProductionsCapture = <?php echo json_encode($urlProductionsCapture); ?>;
     var urlScrapCapture = <?php echo json_encode($urlScrapCapture); ?>;
+    var urlReworkCapture = <?php echo json_encode($urlReworkCapture); ?>;
 </script>

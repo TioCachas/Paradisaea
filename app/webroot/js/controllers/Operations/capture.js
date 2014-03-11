@@ -99,12 +99,12 @@ $(document).ready(function()
         $(this).find('.fa-spin').removeClass('hidden');
         fnWndScrap(operationId);
     });
-//    target.on('click', 'tr.bosch td.reworkValue', function() {
-//        var operationId = $(this).parent().attr('data-id');
-//        $(this).find('span').addClass('hidden');
-//        $(this).find('.fa-spin').removeClass('hidden');
-//        fnWndRework(operationId);
-//    });
+    target.on('click', 'tr.bosch td.reworkValue', function() {
+        var operationId = $(this).parent().attr('data-id');
+        $(this).find('span').addClass('hidden');
+        $(this).find('.fa-spin').removeClass('hidden');
+        fnWndRework(operationId);
+    });
 //    target.on('click', 'tr.bosch td.changeoverValue', function() {
 //        var operationId = $(this).parent().attr('data-id');
 //        $(this).find('span').addClass('hidden');
@@ -198,23 +198,7 @@ function fnWndOperations(operationId)
                 "Close"
             ],
             visible: false,
-            close: function(e)
-            {
-                var dt = workDate.data("kendoDatePicker").value();
-                var ymd = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
-                $.getJSON(urlListSingle, {
-                    o: operationId,
-                    l: line.data("kendoDropDownList").value(),
-                    s: shift.data("kendoDropDownList").value(),
-                    w: ymd
-                }, function(operation)
-                {
-                    if (operation !== false)
-                    {
-                        target.find('tr[data-id="' + oId + '"]').replaceWith(templateRow(operation));
-                    }
-                });
-            },
+            close: getOperations,
             refresh: function(e) {
                 target.find('tr[data-id="' + oId + '"] td.productions span').removeClass('hidden');
                 target.find('tr[data-id="' + oId + '"] td.productions .fa-spin').addClass('hidden');
@@ -243,23 +227,7 @@ function fnWndScrap(operationId)
                 "Close"
             ],
             visible: false,
-            close: function(e)
-            {
-                var dt = workDate.data("kendoDatePicker").value();
-                var ymd = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
-                $.getJSON(urlListSingle, {
-                    o: operationId,
-                    l: line.data("kendoDropDownList").value(),
-                    s: shift.data("kendoDropDownList").value(),
-                    w: ymd
-                }, function(operation)
-                {
-                    if (operation !== false)
-                    {
-                        target.find('tr[data-id="' + operationId + '"]').replaceWith(templateRow(operation));
-                    }
-                });
-            },
+            close: getOperations,
             refresh: function(e) {
                 target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
                 target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
@@ -270,6 +238,35 @@ function fnWndScrap(operationId)
     else
     {
         wndScrap.data("kendoWindow").refresh({url: url});
+    }
+}
+
+function fnWndRework(operationId)
+{
+    var url = urlReworkCapture + '/' + operationId
+    if (!wndRework.data("kendoWindow")) {
+        wndRework.kendoWindow({
+            width: "800px",
+            height: "350px",
+            title: "Retrabajo",
+            content: url,
+            actions: [
+                "Minimize",
+                "Maximize",
+                "Close"
+            ],
+            visible: false,
+            close: getOperations,
+            refresh: function(e) {
+                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
+                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
+                this.center().open();
+            }
+        });
+    }
+    else
+    {
+        wndRework.data("kendoWindow").refresh({url: url});
     }
 }
 
