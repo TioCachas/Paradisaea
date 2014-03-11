@@ -10,7 +10,6 @@
         <title>Bosch</title>
         <?php echo $this->Html->css('vendors/bootstrap/min'); ?>
         <?php echo $this->Html->css('vendors/font-awesome/min'); ?>
-        <?php echo $this->Html->css('vendors/jqueryui/min'); ?>
         <?php echo $this->Html->css('base'); ?>
         <?php echo $this->Html->css('menu'); ?>
         <?php echo $this->Html->css('footer'); ?>
@@ -33,6 +32,7 @@
         <div class="container" id='mainContent'>
             <?php echo $this->fetch('content'); ?>
         </div>
+        <?php echo $this->Html->script('globalization') . PHP_EOL; ?>
         <?php echo $this->fetch('jsVars'); ?>
         <?php echo $this->Html->script('init') . PHP_EOL; ?>
         <?php echo $this->Html->script('vendors/jquery/1.10.1.min') . PHP_EOL; ?>
@@ -41,7 +41,6 @@
         <?php echo $this->Html->script('vendors/swig/min') . PHP_EOL; ?>
         <?php echo $this->Html->script('vendors/backbone/min') . PHP_EOL; ?>
         <?php echo $this->Html->script('vendors/bootstrap/min') . PHP_EOL; ?>
-        <?php echo $this->Html->script('vendors/jqueryui/min') . PHP_EOL; ?>
         <?php echo $this->Html->script('capture') . PHP_EOL; ?>
         <?php echo $this->fetch('scriptBottom') . PHP_EOL; ?>
         <footer>

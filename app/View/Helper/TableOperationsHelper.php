@@ -1,24 +1,33 @@
 <?php
 App::uses('AppHelper', 'View/Helper');
 
-class TableOperationsHelper extends AppHelper {
+class TableOperationsHelper extends AppHelper
+{
 
-    public function render($workDate) {
-        $minutesSymbol = Units::symbol(Units::MINUTES);
+    public function render($users, $workDate)
+    {
         ?>
-        <table class="table table-bordered table-condensed noTextTransform bosch" id='dashboardCapture'>
+        <table class="table table-bordered table-condensed noTextTransform dashboardCapture">
             <thead>
                 <tr class="header">
-                    <th colspan="8"><?php echo __('Hoja de seguimiento de piezas por hora'); ?></th>
-                    <th colspan="5">
-                        <i class='fa fa-bar-chart-o pull-right fa-2x'></i>
-                    </th>
-                    <th colspan="2">
-                        <input type="text" class="pull-right form-control" id="workDate" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
+                    <th colspan="15" class="tools">
+                        <?php echo __('Hoja de seguimiento de piezas por hora'); ?>
+                        <input type="text" class="form-control pull-right" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
+                        <input class="shifts" />
+                        <input class="lines" />
+                        <select class="users">
+                            <?php
+                            array_walk($users, function($user) {
+                                        echo '<option value=' . $user['uId'] . '>' . $user['uName'] . '</option>';
+                                    });
+                            ?>
+                        </select>
+                        <i class = 'fa fa-bar-chart-o'></i>
                     </th>
                 </tr>
-                <tr class="subheader">
-                    <th colspan="2"><?php echo __('Hora'); ?></th>
+                <tr class = "subheader">
+                    <th colspan = "2"><?php echo __('Hora');
+                            ?></th>
                     <th colspan="1" rowspan="2"><?php echo __('Modelo'); ?></th>
                     <th colspan="2"><?php echo __('Objetivo (basado en 100% de OEE)'); ?></th>
                     <th colspan="2"><?php echo __('Actual'); ?></th>
@@ -72,6 +81,44 @@ class TableOperationsHelper extends AppHelper {
                 </tr>
             </thead>
             <tbody>
+                <?php if (count($users) == 0): ?>
+                    <tr class="error users">
+                        <td colspan="15" class="text-center">
+                            <i class="fa fa-info-circle fa-5x"></i>
+                            <br/>
+                            <?php echo __("No se encontrarón usuarios"); ?>
+                        </td>
+                    </tr>
+                <?php else: ?>
+                    <tr class="error lines hidden">
+                        <td colspan="15" class="text-center">
+                            <i class="fa fa-info-circle fa-5x"></i>
+                            <br/>
+                            <?php echo __("El usuario no tiene líneas asignadas"); ?>
+                        </td>
+                    </tr>
+                    <tr class="error shifts hidden">
+                        <td colspan="15" class="text-center">
+                            <i class="fa fa-info-circle fa-5x"></i>
+                            <br/>
+                            <?php echo __("El usuario no tiene turnos asignados"); ?>
+                        </td>
+                    </tr>
+                    <tr class="loader operations hidden">
+                        <td colspan="15" class="text-center">
+                            <i class="fa fa-refresh fa-spin fa-5x"></i>
+                            <br/>
+                            <?php echo __("Generando pizarra de captura..."); ?>
+                        </td>
+                    </tr>
+                    <tr class="loader linesAndShifts">
+                        <td colspan="15" class="text-center">
+                            <i class="fa fa-refresh fa-spin fa-5x"></i>
+                            <br/>
+                            <?php echo __("Cargando líneas y turnos disponibles..."); ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
             <tfoot>
             </tfoot>
@@ -79,7 +126,8 @@ class TableOperationsHelper extends AppHelper {
         <?php
     }
 
-    public function byCurrentDay() {
+    public function byCurrentDay()
+    {
         ?>
         <table class="table table-bordered table-condensed table-striped" id='tableByCurrentDay'>
             <thead>

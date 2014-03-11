@@ -1,60 +1,73 @@
-<?php $this->Html->script('controllers/Productions/capture', array('block' => 'scriptBottom')); ?>
-<?php $this->Html->css('controllers/Productions/capture', array('block' => 'stylesTop')); ?>
-<form class="form-inline" role="form" id="formOperation" method="post">
-    <?php $textModel = __('Modelo'); ?>
-    <div class="form-group">
-        <label for="model" class="control-label"><?php echo $textModel; ?></label>
-        <br/>
-        <select id="model" name='model' class="form-control input-lg">
-            <?php $this->Bosch->models($models); ?>
-        </select>
-    </div>
-    <?php $textModel = __('Index'); ?>
-    <div class="form-group">
-        <label for="index" class="control-label"><?php echo $textModel; ?></label>
-        <br/>
-        <select id="index" name='index' class="form-control input-lg">
-            <?php $this->Bosch->indexes($indexes); ?>
-        </select>
-        <i id="indexLoading" class="fa fa-spinner fa-spin hidden"></i>
-    </div>
-    <?php
-    $unit = Units::names(Units::UNITS);
-    $placeholderUnits = $unit['name'];
-    ?>
-    <?php $textValue = __('Valor'); ?>
-    <div class = "form-group">
-        <label for="value" class="control-label"><?php echo $textValue; ?></label>
-        <br/>
-        <input type="text" required="required" class="form-control input-lg" id="value"  name='value' placeholder="<?php echo $placeholderUnits; ?>">
-    </div>
-    <div class = "form-group">
-        <br/>
-        <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
-    </div>
-</form>
+<?php
+$this->TioCachas->addKendo();
+$this->Html->script('globalization', array('block' => 'scriptBottom'));
+$this->Html->script('controllers/Productions/capture', array('block' => 'scriptBottom'));
+$this->Html->css('controllers/Productions/capture', array('block' => 'stylesTop'));
+$units = Units::symbolHtml(Units::UNITS);
+?>
+<div>
+    <form id="newProduction" action="<?php
+    echo $this->Html->url(array(
+        'action' => 'create'));
+    ?>">
+        <ul>
+            <li>
+                <label class="required" for="model"><?php echo __('Modelo'); ?>:</label>
+                <span><?php echo $model; ?></span>
+            </li>
+            <li>
+                <label for="index"><?php echo __('Index'); ?>:</label>
+                <select name="index" id="index" required data-required-msg="Seleccionar index">
+                    <?php $this->Bosch->indexes($indexes); ?>
+                </select>
+                <span class="k-invalid-msg" data-for="index"></span>
+            </li>
+            <li>
+                <label for="value"><?php echo __('Valor'); ?>:</label>
+                <input data-decimals="0" id="value" requiered name="value" type="text" min="1" max="1000" required data-max-msg="Ingresa un valor entre 0 y 1000" />
+                <div class="k-invalid-msg" data-for="value"></div>
+            </li>
+            <li class="accept">
+                <button class="k-button" type="submit">Agregar</button>
+                <i class="fa fa-refresh fa-spin hidden"></i>
+            </li>
+        </ul>
+    </form>
+</div>
 <br/>
-<div class="table-responsive">
-    <table class="table table-bordered table-condensed table-striped ">
+<div class="table-responsive" id="productions">
+    <table class="table table-bordered table-condensed table-striped">
         <thead>
             <tr>
-                <th><?php echo __('Dia de trabajo'); ?></th>
-                <th><?php echo __('Hora'); ?></th>
                 <th><?php echo __('Modelo'); ?></th>
                 <th><?php echo __('Index'); ?></th>
                 <th><?php echo __('Valor'); ?></th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($productions as $p): ?>
-                <tr>
-                    <td><?php echo $p['oWorkDate']; ?></td>
-                    <td><?php echo $p['hour']; ?></td>
+                <tr data-id="<?php echo $p['pId']; ?>">
                     <td><?php echo $p['mName']; ?></td>
                     <td><?php echo $p['iName']; ?></td>
-                    <td><?php echo $p['pValue']; ?></td>
+                    <td><?php echo $p['pValue'] . ' ' . $units; ?></td>
+                    <td>
+                        <i class="fa fa-times" title="<?php echo __('Eliminar'); ?>"></i>
+                        <i class="fa fa-refresh fa-spin hidden"></i>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+<?php
+$this->TioCachas->templateSwig('templateRow', 'production-user');
+$this->start('jsVars');
+$urlDelete = $this->Html->url(array('action' => 'delete'));
+?>
+<script type="text/javascript">
+    var oId = <?php echo json_encode($operation['id']); ?>;
+    var mName = <?php echo json_encode($model); ?>;
+    var urlDelete = <?php echo json_encode($urlDelete); ?>;
+</script>
+<?php $this->end(); ?>

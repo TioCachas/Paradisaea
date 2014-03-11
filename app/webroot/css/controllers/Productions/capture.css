@@ -1,9 +1,48 @@
-table.table{
-    max-height: 200px;
+.k-textbox {
+    width: 11.8em;
+}
+
+#newProduction ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#newProduction li {
+    margin: 10px 0 0 0;
+}
+
+label {
+    display: inline-block;
+    width: 70px;
+    text-align: right;
+}
+
+.required {
+    font-weight: bold;
+}
+
+.accept{
+    padding-left: 70px;
+}
+
+span.k-tooltip {
+    margin-left: 6px;
+}
+
+.k-widget.k-numerictextbox
+{
+    padding: 0px;
+}
+
+#production table
+{
+    height: 200px;
     overflow-y: scroll;
 }
 
-td.productions
+.fa-times:hover
 {
-    cursor: pointer !important;
+    color: #04519b;
+    cursor: pointer;
 }

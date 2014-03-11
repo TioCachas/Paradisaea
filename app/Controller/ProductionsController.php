@@ -106,23 +106,59 @@ class ProductionsController extends AppController {
             $bosch = $this->Session->read('configuration');
             $lineId = $bosch->getConfiguration()->getLine();
             $this->loadModel('ModelLine');
-            $models = $this->ModelLine->getByLine($lineId);
-            $firstModel = $models[0];
+            $modelId = $bosch->getConfiguration()->getModel();
+            $modelText = $bosch->getConfiguration()->getModelText();
             $this->loadModel('IndexModel');
-            $indexes = $this->IndexModel->getEnabledByModel($firstModel['id']);
-            if (empty($indexes) === true) {
-                $this->redirect(array('action' => 'error', self::ERROR_INDEX));
-                return;
-            }
+            $indexes = $this->IndexModel->getEnabledByModel($modelId);
             $this->loadModel('Production');
             $productions = $this->Production->getByOperationId($operationId, array(Production::STATUS_ENABLED));
             $this->set('operation', $operation['Operation']);
+            $this->set('modelId', $modelId);
             $this->set('productions', $productions);
-            $this->set('models', $models);
+            $this->set('model', $modelText);
             $this->set('indexes', $indexes);
             $this->set('title', __('Piezas OK'));
             $this->set('description', __('Crear registro de piezas OK'));
         }
+    }
+    
+    public function create()
+    {
+        $this->request->onlyAllow('get');
+        $params = $this->request->query;
+        $newOperation = false;
+        if(isset($params['i']) && isset($params['v']) && isset($params['o']))
+        {
+            $this->loadModel('ModelB');
+            $this->loadModel('Index');
+            $bosch = $this->Session->read('configuration');
+            $this->ModelB->id = $bosch->getConfiguration()->getModel();
+            $model = $this->ModelB->read();
+            $this->Index->id = $params['i'];
+            $index = $this->Index->read();
+            $value = $params['v'];
+            $operationId = $params['o'];
+            $newOperation = $this->Production->insert($operationId, $model['ModelB']['id'], $index['Index']['id'], $value);
+            $newOperation['mName'] = $model['ModelB']['name'];
+            $newOperation['iName'] = $index['Index']['name'];
+        }
+        $this->set(array('operation' => $newOperation, '_serialize' => 'operation'));
+        $this->viewClass = 'Json';
+    }
+    
+    public function delete()
+    {
+        $this->request->onlyAllow('get');
+        $params = $this->request->query;
+        $success = false;
+        if(isset($params['i']))
+        {
+            $pId = $params['i'];
+            $this->Production->toggleStatus($pId);
+            $success = true;
+        }
+        $this->set(array('success' => $success, '_serialize' => 'success'));
+        $this->viewClass = 'Json';
     }
 
     public function getByOperationAndHour() {

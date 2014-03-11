@@ -45,7 +45,7 @@ class ConfigCapture {
     public function getModelText() {
         return $this->modelText;
     }
-
+    
     /**
      * Obtenemos el id de la linea sobre la que se esta trabajando
      * @return type

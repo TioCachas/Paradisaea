@@ -49,7 +49,7 @@ class ShiftsController extends AppController {
                     empty($shift) === false &&
                     empty($model) === false) {
                 $bosch = new Bosch();
-                $bosch->setConfiguration(new ConfigCapture($shiftId, $shift['Shift']['name'], $lineId, $line['Line']['name'], $model, $model['ModelB']['id']));
+                $bosch->setConfiguration(new ConfigCapture($shiftId, $shift['Shift']['name'], $lineId, $line['Line']['name'], $modelId, $model['ModelB']['name']));
                 $this->Session->write('configuration', $bosch);
                 $this->redirect(array('controller' => 'Operations', 'action' => 'capture'));
                 return;

@@ -3,9 +3,11 @@
 App::uses('AppController', 'Controller');
 App::uses('Bosch', 'Model');
 
-class OperationsController extends AppController {
+class OperationsController extends AppController
+{
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         $this->Security->allowedControllers = array('Operations');
         $this->Security->allowedActions = array('index, login');
         $this->Security->csrfCheck = false;
@@ -30,7 +32,8 @@ class OperationsController extends AppController {
 //        parent::beforeFilter();
 //    }
 
-    public function admin() {
+    public function admin()
+    {
         $this->set('title', __('Operaciones'));
         $this->set('description', __('Administración de operaciones'));
     }
@@ -40,11 +43,15 @@ class OperationsController extends AppController {
      * Invocado por AJAX
      * @param string $workDate Fecha válida en formato Y-m-d
      */
-    public function getByWorkDate($workDate = null) {
+    public function getByWorkDate($workDate = null)
+    {
         $dt = null;
-        try {
+        try
+        {
             $dt = new DateTime($workDate);
-        } catch (Exception $exc) {
+        }
+        catch (Exception $exc)
+        {
             $dt = new DateTime();
         }
         $operations = $this->Operation->getByWorkDate($dt->format('Y-m-d'));
@@ -52,12 +59,16 @@ class OperationsController extends AppController {
         $this->viewClass = 'Json';
     }
 
-    public function getByWorkDateAndUser($workDate = null) {
+    public function getByWorkDateAndUser($workDate = null)
+    {
         $dt = null;
         $user = $this->Auth->user();
-        try {
+        try
+        {
             $dt = new DateTime($workDate);
-        } catch (Exception $exc) {
+        }
+        catch (Exception $exc)
+        {
             $dt = new DateTime();
         }
         $operations = $this->Operation->getByWorkDateAndUser($dt->format('Y-m-d'), $user['id']);
@@ -65,7 +76,8 @@ class OperationsController extends AppController {
         $this->viewClass = 'Json';
     }
 
-    public function getById($operationId = null) {
+    public function getById($operationId = null)
+    {
         $operations = $this->Operation->getById($operationId);
         $this->set(array('operations' => $operations, '_serialize' => 'operations'));
         $this->viewClass = 'Json';
@@ -78,19 +90,25 @@ class OperationsController extends AppController {
      * en caso de que el valor del parametro sea incorrecto se retorna un archivo
      * sin operaciones.
      */
-    public function exportByWorkDate($workDate = null) {
+    public function exportByWorkDate($workDate = null)
+    {
         $dt = null;
         $operations = null;
         $user = $this->Auth->user();
-        try {
+        try
+        {
             $dt = new DateTime($workDate);
             $operations = $this->Operation->getByWorkDateAndUser($dt->format('Y-m-d'), $user['id']);
-        } catch (Exception $exc) {
+        }
+        catch (Exception $exc)
+        {
             $operations = array();
         }
         $dataFlit = array();
-        foreach ($operations as $o) {
-            if ($o['oStatus'] == 1) {
+        foreach ($operations as $o)
+        {
+            if ($o['oStatus'] == 1)
+            {
                 $x = array();
                 $x[] = $o['lName'];
                 $x[] = $o['hour'];
@@ -132,13 +150,17 @@ class OperationsController extends AppController {
      * Retornamos el nuevo estatus de la operacion o null en otros casos.
      * Invocada por AJAX
      */
-    public function toggleStatus($operationId) {
+    public function toggleStatus($operationId)
+    {
         $newStatus = null;
-        if ($this->request->is('post') === true) {
+        if ($this->request->is('post') === true)
+        {
             $data = $this->request->data;
-            if (isset($data['c']) === true) {
+            if (isset($data['c']) === true)
+            {
                 $comment = trim($data['c']);
-                if ($comment !== '') {
+                if ($comment !== '')
+                {
                     $user = $this->Auth->user();
                     $this->loadModel('LogOperation');
                     $this->LogOperation->addLog($operationId, $user['id'], $comment);
@@ -159,13 +181,17 @@ class OperationsController extends AppController {
      * @param string $operationId
      * @result JSON con la nueva hora
      */
-    public function changeHour($operationId) {
+    public function changeHour($operationId)
+    {
         $data = $this->request->data;
         $newHour = null;
-        if ($this->request->is('post')) {
-            if (isset($data['h']) === true && isset($data['c']) === true) {
+        if ($this->request->is('post'))
+        {
+            if (isset($data['h']) === true && isset($data['c']) === true)
+            {
                 $comment = trim($data['c']);
-                if ($comment !== '') {
+                if ($comment !== '')
+                {
                     $hourId = $data['h'];
                     $user = $this->Auth->user();
                     $this->loadModel('LogOperation');
@@ -187,13 +213,17 @@ class OperationsController extends AppController {
      * @param string $operationId
      * @result JSON con la nueva linea
      */
-    public function changeLine($operationId) {
+    public function changeLine($operationId)
+    {
         $data = $this->request->data;
         $newLine = null;
-        if ($this->request->is('post')) {
-            if (isset($data['l']) === true && isset($data['c']) === true) {
+        if ($this->request->is('post'))
+        {
+            if (isset($data['l']) === true && isset($data['c']) === true)
+            {
                 $comment = trim($data['c']);
-                if ($comment !== '') {
+                if ($comment !== '')
+                {
                     $lineId = $data['l'];
                     $user = $this->Auth->user();
                     $this->loadModel('LogOperation');
@@ -209,119 +239,132 @@ class OperationsController extends AppController {
         $this->viewClass = 'Json';
     }
 
-    public function capture($workDate = null) {
+    public function capture($workDate = null)
+    {
         $bosch = $this->Session->read('configuration');
-        if (($bosch instanceof Bosch) === false) {
+        if (($bosch instanceof Bosch) === false)
+        {
             $this->redirect(array('controller' => 'Shifts', 'action' => 'config'));
             return;
         }
+        $userSesion = $this->Auth->user();
+        $users = array(array('uId' => $userSesion['id'], 'uName' => $userSesion['us3r']),
+            array('uId' => '14652d6a-9a3f-11e3-a2d4-fc4dd44a2aac', 'uName' => 'LOE1SLP'));
         $workDate = $workDate === null ? strftime('%Y-%m-%d') : $workDate;
+        $this->set('users', $users);
         $this->set('workDate', $workDate);
         $this->set('title', __('Captura de operacion'));
         $this->set('description', __('Ingresa la produccion y scrap'));
     }
 
-    public function error($codeError) {
+    public function error($codeError)
+    {
         $this->set('title', __('Error'));
         $this->set('description', __('Error en la operacion'));
         $this->set('codeError', $codeError);
     }
 
-    public function getDashboardCapture($workDate) {
-        $this->request->onlyAllow('post');
-        $bosch = $this->Session->read('configuration');
-        if (($bosch instanceof Bosch) === false) {
-            $this->redirect(array('controller' => 'Shifts', 'action' => 'config'));
-            return;
-        }
-        $shiftId = $bosch->getConfiguration()->getShift();
-        $lineId = $bosch->getConfiguration()->getLine();
-        $userSesion = $this->Auth->user();
-        $userId = $userSesion['id'];
-        $this->Operation->createDashboardCapture($userId, $lineId, $workDate);
-        $operations = $this->Operation->getDashboardCapture($lineId, $shiftId, $workDate);
-        $sum = array(
-            'lName' => '',
-            'hour' => 'Total turno',
-            'target' => 0,
-            'pzOK' => 0,
-            'oTarget' => 0,
-            'oProduction' => 0,
-            'oScrap' => 0,
-            'oRework' => 0,
-            'oChangeover' => 0,
-            'oTechnicalLosses' => 0,
-            'oOrganizationalLosses' => 0,
-            'oQualityLosses' => 0,
-            'oPerformanceLosses' => 0,
-        );
-        $targetAcumulado = 0;
-        $piezasOKAcumulado = 0;
-        $scrapAcumulado = 0;
-        $reworkAcumulado = 0;
-        array_walk($operations, function(&$o) use(&$sum, &$targetAcumulado, &$piezasOKAcumulado, &$scrapAcumulado, &$reworkAcumulado) {
-            $o['sumTarget'] = $targetAcumulado = $targetAcumulado + $o['oTarget'];
-            $o['sumPzOk'] = $piezasOKAcumulado = $piezasOKAcumulado + $o['oProduction'];
-            $o['sumScrap'] = $scrapAcumulado = $scrapAcumulado + $o['oScrap'];
-            $o['sumRework'] = $reworkAcumulado = $reworkAcumulado + $o['oRework'];
+    public function getDashboardCapture()
+    {
+        $this->request->onlyAllow('get');
+        $params = $this->request->query;
+        $result = false;
+        if (isset($params['u']) && isset($params['l']) && isset($params['s']) && isset($params['w']))
+        {
+            $userId = $params['u'];
+            $lineId = $params['l'];
+            $shiftId = $params['s'];
+            $workDate = $params['w'];
+            $this->Operation->createDashboardCapture($userId, $lineId, $workDate);
+            $operations = $this->Operation->getDashboardCapture($lineId, $shiftId, $workDate);
+            $sum = array(
+                'lName' => '',
+                'hour' => 'Total turno',
+                'target' => 0,
+                'pzOK' => 0,
+                'oTarget' => 0,
+                'oProduction' => 0,
+                'oScrap' => 0,
+                'oRework' => 0,
+                'oChangeover' => 0,
+                'oTechnicalLosses' => 0,
+                'oOrganizationalLosses' => 0,
+                'oQualityLosses' => 0,
+                'oPerformanceLosses' => 0,
+            );
+            $targetAcumulado = 0;
+            $piezasOKAcumulado = 0;
+            $scrapAcumulado = 0;
+            $reworkAcumulado = 0;
+            array_walk($operations, function(&$o) use(&$sum, &$targetAcumulado, &$piezasOKAcumulado, &$scrapAcumulado, &$reworkAcumulado) {
+                        $o['sumTarget'] = $targetAcumulado = $targetAcumulado + $o['oTarget'];
+                        $o['sumPzOk'] = $piezasOKAcumulado = $piezasOKAcumulado + $o['oProduction'];
+                        $o['sumScrap'] = $scrapAcumulado = $scrapAcumulado + $o['oScrap'];
+                        $o['sumRework'] = $reworkAcumulado = $reworkAcumulado + $o['oRework'];
 
-            $sum['sumTarget'] = $o['sumTarget'];
-            $sum['sumPzOk'] = $o['sumPzOk'];
-            $sum['oTarget'] += $o['oTarget'];
-            $sum['oProduction'] += $o['oProduction'];
-            $sum['oScrap'] += $o['oScrap'];
-            $sum['oRework'] += $o['oRework'];
-            $sum['oChangeover'] += $o['oChangeover'];
-            $sum['oTechnicalLosses'] += $o['oTechnicalLosses'];
-            $sum['oOrganizationalLosses'] += $o['oOrganizationalLosses'];
-            $sum['oQualityLosses'] += $o['oQualityLosses'];
-            $sum['oPerformanceLosses'] += $o['oPerformanceLosses'];
-        });
-        $result = array();
-        $result['operations'] = $operations;
-        $result['sum'] = $sum;
+                        $sum['sumTarget'] = $o['sumTarget'];
+                        $sum['sumPzOk'] = $o['sumPzOk'];
+                        $sum['oTarget'] += $o['oTarget'];
+                        $sum['oProduction'] += $o['oProduction'];
+                        $sum['oScrap'] += $o['oScrap'];
+                        $sum['oRework'] += $o['oRework'];
+                        $sum['oChangeover'] += $o['oChangeover'];
+                        $sum['oTechnicalLosses'] += $o['oTechnicalLosses'];
+                        $sum['oOrganizationalLosses'] += $o['oOrganizationalLosses'];
+                        $sum['oQualityLosses'] += $o['oQualityLosses'];
+                        $sum['oPerformanceLosses'] += $o['oPerformanceLosses'];
+                    });
+            $result = array();
+            $result['operations'] = $operations;
+            $result['sum'] = $sum;
+        }
         $this->set(array('result' => $result, '_serialize' => 'result'));
         $this->viewClass = 'Json';
     }
 
-    public function getDashboardCaptureSingle($workDate, $oId) {
+    public function getDashboardCaptureSingle()
+    {
         $this->request->onlyAllow('get');
+        $params = $this->request->query;
         $operation = false;
-        if ($workDate !== null && $oId !== null) {
-            $bosch = $this->Session->read('configuration');
-            if (($bosch instanceof Bosch) === true) {
-                $shiftId = $bosch->getConfiguration()->getShift();
-                $lineId = $bosch->getConfiguration()->getLine();
-                $operations = $this->Operation->getDashboardCapture($lineId, $shiftId, $workDate);
-                $targetAcumulado = 0;
-                $piezasOKAcumulado = 0;
-                $scrapAcumulado = 0;
-                $reworkAcumulado = 0;
-                array_walk($operations, function(&$o) use(&$sum, &$targetAcumulado, &$piezasOKAcumulado, &$scrapAcumulado, &$reworkAcumulado) {
-                    $o['sumTarget'] = $targetAcumulado = $targetAcumulado + $o['oTarget'];
-                    $o['sumPzOk'] = $piezasOKAcumulado = $piezasOKAcumulado + $o['oProduction'];
-                    $o['sumScrap'] = $scrapAcumulado = $scrapAcumulado + $o['oScrap'];
-                    $o['sumRework'] = $reworkAcumulado = $reworkAcumulado + $o['oRework'];
-                });
-                $operationsFilter = array_filter($operations, function($e)use($oId) {
-                    return $e['oId'] == $oId;
-                });
-                if (count($operationsFilter) > 0) {
-                    $operation = reset($operationsFilter);
-                }
+        if (isset($params['o']) && isset($params['l']) && isset($params['s']) && isset($params['w']))
+        {
+            $operationId = $params['o'];
+            $lineId = $params['l'];
+            $shiftId = $params['s'];
+            $workDate = $params['w'];
+            $operations = $this->Operation->getDashboardCapture($lineId, $shiftId, $workDate);
+            $targetAcumulado = 0;
+            $piezasOKAcumulado = 0;
+            $scrapAcumulado = 0;
+            $reworkAcumulado = 0;
+            array_walk($operations, function(&$o) use(&$sum, &$targetAcumulado, &$piezasOKAcumulado, &$scrapAcumulado, &$reworkAcumulado) {
+                        $o['sumTarget'] = $targetAcumulado = $targetAcumulado + $o['oTarget'];
+                        $o['sumPzOk'] = $piezasOKAcumulado = $piezasOKAcumulado + $o['oProduction'];
+                        $o['sumScrap'] = $scrapAcumulado = $scrapAcumulado + $o['oScrap'];
+                        $o['sumRework'] = $reworkAcumulado = $reworkAcumulado + $o['oRework'];
+                    });
+            $operationsFilter = array_filter($operations, function($e)use($operationId) {
+                        return $e['oId'] == $operationId;
+                    });
+            if (count($operationsFilter) > 0)
+            {
+                $operation = reset($operationsFilter);
             }
         }
         $this->set(array('result' => $operation, '_serialize' => 'result'));
         $this->viewClass = 'Json';
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $this->Operation->delete($id);
         $this->set(array('success' => true, '_serialize' => 'success'));
         $this->viewClass = 'Json';
     }
 
-    public function create() {
+    public function create()
+    {
         $bosch = $this->Session->read('configuration');
         $lineId = $bosch->getConfiguration()->getLine();
         $userSesion = $this->Auth->user();
@@ -341,7 +384,8 @@ class OperationsController extends AppController {
         $this->loadModel('Line');
         $line = $this->Line->findById($lineId);
         $hour = $this->Hour->findById($hourId);
-        try {
+        try
+        {
             $newOperation = $this->Operation->insert($userId, $lineId, $hourId, $scrap, $rework, $target, $changeover, $technicalLosses, $organizationalLosses, $qualityLosses, $performanceLosses, $workDate);
             $dtS = new DateTime($hour['Hour']['start']);
             $dtE = new DateTime($hour['Hour']['end']);
@@ -368,8 +412,11 @@ class OperationsController extends AppController {
             );
             $result['data'] = $operation;
             $result['success'] = true;
-        } catch (PDOException $exc) {
-            switch ($exc->getCode()) {
+        }
+        catch (PDOException $exc)
+        {
+            switch ($exc->getCode())
+            {
                 case 23000:
                     $result['msg'] = __('Solo puede existir una operacion por combinacion de dia de trabajo, linea y hora');
                     break;
@@ -380,3 +427,5 @@ class OperationsController extends AppController {
     }
 
 }
+
+

@@ -2,52 +2,138 @@ var templateRow = null;
 var templateTotal = null;
 var kendoData = [];
 var target;
-var windowChart;
+var wndTargetVsReal;
 var wndProductions;
+var workDate;
+var shift;
+var line;
+var user;
+var urlGetLinesAndShifts = 'http://localhost/Paradisaea/Users/getLinesAndShifts';
+var blockGetOperations = true;
 
 $(document).ready(function()
 {
     target = $('#shift');
     templateRow = swig.compile(target.find('.template.row').html());
     templateTotal = swig.compile(target.find('.template.total').html());
-    $("#workDate").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'yy-mm-dd',
-        altField: "#alternate",
-        altFormat: "DD, d MM",
-        maxDate: "today"
+    workDate = target.find('[name="workDate"]');
+    workDate.kendoDatePicker({
+        culture: GLOBALIZATION.KENDO_CULTURE,
+        format: GLOBALIZATION.KENDO_FORMAT_DATE,
+        value: new Date(),
+        max: new Date(),
+        change: getOperations
     });
-    var url = urlList + '/' + $("#workDate").val();
-    getOperations(url);
-    $('#workDate').change(function() {
-        var url = urlList + '/' + $(this).val();
-        getOperations(url);
-    });
+    wndTargetVsReal = target.find('div.wndTargetVsReal');
     target.find('.fa-bar-chart-o').on('click', function()
     {
-        windowChart = $("#windowChart");
-        createChart();
-        if (!windowChart.data("kendoWindow")) {
-            windowChart.kendoWindow({
+        if (!wndTargetVsReal.data("kendoWindow")) {
+            wndTargetVsReal.kendoWindow({
                 width: "800px",
                 title: "Produccion objetivo vs produccion real",
                 actions: [
                     "Minimize",
                     "Maximize",
                     "Close"
-                ]
+                ],
             });
+            createChart();
         }
-        windowChart.data("kendoWindow").center().open();
+        wndTargetVsReal.data("kendoWindow").refresh().center().open();
     });
-
     swig.setFilter('parseInt', function(input, idx)
     {
         return parseInt(input[idx]);
     });
     wndProductions = target.find(".wndProductions");
+    line = target.find("input.lines").kendoDropDownList({
+        dataTextField: "lName",
+        dataValueField: "lId",
+        dataSource: {
+            type: "json",
+            dataSource: []
+        },
+        change: getOperations
+    });
+    shift = target.find("input.shifts").kendoDropDownList({
+        dataTextField: "sName",
+        dataValueField: "sId",
+        dataSource: {
+            type: "json",
+            dataSource: []
+        },
+        change: getOperations
+    });
+    user = target.find("select.users").kendoDropDownList({
+        change: function()
+        {
+            var userId = this.value();
+            $('.k-widget.lines span.k-i-arrow-s').addClass('k-loading');
+            $('.k-widget.shifts span.k-i-arrow-s').addClass('k-loading');
+            getLinesAndShifts(userId);
+        }
+    });
+    getLinesAndShiftsByFirstUser();
+    
+     $('tr.bosch td.productions').on('click', function() {
+        var operationId = $(this).parent().attr('data-id');
+        $(this).find('span').addClass('hidden');
+        $(this).find('.fa-spin').removeClass('hidden');
+        fnWndOperations(operationId);
+    });
+    
+    target.on('click', 'tr.bosch td.productions', function() {
+        var operationId = $(this).parent().attr('data-id');
+        $(this).find('span').addClass('hidden');
+        $(this).find('.fa-spin').removeClass('hidden');
+        fnWndOperations(operationId);
+    });
 });
+
+function getLinesAndShiftsByFirstUser()
+{
+    var firstUser = user.data("kendoDropDownList").value();
+    if (firstUser !== undefined)
+    {
+        getLinesAndShifts(firstUser)
+        $('.k-widget.lines span.k-i-arrow-s').addClass('k-loading');
+        $('.k-widget.shifts span.k-i-arrow-s').addClass('k-loading');
+    }
+}
+
+function getLinesAndShifts(userId)
+{
+    target.find('tr.error, tr.loader').addClass('hidden');
+    target.find('tr.bosch').remove();
+    target.find('tfoot').html('');
+    target.find('tr.loader.linesAndShifts').removeClass('hidden');
+    blockGetOperations = true;
+    $.getJSON(urlGetLinesAndShifts, {u: userId}, function(result)
+    {
+        var lines = result['lines'];
+        var shifts = result['shifts'];
+        line.data("kendoDropDownList").dataSource.data(lines);
+        shift.data("kendoDropDownList").dataSource.data(shifts);
+        if (lines.length > 0 && shifts.length > 0)
+        {
+            blockGetOperations = false;
+            getOperations();
+        }
+        else
+        {
+            target.find('tr.error, tr.loader').addClass('hidden');
+            if (lines.length === 0)
+            {
+                target.find('tr.error.lines').removeClass('hidden');
+            }
+            if (shifts.length === 0)
+            {
+                target.find('tr.error.shifts').removeClass('hidden');
+            }
+        }
+        target.find('tr.loader.linesAndShifts').addClass('hidden');
+    });
+}
 
 function fnWndOperations(operationId)
 {
@@ -66,13 +152,18 @@ function fnWndOperations(operationId)
             visible: false,
             close: function(e)
             {
-                var workDate = $('#workDate').val();
-                var url = urlListSingle + '/' + workDate + '/' + oId;
-                $.getJSON(url, {}, function(operation)
+                var dt = workDate.data("kendoDatePicker").value();
+                var ymd = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
+                $.getJSON(urlListSingle, {
+                    o: operationId,
+                    l: line.data("kendoDropDownList").value(),
+                    s: shift.data("kendoDropDownList").value(),
+                    w: ymd
+                }, function(operation)
                 {
                     if (operation !== false)
                     {
-                        $('tr[data-id="' + oId + '"]').replaceWith(templateRow(operation));
+                        target.find('tr[data-id="' + oId + '"]').replaceWith(templateRow(operation));
                     }
                 });
             },
@@ -86,44 +177,47 @@ function fnWndOperations(operationId)
     wndProductions.data("kendoWindow").refresh({url: 'http://localhost/Paradisaea/Productions/capture/' + operationId});
 }
 
-function getOperations(url)
+function getOperations()
 {
-    var tbody = target.find('div.detail tbody');
-    var tfoot = target.find('div.detail tfoot');
-    var loader = target.find('div.loader');
-    var detail = target.find('div.detail');
-    tbody.html('');
-    tfoot.html('');
-    loader.removeClass('hidden');
-    detail.addClass('hidden');
-    $.post(url, {}, function(result) {
-        var operations = result['operations'];
-        kendoData = [];
-        operations.forEach(function(o)
-        {
-            var tr = templateRow(o);
-            tbody.append(tr);
-            kendoData.push({
-                hour: o.hStart + ' - ' + o.hEnd,
-                target: o.oTarget,
-                production: o.oProduction
+    var dt = workDate.data("kendoDatePicker").value();
+    if (blockGetOperations === false && dt !== null)
+    {
+        var ymd = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
+        var tfoot = target.find('table.table tfoot');
+        target.find('tr.bosch').remove();
+        target.find('tr.error').addClass('hidden');
+        target.find('tr.loader').addClass('hidden');
+        target.find('tr.loader.operations').removeClass('hidden');
+        tfoot.html('');
+        $.getJSON(urlList,
+                {
+                    u: user.val(),
+                    l: line.data("kendoDropDownList").value(),
+                    s: shift.data("kendoDropDownList").value(),
+                    w: ymd
+                }, function(result) {
+            var operations = result['operations'];
+            kendoData = [];
+            operations.forEach(function(o)
+            {
+                var tbody = target.find('tbody');
+                var tr = templateRow(o);
+                tbody.append(tr);
+                kendoData.push({
+                    hour: o.hStart + ' - ' + o.hEnd,
+                    target: o.oTarget,
+                    production: o.oProduction
+                });
             });
+            var tr = templateTotal(result['sum']);
+            tfoot.append(tr);
+            target.find('tr.loader.operations').addClass('hidden');
         });
-        var tr = templateTotal(result['sum']);
-        tfoot.append(tr);
-        loader.addClass('hidden');
-        detail.removeClass('hidden');
-        $('td.productions').on('click', function() {
-            var operationId = $(this).parent().attr('data-id');
-            $(this).find('span').addClass('hidden');
-            $(this).find('.fa-spin').removeClass('hidden');
-            fnWndOperations(operationId);
-        })
-    }, 'json');
+    }
 }
 
 function createChart() {
-    $("#chart").kendoChart({
+    $(".chart").kendoChart({
         dataSource: {
             data: kendoData
         },

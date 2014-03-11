@@ -14,11 +14,40 @@ tr.header th
     vertical-align: middle !important;
 }
 
-table#dashboardCapture, table#dashboardCapture td, table#dashboardCapture th
+table.dashboardCapture, table.dashboardCapture td, table.dashboardCapture th
 {
     border: 2px solid #000 !important;
 }
 
+table.dashboardCapture .tools > *
+{
+    float: right;
+}
+
+table.dashboardCapture .tools > * + *
+{
+    margin-right: 10px;
+}
+
+
+table.dashboardCapture i.fa-bar-chart-o
+{
+    cursor: pointer;
+    font-size: 2em;
+}
+
+
 td a{
     color: inherit;
+}
+
+.k-widget.k-datepicker
+{
+    height: 30px;
+    padding: 0px;
+}
+
+td.productions
+{
+    cursor: pointer;
 }

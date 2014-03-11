@@ -55,6 +55,14 @@ class Production extends AppModel
         return $this->flatArray($operations);
     }
 
+    /**
+     * 
+     * @param type $operationId
+     * @param type $modelId
+     * @param type $indexId
+     * @param type $value
+     * @return type
+     */
     public function insert($operationId, $modelId, $indexId, $value)
     {
         $data = array();
@@ -64,6 +72,7 @@ class Production extends AppModel
         $data['value'] = $value;
         $data['status'] = self::STATUS_ENABLED;
         $this->save($data);
+        return $data;
     }
 
 }
