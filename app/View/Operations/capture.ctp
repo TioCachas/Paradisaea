@@ -10,9 +10,10 @@ $urlGetLinesAndShifts = $this->Html->url(array('controller' => 'Users', 'action'
 $urlProductionsCapture = $this->Html->url(array('controller' => 'Productions', 'action' => 'capture'));
 $urlScrapCapture = $this->Html->url(array('controller' => 'Scraps', 'action' => 'capture'));
 $urlReworkCapture = $this->Html->url(array('controller' => 'Reworks', 'action' => 'capture'));
+$urlChangeoverCapture = $this->Html->url(array('controller' => 'Changeovers', 'action' => 'capture'));
 ?>
 <div id="shift">
-    <div class="table-responsive">
+    <div class="table-responsive" style="overflow-x: scroll">
         <?php $this->TableOperations->render($users, $workDate); ?>
     </div>
     <?php $this->TioCachas->templateClassSwig('operations-user', 'row'); ?>
@@ -36,4 +37,5 @@ $urlReworkCapture = $this->Html->url(array('controller' => 'Reworks', 'action' =
     var urlProductionsCapture = <?php echo json_encode($urlProductionsCapture); ?>;
     var urlScrapCapture = <?php echo json_encode($urlScrapCapture); ?>;
     var urlReworkCapture = <?php echo json_encode($urlReworkCapture); ?>;
+    var urlChangeoverCapture = <?php echo json_encode($urlChangeoverCapture); ?>;
 </script>

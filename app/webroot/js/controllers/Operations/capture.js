@@ -54,7 +54,7 @@ $(document).ready(function()
     wndProductions = target.find(".wndProductions");
     wndScrap = target.find(".wndScrap");
     wndRework = target.find(".wndRework");
-    wndChangeModel = target.find(".wndChangeover");
+    wndChangeover = target.find(".wndChangeover");
     wndTechnical = target.find(".wndTechnical");
     wndOrganizational = target.find(".wndOrganizational");
     wndQuality = target.find(".wndQuality");
@@ -105,12 +105,12 @@ $(document).ready(function()
         $(this).find('.fa-spin').removeClass('hidden');
         fnWndRework(operationId);
     });
-//    target.on('click', 'tr.bosch td.changeoverValue', function() {
-//        var operationId = $(this).parent().attr('data-id');
-//        $(this).find('span').addClass('hidden');
-//        $(this).find('.fa-spin').removeClass('hidden');
-//        fnWndChangeover(operationId);
-//    });
+    target.on('click', 'tr.bosch td.changeoverValue', function() {
+        var operationId = $(this).parent().attr('data-id');
+        $(this).find('span').addClass('hidden');
+        $(this).find('.fa-spin').removeClass('hidden');
+        fnWndChangeover(operationId);
+    });
 //    target.on('click', 'tr.bosch td.technicalValue', function() {
 //        var operationId = $(this).parent().attr('data-id');
 //        $(this).find('span').addClass('hidden');
@@ -214,7 +214,7 @@ function fnWndOperations(operationId)
 
 function fnWndScrap(operationId)
 {
-    var url = urlScrapCapture + '/' + operationId
+    var url = urlScrapCapture + '/' + operationId;
     if (!wndScrap.data("kendoWindow")) {
         wndScrap.kendoWindow({
             width: "800px",
@@ -243,7 +243,7 @@ function fnWndScrap(operationId)
 
 function fnWndRework(operationId)
 {
-    var url = urlReworkCapture + '/' + operationId
+    var url = urlReworkCapture + '/' + operationId;
     if (!wndRework.data("kendoWindow")) {
         wndRework.kendoWindow({
             width: "800px",
@@ -267,6 +267,35 @@ function fnWndRework(operationId)
     else
     {
         wndRework.data("kendoWindow").refresh({url: url});
+    }
+}
+
+function fnWndChangeover(operationId)
+{
+    var url = urlChangeoverCapture + '/' + operationId;
+    if (!wndChangeover.data("kendoWindow")) {
+        wndChangeover.kendoWindow({
+            width: "800px",
+            height: "350px",
+            title: "Cambio de modelo",
+            content: url,
+            actions: [
+                "Minimize",
+                "Maximize",
+                "Close"
+            ],
+            visible: false,
+            close: getOperations,
+            refresh: function(e) {
+                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
+                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
+                this.center().open();
+            }
+        });
+    }
+    else
+    {
+        wndChangeover.data("kendoWindow").refresh({url: url});
     }
 }
 
