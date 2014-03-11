@@ -38,25 +38,46 @@ $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
             </div>
         </div>
     </td>
-    <td class="text-right" title="<?php echo __('Scrap'); ?>">
-        {{ oScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>
+    <td class="text-right scrapValue" title="<?php echo __('Scrap'); ?>">
+        <span>
+            {{ oScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>
+        </span>
+        <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
-    <td class="text-right" title="<?php echo __('Retrabajo'); ?>">
-        {{ oRework }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumRework }}&nbsp;<?php echo $symbolHtmlUnits; ?>
+    <td class="text-right reworkValue" title="<?php echo __('Retrabajo'); ?>">
+        <span>
+            {{ oRework }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumRework }}&nbsp;<?php echo $symbolHtmlUnits; ?>
+        </span>
+        <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
-    <td class="text-right" title="<?php echo __('Perdidas por cambio de modelo'); ?>">
-        {{ oChangeover }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+    <td class="text-right changeoverValue" title="<?php echo __('Perdidas por cambio de modelo'); ?>">
+        <span>
+            {{ oChangeover }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+        </span>
+        <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
-    <td class="text-right" title="<?php echo __('Perdidas tecnicas'); ?>">
-        {{ oTechnicalLosses }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+    <td class="text-right technicalValue" title="<?php echo __('Perdidas tecnicas'); ?>">
+        <span>
+            {{ oTechnicalLosses }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+        </span>
+        <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
-    <td class="text-right" title="<?php echo __('Perdidas organizacionales'); ?>">
-        {{ oOrganizationalLosses }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+    <td class="text-right organizationalValue" title="<?php echo __('Perdidas organizacionales'); ?>">
+        <span>
+            {{ oOrganizationalLosses }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+        </span>
+        <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
-    <td class="text-right" title="<?php echo __('Perdidas por calidad'); ?>">
-        {{ oQualityLosses }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+    <td class="text-right qualityValue" title="<?php echo __('Perdidas por calidad'); ?>">
+        <span>
+            {{ oQualityLosses }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+        </span>
+        <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
-    <td class="text-right" title="<?php echo __('Perdidas por desempeño'); ?>">
-        {{ oPerformanceLosses }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+    <td class="text-right performanceValue" title="<?php echo __('Perdidas por desempeño'); ?>">
+        <span>
+            {{ oPerformanceLosses }}&nbsp;<?php echo $symbolHtmlminutes; ?>
+        </span>
+        <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
 </tr>

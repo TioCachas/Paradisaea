@@ -97,14 +97,7 @@ class ProductionsController extends AppController {
         $this->Operation->id = $operationId;
         $operation = $this->Operation->read();
         if (isset($operation['Operation']) === true) {
-            if ($this->request->is('post') === true) {
-                $data = $this->request['data'];
-                if (isset($data['model']) && isset($data['index']) && isset($data['value'])) {
-                    $this->Production->insert($operationId, $data['model'], $data['index'], $data['value']);
-                }
-            }
             $bosch = $this->Session->read('configuration');
-            $lineId = $bosch->getConfiguration()->getLine();
             $this->loadModel('ModelLine');
             $modelId = $bosch->getConfiguration()->getModel();
             $modelText = $bosch->getConfiguration()->getModelText();

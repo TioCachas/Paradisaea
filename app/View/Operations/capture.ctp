@@ -6,7 +6,9 @@ $this->Html->css('controllers/Operations/capture', array(
     'block' => 'stylesTop'));
 $urlList = $this->Html->url(array('controller' => 'Operations', 'action' => 'getDashboardCapture'));
 $urlListSingle = $this->Html->url(array('controller' => 'Operations', 'action' => 'getDashboardCaptureSingle'));
-$urlCreateProduction = $this->Html->url(array('controller' => 'Productions', 'action' => 'createForm'));
+$urlGetLinesAndShifts = $this->Html->url(array('controller' => 'Users', 'action' => 'getLinesAndShifts'));
+$urlProductionsCapture = $this->Html->url(array('controller' => 'Productions', 'action' => 'capture'));
+$urlScrapCapture = $this->Html->url(array('controller' => 'Scraps', 'action' => 'capture'));
 ?>
 <div id="shift">
     <div class="table-responsive">
@@ -15,12 +17,21 @@ $urlCreateProduction = $this->Html->url(array('controller' => 'Productions', 'ac
     <?php $this->TioCachas->templateClassSwig('operations-user', 'row'); ?>
     <?php $this->TioCachas->templateClassSwig('operations-user-total', 'total'); ?>
     <div class="wndProductions"></div>
+    <div class="wndScrap"></div>
+    <div class="wndRework"></div>
+    <div class="wndChangeover"></div>
+    <div class="wndTechnical"></div>
+    <div class="wndOrganizational"></div>
+    <div class="wndQuality"></div>
+    <div class="wndPerformance"></div>
     <div class="chart-wrapper wndTargetVsReal">
         <div class="chart" style="width: 750px;"></div>
     </div>
 </div>
 <script type="text/javascript">
-    var urlCaptureProduction = <?php echo json_encode($urlCreateProduction); ?>;
     var urlList = <?php echo json_encode($urlList); ?>;
     var urlListSingle = <?php echo json_encode($urlListSingle); ?>;
+    var urlGetLinesAndShifts = <?php echo json_encode($urlGetLinesAndShifts); ?>;
+    var urlProductionsCapture = <?php echo json_encode($urlProductionsCapture); ?>;
+    var urlScrapCapture = <?php echo json_encode($urlScrapCapture); ?>;
 </script>

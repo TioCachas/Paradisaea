@@ -47,7 +47,14 @@ td a{
     padding: 0px;
 }
 
-td.productions
+td.productions, 
+td.scrapValue, 
+td.reworkValue,
+td.changeoverValue, 
+td.technicalValue, 
+td.organizationalValue,
+td.qualityValue,
+td.performanceValue
 {
     cursor: pointer;
 }

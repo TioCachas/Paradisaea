@@ -55,7 +55,7 @@ class TableOperationsHelper extends AppHelper
                         <?php echo __('Acumulado'); ?>
                     </th>
                     <th>
-                        <?php echo __('Avence'); ?>
+                        <?php echo __('Avance'); ?>
                     </th>
                     <th class='scrap'>
                         <?php echo __('Scrap / Acumulado'); ?>
