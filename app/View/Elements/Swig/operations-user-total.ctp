@@ -8,17 +8,11 @@ $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
     <td colspan="3">
         <?php echo __("Total del turno"); ?>
     </td>
-    <td class="text-right target" title="<?php echo __('Piezas objetivo'); ?>">
+    <td colspan="2" class="text-right target" title="<?php echo __('Piezas objetivo'); ?>">
         {{ oTarget }}&nbsp;<?php echo $symbolHtmlUnits; ?>
     </td>
-    <td class="text-right" title="<?php echo __('Piezas objetivo acumuladas'); ?>">
-        {{ sumTarget }}&nbsp;<?php echo $symbolHtmlUnits; ?>        
-    </td>
-    <td class="text-right productions">
+    <td colspan="2" class="text-right productions">
         {{ oProduction }}&nbsp;<?php echo $symbolHtmlUnits; ?>
-    </td>
-    <td class="text-right">
-        {{ sumPzOk }}&nbsp;<?php echo $symbolHtmlUnits; ?>
     </td>
     <td>
         <div class="progress" style="position: relative;">
@@ -32,10 +26,10 @@ $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
         </div>
     </td>
     <td class="text-right" title="<?php echo __('Scrap'); ?>">
-        {{ oScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>
+        {{ oScrap }}&nbsp;<?php echo $symbolHtmlUnits; ?>
     </td>
     <td class="text-right" title="<?php echo __('Retrabajo'); ?>">
-        {{ oRework }}&nbsp;<?php echo $symbolHtmlUnits; ?>&nbsp;/&nbsp;{{ sumRework }}&nbsp;<?php echo $symbolHtmlUnits; ?>
+        {{ oRework }}&nbsp;<?php echo $symbolHtmlUnits; ?>
     </td>
     <td class="text-right" title="<?php echo __('Perdidas por cambio de modelo'); ?>">
         {{ oChangeover }}&nbsp;<?php echo $symbolHtmlminutes; ?>

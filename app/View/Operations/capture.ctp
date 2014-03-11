@@ -13,6 +13,7 @@ $urlReworkCapture = $this->Html->url(array('controller' => 'Reworks', 'action' =
 $urlChangeoverCapture = $this->Html->url(array('controller' => 'Changeovers', 'action' => 'capture'));
 $urlTechnicalCapture = $this->Html->url(array('controller' => 'Technicals', 'action' => 'capture'));
 $urlOrganizationalCapture = $this->Html->url(array('controller' => 'Organizationals', 'action' => 'capture'));
+$urlQualityCapture = $this->Html->url(array('controller' => 'Qualities', 'action' => 'capture'));
 ?>
 <div id="shift">
     <div class="table-responsive" style="overflow-x: scroll">
@@ -42,4 +43,5 @@ $urlOrganizationalCapture = $this->Html->url(array('controller' => 'Organization
     var urlChangeoverCapture = <?php echo json_encode($urlChangeoverCapture); ?>;
     var urlTechnicalCapture = <?php echo json_encode($urlTechnicalCapture); ?>;
     var urlOrganizationalCapture = <?php echo json_encode($urlOrganizationalCapture); ?>;
+    var urlQualityCapture = <?php echo json_encode($urlQualityCapture); ?>;
 </script>

@@ -1,0 +1,43 @@
+#newRecord ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#newRecord li {
+    margin: 10px 0 0 0;
+}
+
+label {
+    display: inline-block;
+    width: 90px;
+    text-align: right;
+}
+
+.required {
+    font-weight: bold;
+}
+
+.accept{
+    padding-left: 95px;
+}
+
+span.k-tooltip {
+    margin-left: 6px;
+}
+
+.k-widget.k-numerictextbox
+{
+    padding: 0px;
+}
+
+.fa-times:hover
+{
+    color: #04519b;
+    cursor: pointer;
+}
+
+textarea
+{
+    width: 50%;
+}

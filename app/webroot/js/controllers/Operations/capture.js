@@ -123,12 +123,12 @@ $(document).ready(function()
         $(this).find('.fa-spin').removeClass('hidden');
         fnWndOrganizational(operationId);
     });
-//    target.on('click', 'tr.bosch td.qualityValue', function() {
-//        var operationId = $(this).parent().attr('data-id');
-//        $(this).find('span').addClass('hidden');
-//        $(this).find('.fa-spin').removeClass('hidden');
-//        fnWndQuality(operationId);
-//    });
+    target.on('click', 'tr.bosch td.qualityValue', function() {
+        var operationId = $(this).parent().attr('data-id');
+        $(this).find('span').addClass('hidden');
+        $(this).find('.fa-spin').removeClass('hidden');
+        fnWndQuality(operationId);
+    });
 //    target.on('click', 'tr.bosch td.performanceValue', function() {
 //        var operationId = $(this).parent().attr('data-id');
 //        $(this).find('span').addClass('hidden');
@@ -356,6 +356,36 @@ function fnWndOrganizational(operationId)
         wndOrganizational.data("kendoWindow").refresh({url: url});
     }
 }
+
+function fnWndQuality(operationId)
+{
+    var url = urlQualityCapture + '/' + operationId;
+    if (!wndQuality.data("kendoWindow")) {
+        wndQuality.kendoWindow({
+            width: "800px",
+            height: "350px",
+            title: "Perdidas de calidad",
+            content: url,
+            actions: [
+                "Minimize",
+                "Maximize",
+                "Close"
+            ],
+            visible: false,
+            close: getOperations,
+            refresh: function(e) {
+                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
+                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
+                this.center().open();
+            }
+        });
+    }
+    else
+    {
+        wndQuality.data("kendoWindow").refresh({url: url});
+    }
+}
+
 
 function getOperations()
 {
