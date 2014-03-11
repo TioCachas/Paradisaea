@@ -117,12 +117,12 @@ $(document).ready(function()
         $(this).find('.fa-spin').removeClass('hidden');
         fnWndTechnical(operationId);
     });
-//    target.on('click', 'tr.bosch td.organizationalValue', function() {
-//        var operationId = $(this).parent().attr('data-id');
-//        $(this).find('span').addClass('hidden');
-//        $(this).find('.fa-spin').removeClass('hidden');
-//        fnWndOrganizational(operationId);
-//    });
+    target.on('click', 'tr.bosch td.organizationalValue', function() {
+        var operationId = $(this).parent().attr('data-id');
+        $(this).find('span').addClass('hidden');
+        $(this).find('.fa-spin').removeClass('hidden');
+        fnWndOrganizational(operationId);
+    });
 //    target.on('click', 'tr.bosch td.qualityValue', function() {
 //        var operationId = $(this).parent().attr('data-id');
 //        $(this).find('span').addClass('hidden');
@@ -325,6 +325,35 @@ function fnWndTechnical(operationId)
     else
     {
         wndTechnical.data("kendoWindow").refresh({url: url});
+    }
+}
+
+function fnWndOrganizational(operationId)
+{
+    var url = urlOrganizationalCapture + '/' + operationId;
+    if (!wndOrganizational.data("kendoWindow")) {
+        wndOrganizational.kendoWindow({
+            width: "800px",
+            height: "350px",
+            title: "Perdidas organizacionales",
+            content: url,
+            actions: [
+                "Minimize",
+                "Maximize",
+                "Close"
+            ],
+            visible: false,
+            close: getOperations,
+            refresh: function(e) {
+                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
+                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
+                this.center().open();
+            }
+        });
+    }
+    else
+    {
+        wndOrganizational.data("kendoWindow").refresh({url: url});
     }
 }
 
