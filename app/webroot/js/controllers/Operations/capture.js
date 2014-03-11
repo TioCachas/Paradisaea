@@ -111,12 +111,12 @@ $(document).ready(function()
         $(this).find('.fa-spin').removeClass('hidden');
         fnWndChangeover(operationId);
     });
-//    target.on('click', 'tr.bosch td.technicalValue', function() {
-//        var operationId = $(this).parent().attr('data-id');
-//        $(this).find('span').addClass('hidden');
-//        $(this).find('.fa-spin').removeClass('hidden');
-//        fnWndTechnical(operationId);
-//    });
+    target.on('click', 'tr.bosch td.technicalValue', function() {
+        var operationId = $(this).parent().attr('data-id');
+        $(this).find('span').addClass('hidden');
+        $(this).find('.fa-spin').removeClass('hidden');
+        fnWndTechnical(operationId);
+    });
 //    target.on('click', 'tr.bosch td.organizationalValue', function() {
 //        var operationId = $(this).parent().attr('data-id');
 //        $(this).find('span').addClass('hidden');
@@ -296,6 +296,35 @@ function fnWndChangeover(operationId)
     else
     {
         wndChangeover.data("kendoWindow").refresh({url: url});
+    }
+}
+
+function fnWndTechnical(operationId)
+{
+    var url = urlTechnicalCapture + '/' + operationId;
+    if (!wndTechnical.data("kendoWindow")) {
+        wndTechnical.kendoWindow({
+            width: "800px",
+            height: "350px",
+            title: "Perdidas tecnicas",
+            content: url,
+            actions: [
+                "Minimize",
+                "Maximize",
+                "Close"
+            ],
+            visible: false,
+            close: getOperations,
+            refresh: function(e) {
+                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
+                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
+                this.center().open();
+            }
+        });
+    }
+    else
+    {
+        wndTechnical.data("kendoWindow").refresh({url: url});
     }
 }
 
