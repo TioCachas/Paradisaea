@@ -8,24 +8,30 @@ $urlDelete = $this->Html->url(array('action' => 'delete'));
 $this->TioCachas->templateSwig('templateRow', 'changeover-user');
 ?>
 <div>
-    <form id="newRecord" action="<?php echo $urlCreate; ?>">
-        <ul>
-            <li>
-                <label for="value"><?php echo __('Valor'); ?>:</label>
-                <input id="value" requiered name="value" type="text" min="1" max="1000" required data-max-msg="Ingresa un valor entre 0 y 1000" />
-                <div class="k-invalid-msg" data-for="value"></div>
-            </li>
-            <li>
-                <label for="comment"><?php echo __('Comentario'); ?>:</label>
-                <textarea id="comment" type="text" requiered required></textarea>
-                <div class="k-invalid-msg" data-for="comment"></div>
-            </li>
-            <li class="accept">
-                <button class="k-button" type="submit">Agregar</button>
-                <i class="fa fa-refresh fa-spin hidden"></i>
-            </li>
-        </ul>
-    </form>
+    <?php if (count($models) > 0): ?>
+        <form id="newRecord" action="<?php echo $urlCreate; ?>">
+            <ul>
+                <li>
+                    <label for="value"><?php echo __('Minutos'); ?>:</label>
+                    <input id="value" requiered name="value" type="text" min="1" max="1000" required data-max-msg="Ingresa un valor entre 0 y 1000" value="5"/>
+                    <div class="k-invalid-msg" data-for="value"></div>
+                </li>
+                <li>
+                    <label for="comment"><?php echo __('Comentario'); ?>:</label>
+                    <textarea id="comment" type="text" requiered required></textarea>
+                    <div class="k-invalid-msg" data-for="comment"></div>
+                </li>
+                <li class="accept">
+                    <button class="k-button" type="submit">Agregar</button>
+                    <i class="fa fa-refresh fa-spin hidden"></i>
+                </li>
+            </ul>
+        </form>
+    <?php else: ?>
+        <div class="alert alert-info">
+            <?php echo __('No es posible hacer un cambio de modelo ya que esta linea solo produce un modelo'); ?>
+        </div>
+    <?php endif; ?>
 </div>
 <br/>
 <div class="table-responsive" id="records">

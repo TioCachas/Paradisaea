@@ -17,7 +17,7 @@ $urlQualityCapture = $this->Html->url(array('controller' => 'Qualities', 'action
 $urlPerformanceCapture = $this->Html->url(array('controller' => 'Performance', 'action' => 'capture'));
 ?>
 <div id="shift">
-    <div class="table-responsive" style="overflow-x: scroll">
+    <div class="table-responsive">
         <?php $this->TableOperations->render($users, $workDate); ?>
     </div>
     <?php $this->TioCachas->templateClassSwig('operations-user', 'row'); ?>

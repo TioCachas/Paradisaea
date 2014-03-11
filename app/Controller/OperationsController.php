@@ -248,8 +248,7 @@ class OperationsController extends AppController
             return;
         }
         $userSesion = $this->Auth->user();
-        $users = array(array('uId' => $userSesion['id'], 'uName' => $userSesion['us3r']),
-            array('uId' => '14652d6a-9a3f-11e3-a2d4-fc4dd44a2aac', 'uName' => 'LOE1SLP'));
+        $users = array(array('uId' => $userSesion['id'], 'uName' => $userSesion['us3r']));
         $workDate = $workDate === null ? strftime('%Y-%m-%d') : $workDate;
         $this->set('users', $users);
         $this->set('workDate', $workDate);

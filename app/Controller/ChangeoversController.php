@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('Bosch', 'Model');
 
 class ChangeoversController extends AppController {
 
@@ -20,10 +21,19 @@ class ChangeoversController extends AppController {
         $this->loadModel('Operation');
         $this->Operation->id = $operationId;
         $operation = $this->Operation->read();
+        $bosch = $this->Session->read('configuration');
+        $lineId = $bosch->getConfiguration()->getLine();
+        $modelId = $bosch->getConfiguration()->getModel();
+        $this->loadModel('ModelLine');
+        $models = $this->ModelLine->getByLine($lineId);
+        $models = array_filter($models, function($model)use($modelId) {
+            return $model['id'] != $modelId;
+        });
         if (isset($operation['Operation']) === true) {
             $changeovers = $this->Changeover->getByOperationId($operationId, array(Changeover::STATUS_ENABLED));
             $this->set('operation', $operation['Operation']);
             $this->set('changeovers', $changeovers);
+            $this->set('models', $models);
         }
     }
 

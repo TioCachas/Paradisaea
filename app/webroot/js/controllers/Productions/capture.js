@@ -5,8 +5,6 @@ $(document).ready(function() {
         culture: GLOBALIZATION.KENDO_CULTURE,
         format: "\\#"
     });
-    var numerictextbox = $("#value").data("kendoNumericTextBox");
-    numerictextbox.focus();
     var validator = $("#newProduction").kendoValidator().data("kendoValidator");
     var templateProductionRow = swig.compile($('#templateRow').html());
     $("#newProduction").submit(function(event) {

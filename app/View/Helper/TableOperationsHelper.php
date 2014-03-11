@@ -42,16 +42,11 @@ class TableOperationsHelper extends AppHelper
                     <th>
                         <?php echo __('Fin'); ?>
                     </th>
-                    <th>
-                        <?php echo __('Piezas'); ?>
+                    <th colspan="2">
+                        <?php echo __('Piezas / Acumulado'); ?>
                     </th>
-                    <th>
-                        <?php echo __('Acumulado'); ?>
-                    </th>
-                    <th>
-                        <?php echo __('Piezas'); ?>
-                    </th>
-                    <th>
+                    <th colspan="2">
+                        <?php echo __('Piezas / '); ?>
                         <?php echo __('Acumulado'); ?>
                     </th>
                     <th>
