@@ -4,11 +4,7 @@ $urlProductions = $this->Html->url(array(
 $symbolHtmlUnits = Units::symbolHtml(Units::UNITS);
 $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
 ?>
-{% if parseInt(oProduction) >= parseInt(oTarget) %}
-<tr data-id="{{ oId }}" class="bosch greaterOrEqualThat">
-    {% else %}
-<tr data-id="{{ oId }}" class="bosch lessThat">
-    {% endif %}
+<tr data-id="{{ oId }}" class="bosch">
     <td>{{ hStart }}</td>
     <td>{{ hEnd }}</td>
     <td>{{ models }}</td>
@@ -18,13 +14,21 @@ $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
     <td class="text-right" title="<?php echo __('Piezas objetivo acumuladas'); ?>">
         {{ sumTarget }}&nbsp;<?php echo $symbolHtmlUnits; ?>        
     </td>
-    <td class="text-right productions">
+    {% if parseInt(oProduction) >= parseInt(oTarget) %}
+    <td class="text-right productions bosch success">
+        {% else %}
+    <td class="text-right productions bosch danger">
+        {% endif %}
         <span>
             {{ oProduction }}&nbsp;<?php echo $symbolHtmlUnits; ?>
         </span>
         <i class="fa fa-refresh fa-spin hidden"></i>
     </td>
-    <td class="text-right">
+    {% if parseInt(sumPzOk) >= parseInt(sumTarget) %}
+    <td class="text-right bosch success">
+        {% else %}
+    <td class="text-right bosch danger">
+        {% endif %}
         {{ sumPzOk }}&nbsp;<?php echo $symbolHtmlUnits; ?>
     </td>
     <td>

@@ -1,11 +1,10 @@
 <?php
-$this->TioCachas->addKendo();
 $this->Html->script('controllers/Changeovers/capture', array('block' => 'scriptBottom'));
 $this->Html->css('controllers/Changeovers/capture', array('block' => 'stylesTop'));
-$units = Units::symbolHtml(Units::MINUTES);
 $urlCreate = $this->Html->url(array('action' => 'create'));
 $urlDelete = $this->Html->url(array('action' => 'delete'));
 $this->TioCachas->templateSwig('templateRow', 'changeover-user');
+$units = Units::symbolHtml(Units::MINUTES);
 ?>
 <div>
     <?php if (count($models) > 0): ?>

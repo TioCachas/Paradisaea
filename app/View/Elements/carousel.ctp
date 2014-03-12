@@ -1,4 +1,4 @@
-<?php $this->Html->css('elements/carousel',array('block'=>'stylesTop'));?>
+<?php $this->Html->css('elements/carousel', array('block' => 'stylesTop')); ?>
 <!-- Carousel-->
 <div id="boschCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
@@ -13,12 +13,14 @@
             <div class="container">
                 <div class="carousel-caption">
                     <h1>Daily Monitor</h1>
-                    <p></p>
-                    <p>
-                        <a class="btn btn-lg btn-primary" href="<?php echo $this->Html->url(array('controller' => 'Sesion', 'action' => 'index')); ?>" role="button">
-                            <?php echo __('Ingresar'); ?>
-                        </a>
-                    </p>
+                    <?php if ($loggedIn === false): ?>
+                        <p></p>
+                        <p>
+                            <a class="btn btn-lg btn-primary" href="<?php echo $this->Html->url(array('controller' => 'Sesion', 'action' => 'index')); ?>" role="button">
+                                <?php echo __('Ingresar'); ?>
+                            </a>
+                        </p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -27,12 +29,14 @@
             <div class="container">
                 <div class="carousel-caption">
                     <h1>Daily Monitor</h1>
-                    <p></p>
-                    <p>
-                        <a class="btn btn-lg btn-primary" href="<?php echo $this->Html->url(array('controller' => 'Sesion', 'action' => 'index')); ?>" role="button">
-                            <?php echo __('Ingresar'); ?>
-                        </a>
-                    </p>
+                    <?php if ($loggedIn === false): ?>
+                        <p></p>
+                        <p>
+                            <a class="btn btn-lg btn-primary" href="<?php echo $this->Html->url(array('controller' => 'Sesion', 'action' => 'index')); ?>" role="button">
+                                <?php echo __('Ingresar'); ?>
+                            </a>
+                        </p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -41,12 +45,14 @@
             <div class="container">
                 <div class="carousel-caption">
                     <h1>Daily Monitor</h1>
-                    <p></p>
-                    <p>
-                        <a class="btn btn-lg btn-primary" href="<?php echo $this->Html->url(array('controller' => 'Sesion', 'action' => 'index')); ?>" role="button">
-                            <?php echo __('Ingresar'); ?>
-                        </a>
-                    </p>
+                    <?php if ($loggedIn === false): ?>
+                        <p></p>
+                        <p>
+                            <a class="btn btn-lg btn-primary" href="<?php echo $this->Html->url(array('controller' => 'Sesion', 'action' => 'index')); ?>" role="button">
+                                <?php echo __('Ingresar'); ?>
+                            </a>
+                        </p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

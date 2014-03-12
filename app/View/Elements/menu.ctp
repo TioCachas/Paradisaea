@@ -12,35 +12,40 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class='fa fa-user'></i>
-                        <?php echo __('Operaciones'); ?>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="<?php
-                            echo $this->Html->url(array(
-                                'controller' => 'Operations', 'action' => 'capture'));
-                            ?>">
-                                <i class='fa fa-cogs'></i>
-                                <?php echo __('Crear'); ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php
-                            echo $this->Html->url(array(
-                                'controller' => 'Operations', 'action' => 'admin'));
-                            ?>">
-                                <i class='fa fa-edit'></i>
-                                <?php echo __('Administrar'); ?>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                <?php if ($loggedIn === true): ?>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class='fa fa-user'></i>
+                            <?php echo __('Operaciones'); ?>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'Operations', 'action' => 'capture'));
+                                ?>">
+                                    <i class='fa fa-cogs'></i>
+                                    <?php echo __('Crear'); ?>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'Operations', 'action' => 'admin'));
+                                ?>">
+                                    <i class='fa fa-edit'></i>
+                                    <?php echo __('Administrar'); ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
                 <li>
-                    <a href="#">
+                    <a href="<?php
+                    echo $this->Html->url(array(
+                        'controller' => 'Help', 'action' => 'index'));
+                    ?>">
                         <i class='fa fa-question'></i>
                         <?php echo __('Ayuda'); ?>
                     </a>

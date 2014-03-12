@@ -42,24 +42,23 @@ div.progress
     height: 20px !important;
 }
 
-.bosch.greaterOrEqualThat
+td.bosch.success
 {
-    /*background-color: rgb(42,148,126);*/
-    color: rgb(42,148,126);
-}
-
-.bosch.lessThat
-{
-    /*background-color: #f00;*/
-    color: #f00;
-}
-
-/*.bosch.lessThat a
-{
+    background-color: #5CB85C !important;
     color: #fff !important;
-}*/
+    font-weight: bold;
+}
 
-table.bosch td:hover
+td.bosch.danger
 {
-    border-color: #215F8B !important;
+    background-color: #D9534F !important;
+    color: #fff !important;
+    font-weight: bold;
+}
+
+table.bosch tbody td:hover
+{
+    background-color: #215F8B;
+    border-color: #215F8B;
+    color: #fff;
 }

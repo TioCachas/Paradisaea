@@ -1,11 +1,10 @@
 <?php
-$this->TioCachas->addKendo();
 $this->Html->script('controllers/Technicals/capture', array('block' => 'scriptBottom'));
 $this->Html->css('controllers/Technicals/capture', array('block' => 'stylesTop'));
-$units = Units::symbolHtml(Units::MINUTES);
 $urlCreate = $this->Html->url(array('action' => 'create'));
 $urlDelete = $this->Html->url(array('action' => 'delete'));
 $this->TioCachas->templateSwig('templateRow', 'technical-user');
+$units = Units::symbolHtml(Units::MINUTES);
 ?>
 <div>
     <form id="newRecord" action="<?php echo $urlCreate; ?>">
@@ -32,8 +31,9 @@ $this->TioCachas->templateSwig('templateRow', 'technical-user');
     <table class="table table-bordered table-condensed table-striped">
         <thead>
             <tr>
-                <th><?php echo __('Value'); ?></th>
-                <th>&nbsp;</th>
+                <th data-field="value"><?php echo __('Valor'); ?></th>
+                <th data-field="comment"><?php echo __('Comentario'); ?></th>
+                <th data-field="delete">&nbsp;</th>
             </tr>
         </thead>
         <tbody>

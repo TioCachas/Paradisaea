@@ -1,15 +1,13 @@
 <?php
-$this->TioCachas->addKendo();
-$this->Html->script('globalization', array('block' => 'scriptBottom'));
 $this->Html->script('controllers/Productions/capture', array('block' => 'scriptBottom'));
 $this->Html->css('controllers/Productions/capture', array('block' => 'stylesTop'));
+$this->TioCachas->templateSwig('templateRow', 'production-user');
+$urlDelete = $this->Html->url(array('action' => 'delete'));
+$urlCreate = $this->Html->url(array('action' => 'create'));
 $units = Units::symbolHtml(Units::UNITS);
 ?>
 <div>
-    <form id="newProduction" action="<?php
-    echo $this->Html->url(array(
-        'action' => 'create'));
-    ?>">
+    <form id="newProduction" action="<?php echo $urlCreate; ?>">
         <ul>
             <li>
                 <label class="required" for="model"><?php echo __('Modelo'); ?>:</label>
@@ -60,11 +58,7 @@ $units = Units::symbolHtml(Units::UNITS);
         </tbody>
     </table>
 </div>
-<?php
-$this->TioCachas->templateSwig('templateRow', 'production-user');
-$this->start('jsVars');
-$urlDelete = $this->Html->url(array('action' => 'delete'));
-?>
+<?php $this->start('jsVars'); ?>
 <script type="text/javascript">
     var oId = <?php echo json_encode($operation['id']); ?>;
     var mName = <?php echo json_encode($model); ?>;

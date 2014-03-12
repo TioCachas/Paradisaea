@@ -1,11 +1,10 @@
 <?php
-$this->TioCachas->addKendo();
 $this->Html->script('controllers/Scraps/capture', array('block' => 'scriptBottom'));
 $this->Html->css('controllers/Scraps/capture', array('block' => 'stylesTop'));
-$units = Units::symbolHtml(Units::UNITS);
 $urlCreate = $this->Html->url(array('action' => 'create'));
 $urlDelete = $this->Html->url(array('action' => 'delete'));
 $this->TioCachas->templateSwig('templateRow', 'scrap-user');
+$units = Units::symbolHtml(Units::UNITS);
 ?>
 <div>
     <form id="newRecord" action="<?php echo $urlCreate; ?>">
@@ -30,10 +29,16 @@ $this->TioCachas->templateSwig('templateRow', 'scrap-user');
 <br/>
 <div class="table-responsive" id="records">
     <table class="table table-bordered table-condensed table-striped">
+        <colgroup>
+            <col/>
+            <col/>
+            <col/>
+        </colgroup>
         <thead>
             <tr>
-                <th><?php echo __('Value'); ?></th>
-                <th>&nbsp;</th>
+                <th data-field="value"><?php echo __('Valor'); ?></th>
+                <th data-field="comment"><?php echo __('Comentario'); ?></th>
+                <th data-field="delete">&nbsp;</th>
             </tr>
         </thead>
         <tbody>

@@ -29,7 +29,7 @@ $(document).ready(function() {
         }
     });
     $('#records').on('click', '.fa-times', function() {
-        var pId = $(this).parent().parent().attr('data-id');
+        var pId = $(this).parent().parent().attr('data-uid');
         var tr = $(this).parent().parent();
         var faTimes = $(this);
         $(this).addClass('hidden');
@@ -46,5 +46,4 @@ $(document).ready(function() {
             }
         })
     });
-
 });

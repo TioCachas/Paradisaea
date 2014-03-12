@@ -3,14 +3,7 @@ var templateTotal = null;
 var kendoData = [];
 var target;
 var wndTargetVsReal;
-var wndProductions;
-var wndScrap;
-var wndRework;
-var wndChangeover;
-var wndTechnical;
-var wndOrganizational;
-var wndQuality;
-var wndPerformance;
+var wndCapture;
 var workDate;
 var shift;
 var line;
@@ -51,14 +44,7 @@ $(document).ready(function()
     {
         return parseInt(input[idx]);
     });
-    wndProductions = target.find(".wndProductions");
-    wndScrap = target.find(".wndScrap");
-    wndRework = target.find(".wndRework");
-    wndChangeover = target.find(".wndChangeover");
-    wndTechnical = target.find(".wndTechnical");
-    wndOrganizational = target.find(".wndOrganizational");
-    wndQuality = target.find(".wndQuality");
-    wndPerformance = target.find(".wndPerformance");
+    wndCapture = target.find(".wndCapture");
     line = target.find("input.lines").kendoDropDownList({
         dataTextField: "lName",
         dataValueField: "lId",
@@ -88,52 +74,28 @@ $(document).ready(function()
     });
     getLinesAndShiftsByFirstUser();
     target.on('click', 'tr.bosch td.productions', function() {
-        var operationId = $(this).parent().attr('data-id');
-        $(this).find('span').addClass('hidden');
-        $(this).find('.fa-spin').removeClass('hidden');
-        fnWndOperations(operationId);
+        fnWnd($(this), urlCapture.productions, "Piezas OK");
     });
     target.on('click', 'tr.bosch td.scrapValue', function() {
-        var operationId = $(this).parent().attr('data-id');
-        $(this).find('span').addClass('hidden');
-        $(this).find('.fa-spin').removeClass('hidden');
-        fnWndScrap(operationId);
+        fnWnd($(this), urlCapture.scrap, "Scrap");
     });
     target.on('click', 'tr.bosch td.reworkValue', function() {
-        var operationId = $(this).parent().attr('data-id');
-        $(this).find('span').addClass('hidden');
-        $(this).find('.fa-spin').removeClass('hidden');
-        fnWndRework(operationId);
+        fnWnd($(this), urlCapture.rework, "Retrabajo")
     });
     target.on('click', 'tr.bosch td.changeoverValue', function() {
-        var operationId = $(this).parent().attr('data-id');
-        $(this).find('span').addClass('hidden');
-        $(this).find('.fa-spin').removeClass('hidden');
-        fnWndChangeover(operationId);
+        fnWnd($(this), urlCapture.changeover, "Cambio de modelo")
     });
     target.on('click', 'tr.bosch td.technicalValue', function() {
-        var operationId = $(this).parent().attr('data-id');
-        $(this).find('span').addClass('hidden');
-        $(this).find('.fa-spin').removeClass('hidden');
-        fnWndTechnical(operationId);
+        fnWnd($(this), urlCapture.technical, "Perdidas tecnicas")
     });
     target.on('click', 'tr.bosch td.organizationalValue', function() {
-        var operationId = $(this).parent().attr('data-id');
-        $(this).find('span').addClass('hidden');
-        $(this).find('.fa-spin').removeClass('hidden');
-        fnWndOrganizational(operationId);
+        fnWnd($(this), urlCapture.organizational, "Perdidas organizacionales")
     });
     target.on('click', 'tr.bosch td.qualityValue', function() {
-        var operationId = $(this).parent().attr('data-id');
-        $(this).find('span').addClass('hidden');
-        $(this).find('.fa-spin').removeClass('hidden');
-        fnWndQuality(operationId);
+        fnWnd($(this), urlCapture.quality, "Perdidas de calidad")
     });
     target.on('click', 'tr.bosch td.performanceValue', function() {
-        var operationId = $(this).parent().attr('data-id');
-        $(this).find('span').addClass('hidden');
-        $(this).find('.fa-spin').removeClass('hidden');
-        fnWndPerformance(operationId);
+        fnWnd($(this), urlCapture.performance, "Perdidas de desempeño")
     });
 });
 
@@ -182,15 +144,17 @@ function getLinesAndShifts(userId)
     });
 }
 
-function fnWndOperations(operationId)
+function fnWnd(element, url, title)
 {
-    var oId = operationId;
-    var url = urlProductionsCapture + '/' + operationId
-    if (!wndProductions.data("kendoWindow")) {
-        wndProductions.kendoWindow({
+    var operationId = element.parent().attr('data-id');
+    element.find('span').addClass('hidden');
+    element.find('.fa-spin').removeClass('hidden');
+    url = url + '/' + operationId;
+    if (!wndCapture.data("kendoWindow")) {
+        wndCapture.kendoWindow({
             width: "800px",
             height: "350px",
-            title: "Piezas OK",
+            title: title,
             content: url,
             actions: [
                 "Minimize",
@@ -199,222 +163,16 @@ function fnWndOperations(operationId)
             ],
             visible: false,
             close: getOperations,
-            refresh: function(e) {
-                target.find('tr[data-id="' + oId + '"] td.productions span').removeClass('hidden');
-                target.find('tr[data-id="' + oId + '"] td.productions .fa-spin').addClass('hidden');
+            refresh: function() {
                 this.center().open();
             }
         });
     }
     else
     {
-        wndProductions.data("kendoWindow").refresh({url: url});
+        wndCapture.data("kendoWindow").refresh({url: url}).title(title);
     }
 }
-
-function fnWndScrap(operationId)
-{
-    var url = urlScrapCapture + '/' + operationId;
-    if (!wndScrap.data("kendoWindow")) {
-        wndScrap.kendoWindow({
-            width: "800px",
-            height: "350px",
-            title: "Scrap",
-            content: url,
-            actions: [
-                "Minimize",
-                "Maximize",
-                "Close"
-            ],
-            visible: false,
-            close: getOperations,
-            refresh: function(e) {
-                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
-                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
-                this.center().open();
-            }
-        });
-    }
-    else
-    {
-        wndScrap.data("kendoWindow").refresh({url: url});
-    }
-}
-
-function fnWndRework(operationId)
-{
-    var url = urlReworkCapture + '/' + operationId;
-    if (!wndRework.data("kendoWindow")) {
-        wndRework.kendoWindow({
-            width: "800px",
-            height: "350px",
-            title: "Retrabajo",
-            content: url,
-            actions: [
-                "Minimize",
-                "Maximize",
-                "Close"
-            ],
-            visible: false,
-            close: getOperations,
-            refresh: function(e) {
-                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
-                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
-                this.center().open();
-            }
-        });
-    }
-    else
-    {
-        wndRework.data("kendoWindow").refresh({url: url});
-    }
-}
-
-function fnWndChangeover(operationId)
-{
-    var url = urlChangeoverCapture + '/' + operationId;
-    if (!wndChangeover.data("kendoWindow")) {
-        wndChangeover.kendoWindow({
-            width: "800px",
-            height: "350px",
-            title: "Cambio de modelo",
-            content: url,
-            actions: [
-                "Minimize",
-                "Maximize",
-                "Close"
-            ],
-            visible: false,
-            close: getOperations,
-            refresh: function(e) {
-                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
-                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
-                this.center().open();
-            }
-        });
-    }
-    else
-    {
-        wndChangeover.data("kendoWindow").refresh({url: url});
-    }
-}
-
-function fnWndTechnical(operationId)
-{
-    var url = urlTechnicalCapture + '/' + operationId;
-    if (!wndTechnical.data("kendoWindow")) {
-        wndTechnical.kendoWindow({
-            width: "800px",
-            height: "350px",
-            title: "Perdidas tecnicas",
-            content: url,
-            actions: [
-                "Minimize",
-                "Maximize",
-                "Close"
-            ],
-            visible: false,
-            close: getOperations,
-            refresh: function(e) {
-                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
-                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
-                this.center().open();
-            }
-        });
-    }
-    else
-    {
-        wndTechnical.data("kendoWindow").refresh({url: url});
-    }
-}
-
-function fnWndOrganizational(operationId)
-{
-    var url = urlOrganizationalCapture + '/' + operationId;
-    if (!wndOrganizational.data("kendoWindow")) {
-        wndOrganizational.kendoWindow({
-            width: "800px",
-            height: "350px",
-            title: "Perdidas organizacionales",
-            content: url,
-            actions: [
-                "Minimize",
-                "Maximize",
-                "Close"
-            ],
-            visible: false,
-            close: getOperations,
-            refresh: function(e) {
-                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
-                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
-                this.center().open();
-            }
-        });
-    }
-    else
-    {
-        wndOrganizational.data("kendoWindow").refresh({url: url});
-    }
-}
-
-function fnWndQuality(operationId)
-{
-    var url = urlQualityCapture + '/' + operationId;
-    if (!wndQuality.data("kendoWindow")) {
-        wndQuality.kendoWindow({
-            width: "800px",
-            height: "350px",
-            title: "Perdidas de calidad",
-            content: url,
-            actions: [
-                "Minimize",
-                "Maximize",
-                "Close"
-            ],
-            visible: false,
-            close: getOperations,
-            refresh: function(e) {
-                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
-                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
-                this.center().open();
-            }
-        });
-    }
-    else
-    {
-        wndQuality.data("kendoWindow").refresh({url: url});
-    }
-}
-
-function fnWndPerformance(operationId)
-{
-    var url = urlPerformanceCapture + '/' + operationId;
-    if (!wndPerformance.data("kendoWindow")) {
-        wndPerformance.kendoWindow({
-            width: "800px",
-            height: "350px",
-            title: "Perdidas de desempeño",
-            content: url,
-            actions: [
-                "Minimize",
-                "Maximize",
-                "Close"
-            ],
-            visible: false,
-            close: getOperations,
-            refresh: function(e) {
-                target.find('tr[data-id="' + operationId + '"] td.productions span').removeClass('hidden');
-                target.find('tr[data-id="' + operationId + '"] td.productions .fa-spin').addClass('hidden');
-                this.center().open();
-            }
-        });
-    }
-    else
-    {
-        wndPerformance.data("kendoWindow").refresh({url: url});
-    }
-}
-
 
 function getOperations()
 {

@@ -15,6 +15,16 @@ $urlTechnicalCapture = $this->Html->url(array('controller' => 'Technicals', 'act
 $urlOrganizationalCapture = $this->Html->url(array('controller' => 'Organizationals', 'action' => 'capture'));
 $urlQualityCapture = $this->Html->url(array('controller' => 'Qualities', 'action' => 'capture'));
 $urlPerformanceCapture = $this->Html->url(array('controller' => 'Performance', 'action' => 'capture'));
+$urlCapture = array(
+    'productions' => $urlProductionsCapture,
+    'scrap' => $urlScrapCapture,
+    'rework' => $urlReworkCapture,
+    'changeover' => $urlChangeoverCapture,
+    'technical' => $urlTechnicalCapture,
+    'organizational' => $urlOrganizationalCapture,
+    'quality' => $urlQualityCapture,
+    'performance' => $urlPerformanceCapture,
+);
 ?>
 <div id="shift">
     <div class="table-responsive">
@@ -22,14 +32,7 @@ $urlPerformanceCapture = $this->Html->url(array('controller' => 'Performance', '
     </div>
     <?php $this->TioCachas->templateClassSwig('operations-user', 'row'); ?>
     <?php $this->TioCachas->templateClassSwig('operations-user-total', 'total'); ?>
-    <div class="wndProductions"></div>
-    <div class="wndScrap"></div>
-    <div class="wndRework"></div>
-    <div class="wndChangeover"></div>
-    <div class="wndTechnical"></div>
-    <div class="wndOrganizational"></div>
-    <div class="wndQuality"></div>
-    <div class="wndPerformance"></div>
+    <div class="wndCapture"></div>
     <div class="chart-wrapper wndTargetVsReal">
         <div class="chart" style="width: 750px;"></div>
     </div>
@@ -38,12 +41,5 @@ $urlPerformanceCapture = $this->Html->url(array('controller' => 'Performance', '
     var urlList = <?php echo json_encode($urlList); ?>;
     var urlListSingle = <?php echo json_encode($urlListSingle); ?>;
     var urlGetLinesAndShifts = <?php echo json_encode($urlGetLinesAndShifts); ?>;
-    var urlProductionsCapture = <?php echo json_encode($urlProductionsCapture); ?>;
-    var urlScrapCapture = <?php echo json_encode($urlScrapCapture); ?>;
-    var urlReworkCapture = <?php echo json_encode($urlReworkCapture); ?>;
-    var urlChangeoverCapture = <?php echo json_encode($urlChangeoverCapture); ?>;
-    var urlTechnicalCapture = <?php echo json_encode($urlTechnicalCapture); ?>;
-    var urlOrganizationalCapture = <?php echo json_encode($urlOrganizationalCapture); ?>;
-    var urlQualityCapture = <?php echo json_encode($urlQualityCapture); ?>;
-    var urlPerformanceCapture = <?php echo json_encode($urlPerformanceCapture); ?>;
+    var urlCapture = <?php echo json_encode($urlCapture); ?>;
 </script>

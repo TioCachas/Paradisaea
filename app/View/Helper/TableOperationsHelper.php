@@ -1,13 +1,11 @@
 <?php
 App::uses('AppHelper', 'View/Helper');
 
-class TableOperationsHelper extends AppHelper
-{
+class TableOperationsHelper extends AppHelper {
 
-    public function render($users, $workDate)
-    {
+    public function render($users, $workDate) {
         ?>
-        <table class="table table-bordered table-condensed noTextTransform dashboardCapture">
+        <table class="table table-bordered table-condensed noTextTransform dashboardCapture bosch">
             <thead>
                 <tr class="header">
                     <th colspan="15" class="tools">
@@ -15,11 +13,11 @@ class TableOperationsHelper extends AppHelper
                         <input type="text" class="form-control pull-right" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
                         <input class="shifts" />
                         <input class="lines" />
-                        <select class="users">
+                        <select class="users <?php echo count($users) == 1 ? 'hidden' : '' ?>">
                             <?php
                             array_walk($users, function($user) {
-                                        echo '<option value=' . $user['uId'] . '>' . $user['uName'] . '</option>';
-                                    });
+                                echo '<option value=' . $user['uId'] . '>' . $user['uName'] . '</option>';
+                            });
                             ?>
                         </select>
                         <i class = 'fa fa-bar-chart-o'></i>
@@ -121,8 +119,7 @@ class TableOperationsHelper extends AppHelper
         <?php
     }
 
-    public function byCurrentDay()
-    {
+    public function byCurrentDay() {
         ?>
         <table class="table table-bordered table-condensed table-striped" id='tableByCurrentDay'>
             <thead>
