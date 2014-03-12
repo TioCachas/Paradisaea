@@ -252,8 +252,8 @@ class OperationsController extends AppController
         $workDate = $workDate === null ? strftime('%Y-%m-%d') : $workDate;
         $this->set('users', $users);
         $this->set('workDate', $workDate);
-        $this->set('title', __('Captura de operacion'));
-        $this->set('description', __('Ingresa la produccion y scrap'));
+        $this->set('title', __('Pizarra de captura'));
+        $this->set('description', __('Piezas ok, scrap, retrabajo, perdidas'));
     }
 
     public function error($codeError)

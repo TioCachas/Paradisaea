@@ -35,10 +35,17 @@ $(document).ready(function()
                     "Maximize",
                     "Close"
                 ],
+                open: function()
+                {
+                    createChart();
+                }
             });
-            createChart();
+            wndTargetVsReal.data("kendoWindow").center().open();
         }
-        wndTargetVsReal.data("kendoWindow").refresh().center().open();
+        else
+        {
+            wndTargetVsReal.data("kendoWindow").center().open();
+        }
     });
     swig.setFilter('parseInt', function(input, idx)
     {
@@ -80,22 +87,22 @@ $(document).ready(function()
         fnWnd($(this), urlCapture.scrap, "Scrap");
     });
     target.on('click', 'tr.bosch td.reworkValue', function() {
-        fnWnd($(this), urlCapture.rework, "Retrabajo")
+        fnWnd($(this), urlCapture.rework, "Retrabajo");
     });
     target.on('click', 'tr.bosch td.changeoverValue', function() {
-        fnWnd($(this), urlCapture.changeover, "Cambio de modelo")
+        fnWnd($(this), urlCapture.changeover, "Cambio de modelo");
     });
     target.on('click', 'tr.bosch td.technicalValue', function() {
-        fnWnd($(this), urlCapture.technical, "Perdidas tecnicas")
+        fnWnd($(this), urlCapture.technical, "Perdidas tecnicas");
     });
     target.on('click', 'tr.bosch td.organizationalValue', function() {
-        fnWnd($(this), urlCapture.organizational, "Perdidas organizacionales")
+        fnWnd($(this), urlCapture.organizational, "Perdidas organizacionales");
     });
     target.on('click', 'tr.bosch td.qualityValue', function() {
-        fnWnd($(this), urlCapture.quality, "Perdidas de calidad")
+        fnWnd($(this), urlCapture.quality, "Perdidas de calidad");
     });
     target.on('click', 'tr.bosch td.performanceValue', function() {
-        fnWnd($(this), urlCapture.performance, "Perdidas de desempeño")
+        fnWnd($(this), urlCapture.performance, "Perdidas de desempeño");
     });
 });
 
@@ -203,9 +210,21 @@ function getOperations()
                 kendoData.push({
                     hour: o.hStart + ' - ' + o.hEnd,
                     target: o.oTarget,
-                    production: o.oProduction
+                    production: o.oProduction,
+                    scrap: o.oScrap,
+                    rework: o.oRework
                 });
             });
+            var chart = $(".chart").data('kendoChart');
+            if (chart)
+            {
+                var dataSource = new kendo.data.DataSource(
+                        {
+                            data: kendoData
+                        });
+                chart.setDataSource(dataSource);
+                chart.refresh();
+            }
             var tr = templateTotal(result['sum']);
             tfoot.append(tr);
             target.find('tr.loader.operations').addClass('hidden');
@@ -214,56 +233,69 @@ function getOperations()
 }
 
 function createChart() {
-    $(".chart").kendoChart({
-        dataSource: {
-            data: kendoData
-        },
-        title: {
-            text: ""
-        },
-        legend: {
-            visible: true
-        },
-        seriesDefaults: {
-            type: "line",
-            style: "smooth",
-            labels: {
+    if (!$(".chart").data('kendoChart'))
+    {
+        $(".chart").kendoChart({
+            dataSource: {
+                data: kendoData
+            },
+            title: {
+                text: ""
+            },
+            legend: {
+                visible: true
+            },
+            seriesDefaults: {
+                type: "line",
+                style: "smooth",
+                labels: {
+                    visible: true,
+                    format: "{0}",
+                    background: "transparent"
+                }
+            },
+            series: [{
+                    field: "production",
+                    name: "Produccion real [piezas]",
+                    color: "#00ff00"
+                },
+                {
+                    field: "target",
+                    name: "Produccion objetivo [piezas]",
+                    color: "#0000ff"
+                },
+                {
+                    field: "scrap",
+                    name: "Scrap [piezas]",
+                    color: "#ff0000"
+                },
+                {
+                    field: "rework",
+                    name: "Retrabajo [piezas]",
+                    color: "#ffff00"
+                }],
+            valueAxis: {
+                labels: {
+                    format: "{0}",
+                },
+                line: {
+                    visible: true
+                }
+            },
+            categoryAxis: {
+                labels: {
+                    rotation: 270
+                },
+                field: "hour",
+                majorGridLines: {
+                    visible: true
+                }
+            },
+            tooltip: {
                 visible: true,
-                format: "{0}",
-                background: "transparent"
+                format: "{0}%",
+                template: "#= series.name #: #= value #"
             }
-        },
-        series: [{
-                field: "production",
-                name: "Produccion real [piezas]",
-                color: "#00ff00"
-            },
-            {
-                field: "target",
-                name: "Produccion objetivo [piezas]",
-                color: "#0000ff"
-            }],
-        valueAxis: {
-            labels: {
-                format: "{0}",
-            },
-            line: {
-                visible: true
-            }
-        },
-        categoryAxis: {
-            labels: {
-                rotation: 270
-            },
-            field: "hour",
-            majorGridLines: {
-                visible: true
-            }
-        },
-        tooltip: {
-            visible: true,
-            format: "{0}%",
-            template: "#= series.name #: #= value #"
-        }
-    });
+        });
+    }
 }
