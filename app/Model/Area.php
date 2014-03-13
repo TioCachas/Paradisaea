@@ -2,7 +2,7 @@
 
 App::uses('AppModel', 'Model');
 
-class Defect extends AppModel {
+class Area extends AppModel {
 
     /**
      * Al Agregar/eliminar/actualizar las constantes de los modelos implica ir
@@ -12,14 +12,13 @@ class Defect extends AppModel {
     const STATUS_DISABLED = 0;
 
     /**
-     * obtenemos los defectos que puede generar una linea de trabajo
-     * @param integer $workstationId
-     * @return array
+     * Obtenemos los registros habilitados
+     * @return type
      */
-    public function getEnabledByWorkstation($workstationId) {
-        $order = array('code' => 'ASC');
-        $defects = $this->findAllByStatusAndWorkstationId(self::STATUS_ENABLED, $workstationId, array(), $order);
-        return $this->flatArray($defects);
+    public function getEnabled() {
+        $order = array('name' => 'ASC');
+        $records = $this->findAllByStatus(self::STATUS_ENABLED, array(), $order);
+        return $this->flatArray($records);
     }
     
     /**

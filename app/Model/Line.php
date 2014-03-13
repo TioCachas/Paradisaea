@@ -2,8 +2,8 @@
 
 App::uses('AppModel', 'Model');
 
-class Line extends AppModel
-{
+class Line extends AppModel {
+
     public $useTable = 'production_lines';
 
     const STATUS_ENABLED = 1;
@@ -15,8 +15,7 @@ class Line extends AppModel
      * disabled => enabled
      * @param string $id
      */
-    public function toggleStatus($id)
-    {
+    public function toggleStatus($id) {
         $this->query('
             UPDATE production_lines
             SET status = IF(status = 1, ' . self::STATUS_DISABLED . ', ' . self::STATUS_ENABLED . ')
@@ -25,12 +24,13 @@ class Line extends AppModel
     }
 
     /**
-     * Leemos todas las lineas de produccion habilitadas
-     * @return array
+     * Obtenemos los registros habilitados
+     * @return type
      */
-    public function getEnabled()
-    {
-        return $this->findAllByStatus(self::STATUS_ENABLED);
+    public function getEnabled() {
+        $order = array('name' => 'ASC');
+        $records = $this->findAllByStatus(self::STATUS_ENABLED, array(), $order);
+        return $this->flatArray($records);
     }
 
     /**
@@ -40,8 +40,7 @@ class Line extends AppModel
      * @param integer $status
      * @return array
      */
-    public function getByAreaIdAndStatus($areaId, $status = self::STATUS_ENABLED)
-    {
+    public function getByAreaIdAndStatus($areaId, $status = self::STATUS_ENABLED) {
         $order = array('name' => 'ASC');
         $lines = $this->findAllByAreaIdAndStatus($areaId, $status, array(), $order);
         return $lines;
@@ -53,8 +52,7 @@ class Line extends AppModel
      * @param string $lineId
      * @return array
      */
-    public function getSelfAreaEnabled($lineId)
-    {
+    public function getSelfAreaEnabled($lineId) {
         $lines = $this->query("
             SELECT Line.*
             FROM production_lines l
@@ -63,6 +61,26 @@ class Line extends AppModel
             AND Line.status = " . self::STATUS_ENABLED, array(
             $lineId));
         return $lines;
+    }
+
+    /**
+     * Insertamos un registro
+     * @param array $newData
+     * @return array
+     */
+    public function insert($newData) {
+        return $this->save($newData);
+    }
+
+    /**
+     * Actualizamos un registro
+     * @param string $id
+     * @param array $modifyData
+     * @return array
+     */
+    public function update($id, $modifyData) {
+        $this->id = $id;
+        return $this->save($modifyData);
     }
 
 }

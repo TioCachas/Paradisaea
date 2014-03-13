@@ -58,5 +58,29 @@ class TioCachasHelper extends AppHelper
                 'block' => 'scriptBottom'));
         }
     }
+    
+    /**
+     * Generamos un arreglo con URL hacia acciones CRUD contenidas en el mismo 
+     * URL para CREATE
+     * URL para READ
+     * URL para UPDATE
+     * URL para DELETE
+     * controlador.
+     * @return array
+     */
+    public function urlsCRUD()
+    {
+        $urlCreate = $this->_View->Html->url(array('action'=>'create'));
+        $urlRead = $this->_View->Html->url(array('action'=>'read'));
+        $urlUpdate = $this->_View->Html->url(array('action'=>'update'));
+        $urlDelete = $this->_View->Html->url(array('action'=>'destroy'));
+        $array = array(
+            'create' => $urlCreate,
+            'read' => $urlRead,
+            'update' => $urlUpdate,
+            'delete' => $urlDelete,
+        );
+        return $array;
+    }
 
 }

@@ -2,22 +2,13 @@
 
 App::uses('CrudController', 'Controller');
 
-class LinesController extends CrudController
-{
-    public $_model = 'Line';
-    /**
-     * Regresamos un combo donde se puede seleccionar una nueva linea de produccion
-     */
-    public function getLinesSelfArea($lineId)
-    {
-        $lines = $this->Line->getSelfAreaEnabled($lineId);
-        $this->set('lines', $lines);
-        $this->layout = 'ajax';
-    }
-    
+class AreasController extends CrudController {
+
+    public $_model = 'Area';
+
     public function admin() {
-        $this->set('title', __('Lineas de produccion'));
-        $this->set('description', __('Administracion de lineas de produccion'));
+        $this->set('title', __('Areas'));
+        $this->set('description', __('Administracion de areas'));
     }
 
     protected function getRecords() {
