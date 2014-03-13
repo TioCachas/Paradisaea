@@ -11,9 +11,9 @@ class TioCachasHelper extends AppHelper
     {
         $this->_View->Html->script('vendors/kendo/kendo.all.min', array('block' => 'scriptBottom'));
         $this->_View->Html->css('vendors/kendo/kendo.common.min', array('block' => 'stylesTop'));
-        $this->_View->Html->css('vendors/kendo/kendo.default.min', array('block' => 'stylesTop'));
+        $this->_View->Html->css('vendors/kendo/kendo.bootstrap.min', array('block' => 'stylesTop'));
         $this->_View->Html->css('vendors/kendo/kendo.dataviz.min', array('block' => 'stylesTop'));
-        $this->_View->Html->css('vendors/kendo/kendo.dataviz.default.min', array(
+        $this->_View->Html->css('vendors/kendo/kendo.dataviz.bootstrap.min', array(
             'block' => 'stylesTop'));
         $cultures = array('es-MX');
         array_walk($cultures, function($culture) {
