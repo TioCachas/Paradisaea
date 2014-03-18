@@ -15,6 +15,7 @@ $(document).ready(function() {
             $.getJSON(url, {
                 o: oId,
                 c: $('#comment').val(),
+                m: $('#model').val(),
                 v: $("#value").data('kendoNumericTextBox').value()
             }, function(newRecord) {
                 if (newRecord !== false)

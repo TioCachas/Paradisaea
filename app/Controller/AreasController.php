@@ -1,6 +1,7 @@
 <?php
 
 App::uses('CrudController', 'Controller');
+App::uses('Area', 'Model');
 
 class AreasController extends CrudController {
 

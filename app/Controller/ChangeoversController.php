@@ -46,7 +46,10 @@ class ChangeoversController extends AppController {
         $this->request->onlyAllow('get');
         $params = $this->request->query;
         $newRecord = false;
-        if (isset($params['o']) && isset($params['v']) && isset($params['c'])) {
+        if (isset($params['o']) && isset($params['v']) && isset($params['c']) && isset($params['m'])) {
+            $bosch = $this->Session->read('configuration');
+            $configuration = $bosch->getConfiguration();
+            $configuration->setLine($params['m']);
             $value = $params['v'];
             $operationId = $params['o'];
             $comment = $params['c'];

@@ -11,6 +11,15 @@ $units = Units::symbolHtml(Units::MINUTES);
         <form id="newRecord" action="<?php echo $urlCreate; ?>">
             <ul>
                 <li>
+                    <label for="model"><?php echo __('Modelo'); ?>:</label>
+                    <select name="model" id="model">
+                        <?php foreach ($models as $model): ?>
+                            <option value="<?php echo $model['id']; ?>"><?php echo $model['name']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="k-invalid-msg" data-for="model"></div>
+                </li>
+                <li>
                     <label for="value"><?php echo __('Minutos'); ?>:</label>
                     <input id="value" requiered name="value" type="text" min="1" max="1000" required data-max-msg="Ingresa un valor entre 0 y 1000" value="5"/>
                     <div class="k-invalid-msg" data-for="value"></div>

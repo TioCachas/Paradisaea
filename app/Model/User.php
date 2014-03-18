@@ -1,14 +1,15 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 
-class User extends AppModel
+class User extends Crud
 {
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
 
     public $useTable = 'us3rs_m0n1t0r';
+    
     public $validate = array(
         'us3r' => array(
             'required' => array(
@@ -38,27 +39,27 @@ class User extends AppModel
         }
     }
 
-    public function insert($user, $pass)
-    {
-        $data = array();
-        $data['us3r'] = substr($user, 0, 10);
-        $data['p4ss'] = $pass;
-        $data['status'] = self::STATUS_ENABLED;
-        try
-        {
-            $this->save($data);
-        }
-        catch (PDOException $e)
-        {
-            switch ($e->getCode())
-            {
-                case 23000:
-                    break;
-                default:
-                    throw $e;
-            }
-        }
-    }
+//    public function insert($user, $pass)
+//    {
+//        $data = array();
+//        $data['us3r'] = substr($user, 0, 10);
+//        $data['p4ss'] = $pass;
+//        $data['status'] = self::STATUS_ENABLED;
+//        try
+//        {
+//            $this->save($data);
+//        }
+//        catch (PDOException $e)
+//        {
+//            switch ($e->getCode())
+//            {
+//                case 23000:
+//                    break;
+//                default:
+//                    throw $e;
+//            }
+//        }
+//    }
 
     public function changePass($id, $newPass)
     {
@@ -67,6 +68,17 @@ class User extends AppModel
         $db = $this->getDataSource();
         $db->fetchAll("UPDATE us3rs_m0n1t0r SET p4ss = ? WHERE id = ?", array(
             $newPass, $id));
+    }
+    
+    /**
+     * Obtenemos los registros habilitados.
+     * @return array
+     */
+    public function getEnabled()
+    {
+        $order = array('name' => 'ASC');
+        $workstations = $this->findAllByStatus(self::STATUS_ENABLED,array(), $order);
+        return $this->flatArray($workstations);
     }
 
 }

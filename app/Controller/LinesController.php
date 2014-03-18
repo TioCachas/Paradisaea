@@ -1,6 +1,7 @@
 <?php
 
 App::uses('CrudController', 'Controller');
+App::uses('Line', 'Model');
 
 class LinesController extends CrudController
 {

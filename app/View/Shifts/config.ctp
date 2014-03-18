@@ -3,7 +3,7 @@ $this->Html->script('controllers/Shifts/config', array('block' => 'scriptBottom'
 echo $this->Form->create(array('url' => array('action' => 'setConfig'), 'method' => 'post',
     'class' => 'form-horizontal',
     'role' => 'form'));
-$urlGetModels = $this->Html->url(array('controller' => 'ModelsLines', 'action' => 'getByLine'));
+$urlGetModels = $this->Html->url(array('controller' => 'ModelLines', 'action' => 'getByLine'));
 ?>
 <div class="form-group">
     <label for="inputShift" class="col-sm-2 col-lg-1 control-label">

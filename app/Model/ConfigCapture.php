@@ -53,6 +53,16 @@ class ConfigCapture {
     public function getLine() {
         return $this->line;
     }
+    
+    public function setLine($lineId)
+    {
+        $this->line = $lineId;
+    }
+    
+    public function setLineText($textLine)
+    {
+        $this->lineText = $textLine;
+    }
 
     /**
      * Obtenemos el id del turno en el que se esta trabajando

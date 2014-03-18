@@ -24,7 +24,7 @@ class ModelLine extends Crud
             SELECT m.id, m.name
             FROM models_lines ml
             INNER JOIN models m ON m.id = ml.model_id
-            WHERE line_id = ?
+            WHERE line_id = ? AND ml.status = 1
             ORDER BY m.name ASC', array(
             $lineId));
         return $this->flatArray($mls);

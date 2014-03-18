@@ -1,6 +1,7 @@
 <?php
 
 App::uses('CrudController', 'Controller');
+App::uses('Defect', 'Model');
 
 class DefectsController extends CrudController
 {

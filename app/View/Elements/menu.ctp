@@ -65,6 +65,15 @@
                                     <?php echo __('Modelos'); ?>
                                 </a>
                             </li>
+                            <li>
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'Users', 'action' => 'admin'));
+                                ?>">
+                                    <i class='fa fa-folder-o'></i>
+                                    <?php echo __('Usuarios'); ?>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 <?php endif; ?>

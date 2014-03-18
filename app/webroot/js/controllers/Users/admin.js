@@ -6,7 +6,7 @@ $(document).ready(function() {
                 dataType: "json",
                 statusCode: {
                     404: function() {
-                        alert("El nombre de la línea no está disponible");
+                        alert("El nombre de usuario no está disponible");
                     }
                 }
             },
@@ -19,7 +19,7 @@ $(document).ready(function() {
                 dataType: "json",
                 statusCode: {
                     404: function() {
-                        alert("El nombre de la línea no está disponible");
+                        alert("El nombre de usuario no está disponible");
                     }
                 }
             },
@@ -54,8 +54,7 @@ $(document).ready(function() {
                         editable: true,
                         nullable: false,
                         validation: {
-                            required: true,
-                            min: 1
+                            required: true
                         }
                     }
                 }
@@ -67,12 +66,10 @@ $(document).ready(function() {
         dataSource: dataSource,
         pageable: true,
         height: 520,
-        toolbar: [{name: "create", text: "Agregar línea"}],
+        toolbar: [{name: "create", text: "Agregar usuario"}],
         columns: [
-            {field: "name", title: "Nombre"},
+            {field: "name", title: "Estación"},
             {command: [
-//                    {text: "Modelos", click: showModels},
-                    {text: "Estaciones de trabajo", click: showWorkstations},
                     {
                         name: "edit",
                         text: {
@@ -86,26 +83,8 @@ $(document).ready(function() {
                         text: "Eliminar"
                     }], title: "&nbsp;"}],
         editable: {
-            confirmation: "¿Estas seguro que deseas eliminar está línea?",
+            confirmation: "¿Estas seguro que deseas eliminar este usuario?",
             mode: "inline",
         }
     });
 });
-
-function showWorkstations(e)
-{
-    e.preventDefault();
-    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-    var id = dataItem.id;
-    var url = appBosch.urlWorkstations + '/' + id;
-    $(location).attr('href', url);
-}
-
-function showModels(e)
-{
-    e.preventDefault();
-    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-    var id = dataItem.id;
-    var url = appBosch.urlModels + '/' + id;
-    $(location).attr('href', url);
-}

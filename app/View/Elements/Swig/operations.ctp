@@ -32,39 +32,39 @@ $urlOrganizational = $this->Html->url(array(
         </a>
     </td>
     <td>
-        <a href="<?php echo $urlScrap; ?>/{{ oId }}">
+        <!--<a href="<?php echo $urlScrap; ?>/{{ oId }}">-->
             {{ oScrap }}
-        </a>
+        <!--</a>-->
     </td>
     <td>
-        <a href="<?php echo $urlRework; ?>/{{ oId }}">
+        <!--<a href="<?php echo $urlRework; ?>/{{ oId }}">-->
             {{ oRework }}
-        </a>
+        <!--</a>-->
     </td>
     <td>
-        <a href="<?php echo $urlChangeover; ?>/{{ oId }}">
+        <!--<a href="<?php echo $urlChangeover; ?>/{{ oId }}">-->
             {{ oChangeover }}
-        </a>
+        <!--</a>-->
     </td>
     <td>
-        <a href="<?php echo $urlTechnical; ?>/{{ oId }}">
+        <!--<a href="<?php echo $urlTechnical; ?>/{{ oId }}">-->
             {{ oTechnicalLosses }}
-        </a>
+        <!--</a>-->
     </td>
     <td>
-        <a href="<?php echo $urlOrganizational; ?>/{{ oId }}">
+        <!--<a href="<?php echo $urlOrganizational; ?>/{{ oId }}">-->
             {{ oOrganizationalLosses }}
-        </a>
+        <!--</a>-->
     </td>
     <td>
-        <a href="<?php echo $urlOrganizational; ?>/{{ oId }}">
+        <!--<a href="<?php echo $urlOrganizational; ?>/{{ oId }}">-->
             {{ oQualityLosses }}
-        </a>
+        <!--</a>-->
     </td>
     <td>
-        <a href="<?php echo $urlOrganizational; ?>/{{ oId }}">
+        <!--<a href="<?php echo $urlOrganizational; ?>/{{ oId }}">-->
             {{ oPerformanceLosses }}
-        </a>
+        <!--</a>-->
     </td>
     <td>
         <span class="status">

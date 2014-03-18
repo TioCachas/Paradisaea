@@ -1,6 +1,7 @@
 <?php
 
 App::uses('CrudController', 'Controller');
+App::uses('Workstation', 'Model');
 
 class WorkstationsController extends CrudController {
     
