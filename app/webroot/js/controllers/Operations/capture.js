@@ -29,7 +29,7 @@ $(document).ready(function()
         if (!wndTargetVsReal.data("kendoWindow")) {
             wndTargetVsReal.kendoWindow({
                 width: "800px",
-                title: "Produccion objetivo vs produccion real",
+                title: "Producción objetivo vs Producción real",
                 actions: [
                     "Minimize",
                     "Maximize",
@@ -93,16 +93,16 @@ $(document).ready(function()
         fnWnd($(this), urlCapture.changeover, "Cambio de modelo");
     });
     target.on('click', 'tr.bosch td.technicalValue', function() {
-        fnWnd($(this), urlCapture.technical, "Perdidas tecnicas");
+        fnWnd($(this), urlCapture.technical, "Pérdidas técnicas");
     });
     target.on('click', 'tr.bosch td.organizationalValue', function() {
-        fnWnd($(this), urlCapture.organizational, "Perdidas organizacionales");
+        fnWnd($(this), urlCapture.organizational, "Pérdidas organizacionales");
     });
     target.on('click', 'tr.bosch td.qualityValue', function() {
-        fnWnd($(this), urlCapture.quality, "Perdidas de calidad");
+        fnWnd($(this), urlCapture.quality, "Pérdidas de calidad");
     });
     target.on('click', 'tr.bosch td.performanceValue', function() {
-        fnWnd($(this), urlCapture.performance, "Perdidas de desempeño");
+        fnWnd($(this), urlCapture.performance, "Pérdidas de desempeño");
     });
 });
 
@@ -256,12 +256,12 @@ function createChart() {
             },
             series: [{
                     field: "production",
-                    name: "Produccion real [piezas]",
+                    name: "Producción real [piezas]",
                     color: "#00ff00"
                 },
                 {
                     field: "target",
-                    name: "Produccion objetivo [piezas]",
+                    name: "Producción objetivo [piezas]",
                     color: "#0000ff"
                 },
                 {

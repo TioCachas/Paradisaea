@@ -10,7 +10,7 @@ class TableOperationsHelper extends AppHelper {
                 <tr class="header">
                     <th colspan="15" class="tools">
                         <?php echo __('Hoja de seguimiento de piezas por hora'); ?>
-                        <input type="text" class="form-control pull-right" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
+                        <input type="text" class="pull-right" name="workDate" placeholder="<?php echo __('Dia de trabajo'); ?>" value="<?php echo $workDate; ?>">
                         <input class="shifts" />
                         <input class="lines" />
                         <select class="users <?php echo count($users) == 1 ? 'hidden' : '' ?>">
@@ -31,7 +31,7 @@ class TableOperationsHelper extends AppHelper {
                     <th colspan="2"><?php echo __('Actual'); ?></th>
                     <th colspan="1"><?php echo __('Piezas/hora'); ?></th>
                     <th colspan="2"><?php echo __('Calidad [piezas]'); ?></th>
-                    <th colspan="5"><?php echo __('Disponibilidad de perdidas [minutos]'); ?></th>
+                    <th colspan="5"><?php echo __('Disponibilidad de pérdidas [minutos]'); ?></th>
                 </tr>
                 <tr class="text-center subheader">
                     <th>
@@ -60,7 +60,7 @@ class TableOperationsHelper extends AppHelper {
                         <?php echo __('Cambio de modelo'); ?>
                     </th>
                     <th class='techicalLosses'>
-                        <?php echo __('Tecnicas'); ?>
+                        <?php echo __('Técnicas'); ?>
                     </th>
                     <th class='organizationalLosses'>
                         <?php echo __('Organizacional'); ?>

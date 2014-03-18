@@ -101,8 +101,8 @@ class ProductionsController extends AppController {
             $this->loadModel('ModelLine');
             $modelId = $bosch->getConfiguration()->getModel();
             $modelText = $bosch->getConfiguration()->getModelText();
-            $this->loadModel('IndexModel');
-            $indexes = $this->IndexModel->getEnabledByModel($modelId);
+            $this->loadModel('Index');
+            $indexes = $this->Index->getEnabledByModelId($modelId);
             $this->loadModel('Production');
             $productions = $this->Production->getByOperationId($operationId, array(Production::STATUS_ENABLED));
             $this->set('operation', $operation['Operation']);

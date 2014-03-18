@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppModel', 'Model');
+App::uses('Production', 'Model');
 
 class Operation extends AppModel {
 
@@ -146,7 +147,7 @@ class Operation extends AppModel {
             FROM operations o
             INNER JOIN hours h ON h.id = o.hour_id
             LEFT JOIN productions p ON p.operation_id = o.id
-            LEFT JOIN models m ON p.model_id = m.id
+            LEFT JOIN models m ON p.model_id = m.id AND p.status = '.Production::STATUS_ENABLED.'
             WHERE 
                     o.status = ' . self::STATUS_ENABLED . '
                 AND o.line_id = ?

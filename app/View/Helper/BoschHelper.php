@@ -100,8 +100,8 @@ class BoschHelper extends AppHelper
         foreach ($indexes as $k => $index)
         {
             ?>
-            <option value="<?php echo $index['i']['id'] ?>">
-                <?php echo $index['i']['name'] ?>
+            <option value="<?php echo $index['id'] ?>">
+                <?php echo $index['name'] ?>
             </option>
             <?php
         }
