@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 
-class Line extends AppModel {
+class Line extends Crud {
 
     public $useTable = 'production_lines';
 
@@ -43,7 +43,7 @@ class Line extends AppModel {
     public function getByAreaIdAndStatus($areaId, $status = self::STATUS_ENABLED) {
         $order = array('name' => 'ASC');
         $lines = $this->findAllByAreaIdAndStatus($areaId, $status, array(), $order);
-        return $lines;
+        return $this->flatArray($lines);
     }
 
     /**
@@ -61,26 +61,6 @@ class Line extends AppModel {
             AND Line.status = " . self::STATUS_ENABLED, array(
             $lineId));
         return $lines;
-    }
-
-    /**
-     * Insertamos un registro
-     * @param array $newData
-     * @return array
-     */
-    public function insert($newData) {
-        return $this->save($newData);
-    }
-
-    /**
-     * Actualizamos un registro
-     * @param string $id
-     * @param array $modifyData
-     * @return array
-     */
-    public function update($id, $modifyData) {
-        $this->id = $id;
-        return $this->save($modifyData);
     }
 
 }

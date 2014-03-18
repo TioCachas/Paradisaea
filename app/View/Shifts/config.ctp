@@ -11,7 +11,7 @@ $urlGetModels = $this->Html->url(array('controller' => 'ModelsLines', 'action' =
     </label>
     <div class="col-sm-9 col-lg-5">
         <select id="inputShift" name='inputShift' class="form-control input-lg">
-            <?php $this->Bosch->shifts($shifts); ?>
+            <?php $this->Bosch->userShifts($shifts); ?>
         </select>
     </div>
 </div>
@@ -21,7 +21,7 @@ $urlGetModels = $this->Html->url(array('controller' => 'ModelsLines', 'action' =
     </label>
     <div class="col-sm-9 col-lg-5">
         <select id="inputLine" name='inputLine' class="form-control input-lg">
-            <?php $this->Bosch->lines($lines); ?>
+            <?php $this->Bosch->userLines($lines); ?>
         </select>
     </div>
 </div>

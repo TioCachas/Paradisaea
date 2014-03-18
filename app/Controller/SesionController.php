@@ -8,9 +8,8 @@ class SesionController extends AppController
     public function beforeFilter()
     {
         $this->Auth->allow(array('index', 'login'));
-        $this->Security->requireAuth(array('login'));
-        $this->Security->allowedControllers = array('Sesion');
-        $this->Security->allowedActions = array('login');
+        $this->Security->validatePost = false;
+        $this->Security->csrfCheck = false;
         parent::beforeFilter();
     }
 
@@ -26,7 +25,6 @@ class SesionController extends AppController
         $this->request->onlyAllow('post');
         $ip = $this->request->clientIp();
         $userAgent = $this->request->header('User-Agent');
-//        $this->addLog($post['us3r'], $ip, $userAgent);
         
         if ($this->Auth->login())
         {

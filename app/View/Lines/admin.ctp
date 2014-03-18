@@ -1,4 +1,5 @@
 <?php
+
 $this->TioCachas->addKendo();
 $this->Html->script('controllers/Lines/admin', array('block' => 'scriptBottom'));
 $appBosch = new stdClass();

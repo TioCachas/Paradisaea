@@ -2,49 +2,88 @@
 
 App::uses('AppController', 'Controller');
 
-abstract class CrudController extends AppController {
-
+abstract class CrudController extends AppController
+{
     public $_model;
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         $this->Security->validatePost = false;
         $this->Security->csrfCheck = false;
         parent::beforeFilter();
     }
 
-    /*
+    /**
      * A C C I O N E S
      */
-
-    public function create() {
+    final public function create()
+    {
         $this->request->onlyAllow('get');
         $m = $this->_model;
         $models = json_decode($this->request->query['models']);
         $model = $models[0];
-        try {
-            $this->$m->insert($this->c($model));
-        } catch (PDOException $exc) {
-            switch($exc->getCode()) {
+        $result = false;
+        try
+        {
+            $newModel = $this->$m->insert($this->c($model));
+            $result = $newModel[$m];
+        }
+        catch (PDOException $exc)
+        {
+            switch ($exc->getCode())
+            {
                 case 23000:
+                    $this->response->statusCode(404);
+                    break;
+                default:
+                    throw $exc;
             }
         }
-        $this->set(array('records' => false, '_serialize' => 'records'));
+        $this->set(array('records' => $result, '_serialize' => 'records'));
         $this->viewClass = 'Json';
     }
 
-    public function read() {
+    final public function read()
+    {
         $this->request->onlyAllow('get');
         $this->set(array('records' => $this->getRecords(), '_serialize' => 'records'));
         $this->viewClass = 'Json';
     }
 
-    public function update() {
+    final public function update()
+    {
         $this->request->onlyAllow('get');
         $m = $this->_model;
         $models = json_decode($this->request->query['models']);
         $model = $models[0];
-        $this->$m->update($this->id($model), $this->u($model));
-        $this->set(array('records' => $this->getRecords(), '_serialize' => 'records'));
+        $result = false;
+        try
+        {
+            $updatedModel = $this->$m->update($this->id($model), $this->u($model));
+            $result = $updatedModel[$m];
+        }
+        catch (PDOException $exc)
+        {
+            switch ($exc->getCode())
+            {
+                case 23000:
+                    $this->response->statusCode(404);
+                    break;
+                default:
+                    throw $exc;
+            }
+        }
+        $this->set(array('records' => $result, '_serialize' => 'records'));
+        $this->viewClass = 'Json';
+    }
+
+    final public function destroy()
+    {
+        $this->request->onlyAllow('get');
+        $m = $this->_model;
+        $id = $this->request->query['id'];
+        $deletedModel = $this->$m->destroy($id, $m::STATUS_DISABLED);
+        $this->set(array('records' => $deletedModel[$m], '_serialize' => 'records'));
         $this->viewClass = 'Json';
     }
 
@@ -52,20 +91,11 @@ abstract class CrudController extends AppController {
      * P R I V A D O S  para R E D E F I N I R
      */
 
-    protected function c($model) {
-        return array();
-    }
+    abstract protected function c($model);
 
-    protected function u($model) {
-        return array();
-    }
+    abstract protected function u($model);
 
-    protected function id($model) {
-        return null;
-    }
+    abstract protected function id($model);
 
-    protected function getRecords() {
-        return array();
-    }
-
+    abstract protected function getRecords();
 }

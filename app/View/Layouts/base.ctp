@@ -25,6 +25,12 @@
                         <?php if (isset($description) === true): ?>
                             <p><?php echo $description; ?></p>
                         <?php endif; ?>
+                        <?php
+                        if (isset($breadcrumb))
+                        {
+                            $this->TioCachas->breadcrumb($breadcrumb);
+                        }
+                        ?>
                     </div>
                 <?php endif; ?>
             </div>

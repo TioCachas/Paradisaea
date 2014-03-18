@@ -20,10 +20,11 @@ class ShiftsController extends AppController {
     }
 
     public function config() {
-        $this->loadModel('Shift');
-        $this->loadModel('Line');
-        $shifts = $this->Shift->getAll();
-        $lines = $this->Line->getEnabled();
+        $user = $this->Auth->user();
+        $this->loadModel('UserShift');
+        $this->loadModel('UserLine');
+        $shifts = $this->UserShift->getByUser($user['id']);
+        $lines = $this->UserLine->getByUser($user['id']);
         $this->set('shifts', $shifts);
         $this->set('lines', $lines);
     }

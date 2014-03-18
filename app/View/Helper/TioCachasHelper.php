@@ -26,7 +26,7 @@ class TioCachasHelper extends AppHelper
     {
         ?>
         <script type="text/template" class="template <?php echo $otherClass; ?>">
-            <?php echo $this->_View->element('Swig/' . $element); ?>
+        <?php echo $this->_View->element('Swig/' . $element); ?>
         </script>
         <?php
     }
@@ -58,7 +58,7 @@ class TioCachasHelper extends AppHelper
                 'block' => 'scriptBottom'));
         }
     }
-    
+
     /**
      * Generamos un arreglo con URL hacia acciones CRUD contenidas en el mismo 
      * URL para CREATE
@@ -70,17 +70,34 @@ class TioCachasHelper extends AppHelper
      */
     public function urlsCRUD()
     {
-        $urlCreate = $this->_View->Html->url(array('action'=>'create'));
-        $urlRead = $this->_View->Html->url(array('action'=>'read'));
-        $urlUpdate = $this->_View->Html->url(array('action'=>'update'));
-        $urlDelete = $this->_View->Html->url(array('action'=>'destroy'));
+        $urlCreate = $this->_View->Html->url(array('action' => 'create'));
+        $urlRead = $this->_View->Html->url(array('action' => 'read'));
+        $urlUpdate = $this->_View->Html->url(array('action' => 'update'));
+        $urlDelete = $this->_View->Html->url(array('action' => 'destroy'));
         $array = array(
             'create' => $urlCreate,
             'read' => $urlRead,
             'update' => $urlUpdate,
-            'delete' => $urlDelete,
+            'destroy' => $urlDelete,
         );
         return $array;
+    }
+
+    public function breadcrumb($array)
+    {
+        if (is_array($array) === true && count($array) > 0):
+            ?>
+            <ol class="breadcrumb">
+                <?php foreach ($array as $key => $element): ?>
+                    <li>
+                        <a href="<?php echo $element; ?>">
+                            <?php echo $key; ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+        <?php endif; ?>
+        <?php
     }
 
 }

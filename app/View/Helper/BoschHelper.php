@@ -5,6 +5,28 @@ App::uses('UserLine', 'Model');
 class BoschHelper extends AppHelper
 {
 
+    public function userShifts($shifts)
+    {
+        array_walk($shifts, function($shift) {
+                    ?>
+                    <option value="<?php echo $shift['sId'] ?>">
+                        <?php echo $shift['sName'] ?>
+                    </option>
+                    <?php
+                });
+    }
+    
+    public function userLines($lines)
+    {
+        array_walk($lines, function($line) {
+                    ?>
+                    <option value="<?php echo $line['lId'] ?>">
+                        <?php echo $line['lName'] ?>
+                    </option>
+                    <?php
+                });
+    }
+
     public function shifts($shifts)
     {
         foreach ($shifts as $k => $shift)

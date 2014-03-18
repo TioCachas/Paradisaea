@@ -1,9 +1,9 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 
-class Area extends AppModel {
-
+class Area extends Crud
+{
     /**
      * Al Agregar/eliminar/actualizar las constantes de los modelos implica ir
      * y actualizar los comentarios en los campos de la tabla asociada a este modelo.
@@ -12,34 +12,14 @@ class Area extends AppModel {
     const STATUS_DISABLED = 0;
 
     /**
-     * Obtenemos los registros habilitados
+     * Obtenemos los registros para el grid del admin
      * @return type
      */
-    public function getEnabled() {
+    public function getEnabled()
+    {
         $order = array('name' => 'ASC');
         $records = $this->findAllByStatus(self::STATUS_ENABLED, array(), $order);
         return $this->flatArray($records);
-    }
-    
-    /**
-     * Insertamos un registro
-     * @param array $newData
-     * @return array
-     */
-    public function insert($newData) {
-        return $this->save($newData);
-    }
-    
-    /**
-     * Actualizamos un registro
-     * @param string $id
-     * @param array $modifyData
-     * @return array
-     */
-    public function update($id, $modifyData)
-    {
-        $this->id = $id;
-        return $this->save($modifyData);
     }
 
 }

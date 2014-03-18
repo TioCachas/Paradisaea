@@ -40,6 +40,24 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class='fa fa-folder'></i>
+                            <?php echo __('Catálogos'); ?>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'Areas', 'action' => 'admin'));
+                                ?>">
+                                    <i class='fa fa-folder-o'></i>
+                                    <?php echo __('Áreas'); ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 <?php endif; ?>
                 <li>
                     <a href="<?php
@@ -111,7 +129,7 @@
                                     'controller' => 'Sesion', 'action' => 'Logout'));
                                 ?>">
                                     <i class='fa fa-sign-out'></i>
-                                    <?php echo __('Cerrar sesion'); ?>
+                                    <?php echo __('Cerrar sesión'); ?>
                                 </a>
                             </li>
                         </ul>
