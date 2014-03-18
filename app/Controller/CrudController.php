@@ -35,7 +35,7 @@ abstract class CrudController extends AppController
             {
                 case 23000:
                     $this->response->statusCode(404);
-                    break;
+                    //break;
                 default:
                     throw $exc;
             }

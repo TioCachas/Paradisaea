@@ -70,8 +70,11 @@ $(document).ready(function() {
         toolbar: [{name: "create", text: "Agregar estación de trabajo"}],
         columns: [
             {field: "name", title: "Estación"},
-            {command: {text: "Defectos", click: showDefects}, title: "Defectos"},
             {command: [
+                    {
+                        text: "Defectos",
+                        click: showDefects
+                    },
                     {
                         name: "edit",
                         text: {

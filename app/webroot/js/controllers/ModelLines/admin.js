@@ -6,7 +6,7 @@ $(document).ready(function() {
                 dataType: "json",
                 statusCode: {
                     404: function() {
-                        alert("El nombre del área no está disponible");
+                        alert("El modelo ya está asociado a está línea");
                     }
                 }
             },
@@ -19,7 +19,7 @@ $(document).ready(function() {
                 dataType: "json",
                 statusCode: {
                     404: function() {
-                        alert("El nombre del área no está disponible");
+                        alert("El modelo ya está asociado a está línea");
                     }
                 }
             },
@@ -50,13 +50,11 @@ $(document).ready(function() {
             model: {
                 id: "id",
                 fields: {
-                    name: {
+                    model_id: {
+                        field: "model_id",
+                        defaultValue: appBosch.models[0].value,
                         editable: true,
-                        nullable: false,
-                        validation: {
-                            required: true,
-                            min: 1
-                        }
+                        nullable: false
                     }
                 }
             }
@@ -65,14 +63,12 @@ $(document).ready(function() {
 
     $("#grid").kendoGrid({
         dataSource: dataSource,
-        selectable: true,
         pageable: true,
         height: 520,
-        toolbar: [{name: "create", text: "Agregar área"}],
+        toolbar: [{name: "create", text: "Asociar modelo"}],
         columns: [
-            {field: "name", title: "Nombre"},
+            {field: "model_id", title: "Modelo", values: appBosch.models, },
             {command: [
-                    {text: "Líneas", click: showLines},
                     {
                         name: "edit",
                         text: {
@@ -86,17 +82,8 @@ $(document).ready(function() {
                         text: "Eliminar"
                     }], title: "&nbsp;"}],
         editable: {
-            confirmation: "¿Estas seguro que deseas eliminar está área?",
+            confirmation: "¿Estas seguro que deseas desasociar este modelo?",
             mode: "inline",
         }
     });
 });
-
-function showLines(e)
-{
-    e.preventDefault();
-    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-    var id = dataItem.id;
-    var url = appBosch.urlLines + '/' + id;
-    $(location).attr('href', url);
-}

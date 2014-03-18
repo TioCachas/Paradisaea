@@ -70,8 +70,9 @@ $(document).ready(function() {
         toolbar: [{name: "create", text: "Agregar línea"}],
         columns: [
             {field: "name", title: "Nombre"},
-            {command: {text: "Estaciones de trabajo", click: showWorkstations}, title: "Estaciones de trabajo"},
             {command: [
+                    {text: "Modelos", click: showModels},
+                    {text: "Estaciones de trabajo", click: showWorkstations},
                     {
                         name: "edit",
                         text: {
@@ -97,5 +98,14 @@ function showWorkstations(e)
     var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
     var id = dataItem.id;
     var url = appBosch.urlWorkstations + '/' + id;
+    $(location).attr('href', url);
+}
+
+function showModels(e)
+{
+    e.preventDefault();
+    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+    var id = dataItem.id;
+    var url = appBosch.urlModels + '/' + id;
     $(location).attr('href', url);
 }
