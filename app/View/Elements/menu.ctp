@@ -56,6 +56,15 @@
                                     <?php echo __('Áreas'); ?>
                                 </a>
                             </li>
+                            <li>
+                                <a href="<?php
+                                echo $this->Html->url(array(
+                                    'controller' => 'ModelBs', 'action' => 'admin'));
+                                ?>">
+                                    <i class='fa fa-folder-o'></i>
+                                    <?php echo __('Modelos'); ?>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 <?php endif; ?>
