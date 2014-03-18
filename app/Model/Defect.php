@@ -1,9 +1,9 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 
-class Defect extends AppModel {
-
+class Defect extends Crud
+{
     /**
      * Al Agregar/eliminar/actualizar las constantes de los modelos implica ir
      * y actualizar los comentarios en los campos de la tabla asociada a este modelo.
@@ -16,31 +16,12 @@ class Defect extends AppModel {
      * @param integer $workstationId
      * @return array
      */
-    public function getEnabledByWorkstation($workstationId) {
-        $order = array('code' => 'ASC');
-        $defects = $this->findAllByStatusAndWorkstationId(self::STATUS_ENABLED, $workstationId, array(), $order);
-        return $this->flatArray($defects);
-    }
-    
-    /**
-     * Insertamos un registro
-     * @param array $newData
-     * @return array
-     */
-    public function insert($newData) {
-        return $this->save($newData);
-    }
-    
-    /**
-     * Actualizamos un registro
-     * @param string $id
-     * @param array $modifyData
-     * @return array
-     */
-    public function update($id, $modifyData)
+    public function getEnabledByWorkstation($workstationId)
     {
-        $this->id = $id;
-        return $this->save($modifyData);
+        $order = array('code' => 'ASC');
+        $defects = $this->findAllByStatusAndWorkstationId(self::STATUS_ENABLED, $workstationId, array(
+), $order);
+        return $this->flatArray($defects);
     }
 
 }
