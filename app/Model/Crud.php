@@ -6,12 +6,6 @@ abstract class Crud extends AppModel
 {
 
     /**
-     * Obtenemos los registros habilitados
-     * @return type
-     */
-    abstract public function getEnabled();
-
-    /**
      * Insertamos un registro
      * @param array $newData
      * @return array

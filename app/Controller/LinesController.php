@@ -18,13 +18,16 @@ class LinesController extends CrudController
 
     public function admin($areaId)
     {
+        $this->loadModel('Area');
+        $this->Area->id = $areaId;
+        $area = $this->Area->read();
         $breadcrumb = array(
-            __('áreas') => Router::url(array('controller' => 'Areas', 'action' => 'admin')),
+            $area['Area']['name'] => Router::url(array('controller' => 'Areas', 'action' => 'admin')),
         );
         $this->Session->write('areaId', $areaId);
         $this->set('breadcrumb', $breadcrumb);
         $this->set('title', __('Líneas de producción'));
-        $this->set('description', __('Administración de líneas de producción'));
+        $this->set('description', __('Administración'));
     }
 
     protected function getRecords()

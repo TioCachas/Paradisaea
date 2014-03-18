@@ -8,7 +8,7 @@ class AreasController extends CrudController {
 
     public function admin() {
         $this->set('title', __('Áreas'));
-        $this->set('description', __('Administración de áreas'));
+        $this->set('description', __('Administración'));
     }
 
     protected function getRecords() {

@@ -1,9 +1,9 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 
-class Workstation extends AppModel {
-
+class Workstation extends Crud
+{
     /**
      * Al Agregar/eliminar/actualizar las constantes de los modelos implica ir
      * y actualizar los comentarios en los campos de la tabla asociada a este modelo.
@@ -16,10 +16,12 @@ class Workstation extends AppModel {
      * @param integer $lineId
      * @return array
      */
-    public function getEnabledByLine($lineId) {
+    public function getEnabledByLine($lineId)
+    {
         $order = array('name' => 'ASC');
-        $workstations = $this->findAllByStatusAndLineId(self::STATUS_ENABLED, $lineId, array(), $order);
-        return $workstations;
+        $workstations = $this->findAllByStatusAndLineId(self::STATUS_ENABLED, $lineId, array(
+                ), $order);
+        return $this->flatArray($workstations);
     }
 
     /**
@@ -27,7 +29,8 @@ class Workstation extends AppModel {
      * @param string $lineId
      * @return array
      */
-    public function getByLine($lineId) {
+    public function getByLine($lineId)
+    {
         $order = array('name' => 'ASC');
         $workstations = $this->findAllByLineId($lineId, array(), $order);
         return $workstations;
@@ -37,7 +40,8 @@ class Workstation extends AppModel {
      * Obtenemos las estaciones de trabajo de una linea con detalles sobre la linea
      * @param string $lineId
      */
-    public function getEnabledByLineDetail($lineId) {
+    public function getEnabledByLineDetail($lineId)
+    {
         $params = array(
             'lId' => $lineId,
         );
@@ -55,25 +59,6 @@ class Workstation extends AppModel {
                 AND w.status = ' . self::STATUS_ENABLED . '
             ORDER BY w.name ASC', $params);
         return $this->flatArray($records);
-    }
-
-    /*
-     * Creamos una nueva estacion de trabajo
-     */
-    public function insert($newData) {
-        return $this->save($newData);
-    }
-    
-    /**
-     * Actualizamos el registro
-     * @param type $id
-     * @param type $name
-     * @return type
-     */
-    public function update($id, $modifyData)
-    {
-        $this->id = $id;
-        return $this->save($modifyData);
     }
 
 }

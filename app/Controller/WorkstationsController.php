@@ -1,13 +1,27 @@
 <?php
 
 App::uses('CrudController', 'Controller');
-App::uses('Workstation', 'Model');
 
 class WorkstationsController extends CrudController {
+    
+    public $_model = 'Workstation';
 
-    public function admin() {
+    public function admin($lineId) {
+        $areaId = $this->Session->read('areaId');
+        $this->loadModel('Area');
+        $this->loadModel('Line');
+        $this->Area->id = $areaId;
+        $area = $this->Area->read();
+        $this->Line->id = $lineId;
+        $line = $this->Line->read();
+        $breadcrumb = array(
+            $area['Area']['name'] => Router::url(array('controller' => 'Areas', 'action' => 'admin')),
+            $line['Line']['name'] => Router::url(array('controller' => 'Lines', 'action' => 'admin', $areaId)),
+        );
+        $this->Session->write('lineId', $lineId);
+        $this->set('breadcrumb', $breadcrumb);
         $this->set('title', __('Estaciones de trabajo'));
-        $this->set('description', __('Administra las estaciones de trabajo'));
+        $this->set('description', __('Administración'));
     }
 
     /*
@@ -15,25 +29,27 @@ class WorkstationsController extends CrudController {
      */
 
     protected function getRecords() {
-        $workstations = $this->Workstation->getEnabledByLineDetail('aed09b6e-912d-11e3-8702-642737866159');
-        return $workstations;
+        $lineId = $this->Session->read('lineId');
+        $m = $this->_model;
+        $records = $this->$m->getEnabledByLine($lineId);
+        return $records;
     }
 
     protected function c($model) {
         return array(
-            'name' => $model->wName,
-            'line_id' => 'aed09b6e-912d-11e3-8702-642737866159',
+            'name' => trim($model->name),
+            'line_id' => $this->Session->read('lineId'),
             'status' => Workstation::STATUS_ENABLED,
         );
     }
 
     protected function id($model) {
-        return $model->wId;
+        return $model->id;
     }
 
-    protected function d($model) {
+    protected function u($model) {
         return array(
-            'name' => $model->wName,
+            'name' => trim($model->name),
         );
     }
 

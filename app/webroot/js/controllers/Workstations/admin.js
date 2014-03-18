@@ -3,7 +3,12 @@ $(document).ready(function() {
         transport: {
             create: {
                 url: appBosch.crud.create,
-                dataType: "json"
+                dataType: "json",
+                statusCode: {
+                    404: function() {
+                        alert("El nombre de la estación de trabajo no está disponible");
+                    }
+                }
             },
             read: {
                 url: appBosch.crud.read,
@@ -11,26 +16,48 @@ $(document).ready(function() {
             },
             update: {
                 url: appBosch.crud.update,
-                dataType: "json"
+                dataType: "json",
+                statusCode: {
+                    404: function() {
+                        alert("El nombre de la estación de trabajo no está disponible");
+                    }
+                }
             },
             destroy: {
                 url: appBosch.crud.destroy,
                 dataType: "json"
             },
             parameterMap: function(options, operation) {
-                if (operation !== "read" && options.models) {
-                    return {models: kendo.stringify(options.models)};
+                var params = {};
+                switch (operation)
+                {
+                    case 'create':
+                        params = {models: kendo.stringify(options.models)};
+                    case 'read':
+                        break;
+                    case 'update':
+                        params = {models: kendo.stringify(options.models)};
+                        break;
+                    case 'destroy':
+                        params = {id: options.models[0].id};
                 }
+                return params;
             }
         },
         batch: true,
         pageSize: 10,
         schema: {
             model: {
-                id: "wId",
+                id: "id",
                 fields: {
-                    wName: {editable: true, nullable: false, validation: {required: true, min: 1}},
-                    lName: {editable: false, nullable: false}
+                    name: {
+                        editable: true,
+                        nullable: false,
+                        validation: {
+                            required: true,
+                            min: 1
+                        }
+                    }
                 }
             }
         }
@@ -40,13 +67,27 @@ $(document).ready(function() {
         dataSource: dataSource,
         pageable: true,
         height: 520,
-        toolbar: ["create"],
+        toolbar: [{name: "create", text: "Agregar estación de trabajo"}],
         columns: [
-            {field: "wName", title: "Estacion"},
-            {field: "lName", title: "Linea"},
+            {field: "name", title: "Estación"},
             {command: {text: "Defectos", click: showDefects}, title: "Defectos"},
-            {command: ["edit", "destroy"], title: "&nbsp;"}],
-        editable: 'inline'
+            {command: [
+                    {
+                        name: "edit",
+                        text: {
+                            edit: "Editar",
+                            update: "Actualizar",
+                            cancel: "Cancelar"
+                        },
+                    },
+                    {
+                        name: "destroy",
+                        text: "Eliminar"
+                    }], title: "&nbsp;"}],
+        editable: {
+            confirmation: "¿Estas seguro que deseas eliminar está estación de trabajo?",
+            mode: "inline",
+        }
     });
 });
 
