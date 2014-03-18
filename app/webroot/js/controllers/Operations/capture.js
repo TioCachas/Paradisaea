@@ -186,7 +186,7 @@ function getOperations()
     var dt = workDate.data("kendoDatePicker").value();
     if (blockGetOperations === false && dt !== null)
     {
-        var ymd = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
+        var ymd = dt.getFullYear() + '-' + (parseInt(dt.getMonth()) + 1) + '-' + dt.getDate();
         var tfoot = target.find('table.table tfoot');
         target.find('tr.bosch').remove();
         target.find('tr.error').addClass('hidden');

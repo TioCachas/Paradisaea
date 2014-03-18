@@ -26,7 +26,7 @@
                                     'controller' => 'Operations', 'action' => 'capture'));
                                 ?>">
                                     <i class='fa fa-cogs'></i>
-                                    <?php echo __('Crear'); ?>
+                                    <?php echo __('Capturar'); ?>
                                 </a>
                             </li>
                             <li>

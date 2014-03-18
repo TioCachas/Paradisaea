@@ -10,6 +10,7 @@
         <title>Bosch</title>
         <?php echo $this->Html->css('vendors/bootstrap/min'); ?>
         <?php echo $this->Html->css('vendors/font-awesome/min'); ?>
+        <?php echo $this->Html->css('vendors/jqueryui/min'); ?>
         <?php echo $this->Html->css('base'); ?>
         <?php echo $this->Html->css('menu'); ?>
         <?php echo $this->Html->css('footer'); ?>
@@ -42,6 +43,7 @@
         <?php echo $this->fetch('jsVars'); ?>
         <?php echo $this->Html->script('init') . PHP_EOL; ?>
         <?php echo $this->Html->script('vendors/jquery/1.10.1.min') . PHP_EOL; ?>
+        <?php echo $this->Html->script('vendors/jqueryui/min') . PHP_EOL; ?>
         <?php echo $this->Html->script('base') . PHP_EOL; ?>
         <?php echo $this->Html->script('vendors/underscore/min') . PHP_EOL; ?>
         <?php echo $this->Html->script('vendors/swig/min') . PHP_EOL; ?>

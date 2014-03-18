@@ -258,8 +258,13 @@ class Operation extends AppModel {
             INNER JOIN us3rs_m0n1t0r u ON u.id = o.user_id
             INNER JOIN production_lines l ON o.line_id = l.id
             INNER JOIN hours h ON o.hour_id = h.id
+            INNER JOIN shifts s ON s.id = h.shift_id
             WHERE o.work_date = ?
-            ORDER BY o.creation_date DESC, l.name ASC", $params);
+            ORDER BY 
+                  l.name ASC
+                , o.work_date DESC
+                , s.number ASC
+                , h.number ASC", $params);
         return $this->flatArray($operations);
     }
 
