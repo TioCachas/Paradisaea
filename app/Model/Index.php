@@ -1,9 +1,9 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 
-class Index extends AppModel {
-
+class Index extends Crud
+{
     /**
      * Al Agregar/eliminar/actualizar las constantes de los modelos implica ir
      * y actualizar los comentarios en los campos de la tabla asociada a este modelo.
@@ -17,8 +17,11 @@ class Index extends AppModel {
      * Obtenemos todos los indexes que estan habilitados
      * @return type
      */
-    public function getEnabled() {
-        return $this->findAllByStatus(self::STATUS_ENABLED);
+    public function getEnabledByModelId($modelId)
+    {
+        $order = array('name' => 'ASC');
+        $records = $this->findAllByStatusAndModelId(self::STATUS_ENABLED, $modelId, array(), $order);
+        return $this->flatArray($records);
     }
 
 }

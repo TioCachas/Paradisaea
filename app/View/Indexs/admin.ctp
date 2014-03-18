@@ -1,9 +1,8 @@
 <?php
 $this->TioCachas->addKendo();
-$this->Html->script('controllers/ModelBs/admin', array('block' => 'scriptBottom'));
+$this->Html->script('controllers/Indexs/admin', array('block' => 'scriptBottom'));
 $appBosch = new stdClass();
 $appBosch->crud = $this->TioCachas->urlsCRUD();
-$appBosch->urlIndex = $this->Html->url(array('controller' => 'Indexs', 'action' => 'admin'));
 ?>
 <div id="example" class="k-content">
     <div id="grid"></div>

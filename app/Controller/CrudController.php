@@ -25,7 +25,8 @@ abstract class CrudController extends AppController
         $result = false;
         try
         {
-            $newModel = $this->$m->insert($this->c($model));
+            $data = $this->c($model);
+            $newModel = $this->$m->insert($data);
             $result = $newModel[$m];
         }
         catch (PDOException $exc)
