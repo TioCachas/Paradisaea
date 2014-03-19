@@ -6,7 +6,7 @@ $(document).ready(function() {
                 dataType: "json",
                 statusCode: {
                     404: function() {
-                        alert("El código del defecto no está disponible");
+                        alert("El código de pérdida no está disponible");
                     }
                 }
             },
@@ -19,7 +19,7 @@ $(document).ready(function() {
                 dataType: "json",
                 statusCode: {
                     404: function() {
-                        alert("El código del defecto no está disponible");
+                        alert("El código de pérdida no está disponible");
                     }
                 }
             },
@@ -63,6 +63,12 @@ $(document).ready(function() {
                         validation: {
                             required: true
                         }
+                    },
+                    type: {
+                        field: "type",
+                        defaultValue: appBosch.typesLosses[0].value,
+                        editable: true,
+                        nullable: false
                     }
                 }
             }
@@ -73,10 +79,11 @@ $(document).ready(function() {
         dataSource: dataSource,
         pageable: true,
         height: 520,
-        toolbar: [{name: "create", text: "Agregar defecto"}],
+        toolbar: [{name: "create", text: "Agregar código de pérdida"}],
         columns: [
             {field: "code", title: "Código"},
             {field: "description", title: "Descripción"},
+            {field: "type", title: "Tipo de pérdida", values: appBosch.typesLosses, },
             {command: [
                     {
                         name: "edit",
@@ -91,7 +98,7 @@ $(document).ready(function() {
                         text: "Eliminar"
                     }], title: "&nbsp;"}],
         editable: {
-            confirmation: "¿Estas seguro que deseas eliminar este defecto?",
+            confirmation: "¿Estas seguro que deseas eliminar este código de pérdida?",
             mode: "inline",
         }
     });

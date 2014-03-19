@@ -72,7 +72,7 @@ $(document).ready(function() {
             {field: "name", title: "Estación"},
             {command: [
                     {
-                        text: "Defectos",
+                        text: "Códigos de pérdidas",
                         click: showDefects
                     },
                     {

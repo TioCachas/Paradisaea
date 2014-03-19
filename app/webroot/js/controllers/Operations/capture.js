@@ -246,7 +246,7 @@ function createChart() {
                 visible: true
             },
             seriesDefaults: {
-                type: "line",
+                type: "area",
                 style: "smooth",
                 labels: {
                     visible: true,

@@ -28,8 +28,9 @@ class DefectsController extends CrudController
                 $lineId)),
         );
         $this->Session->write('workstationId', $workstationId);
+        $this->set('typesLosses', Defect::typesTextAndValue());
         $this->set('breadcrumb', $breadcrumb);
-        $this->set('title', __('Defectos'));
+        $this->set('title', __('Códigos de pérdida'));
         $this->set('description', __('Administración'));
     }
 
@@ -48,6 +49,7 @@ class DefectsController extends CrudController
             'code' => trim($model->code),
             'description' => trim($model->description),
             'workstation_id' => $workstationId,
+            'type' => $model->type,
             'status' => Defect::STATUS_ENABLED,
         );
     }
@@ -62,6 +64,7 @@ class DefectsController extends CrudController
         return array(
             'code' => trim($model->code),
             'description' => trim($model->description),
+            'type' => $model->type,
         );
     }
 
