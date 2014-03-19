@@ -53,13 +53,41 @@ class Defect extends Crud {
 
     /**
      * obtenemos los defectos que puede generar una linea de trabajo
-     * @param integer $workstationId
+     * @param string $workstationId
      * @return array
      */
     public function getEnabledByWorkstation($workstationId) {
         $order = array('creation_date' => 'DESC');
         $defects = $this->findAllByStatusAndWorkstationId(self::STATUS_ENABLED, $workstationId, array(), $order);
         return $this->flatArray($defects);
+    }
+    
+    public function getEnabledByWorkstationAndType($workstationId, $type) {
+        $filters = array(
+            'conditions' => array(
+                'status' => self::STATUS_ENABLED,
+                'workstation_id' => $workstationId,
+                'type' => $type,
+            ),
+            'order' => 'creation_date ASC',
+        );
+        $records = $this->find('all', $filters);
+        return $this->flatArray($records);
+    }
+
+    /**
+     * Obtenemos todos los defectos habilitados de una linea
+     * @param type $operationId
+     * @return type
+     */
+    public function getEnabledByLineId($lineId) {
+        $params = array($lineId);
+        $records = $this->query('
+            SELECT d.* 
+            FROM defects d
+            INNER JOIN workstations w ON d.workstation_id = w.id
+            WHERE w.line_id = ?', $params);
+        return $this->flatArray($records);
     }
 
 }

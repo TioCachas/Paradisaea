@@ -11,7 +11,7 @@ $urlProductionsCapture = $this->Html->url(array('controller' => 'Productions', '
 $urlScrapCapture = $this->Html->url(array('controller' => 'Scraps', 'action' => 'capture'));
 $urlReworkCapture = $this->Html->url(array('controller' => 'Reworks', 'action' => 'capture'));
 $urlChangeoverCapture = $this->Html->url(array('controller' => 'Changeovers', 'action' => 'capture'));
-$urlTechnicalCapture = $this->Html->url(array('controller' => 'Technicals', 'action' => 'capture'));
+$urlTechnicalCapture = $this->Html->url(array('controller' => 'Technicals', 'action' => 'admin'));
 $urlOrganizationalCapture = $this->Html->url(array('controller' => 'Organizationals', 'action' => 'capture'));
 $urlQualityCapture = $this->Html->url(array('controller' => 'Qualities', 'action' => 'capture'));
 $urlPerformanceCapture = $this->Html->url(array('controller' => 'Performance', 'action' => 'capture'));

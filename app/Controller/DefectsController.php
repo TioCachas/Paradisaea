@@ -3,12 +3,11 @@
 App::uses('CrudController', 'Controller');
 App::uses('Defect', 'Model');
 
-class DefectsController extends CrudController
-{
+class DefectsController extends CrudController {
+
     public $_model = 'Defect';
 
-    public function admin($workstationId)
-    {
+    public function admin($workstationId) {
         $areaId = $this->Session->read('areaId');
         $lineId = $this->Session->read('lineId');
         $this->loadModel('Area');
@@ -34,16 +33,14 @@ class DefectsController extends CrudController
         $this->set('description', __('Administración'));
     }
 
-    protected function getRecords()
-    {
+    protected function getRecords() {
         $workstationId = $this->Session->read('workstationId');
         $m = $this->_model;
         $records = $this->Defect->getEnabledByWorkstation($workstationId);
         return $records;
     }
 
-    protected function c($model)
-    {
+    protected function c($model) {
         $workstationId = $this->Session->read('workstationId');
         return array(
             'code' => trim($model->code),
@@ -54,18 +51,30 @@ class DefectsController extends CrudController
         );
     }
 
-    protected function id($model)
-    {
+    protected function id($model) {
         return $model->id;
     }
 
-    protected function u($model)
-    {
+    protected function u($model) {
         return array(
             'code' => trim($model->code),
             'description' => trim($model->description),
             'type' => $model->type,
         );
+    }
+
+    public function getByWorkstationAndType() {
+        $params = $this->request->query;
+        $type = $params['type'];
+        $workstationId = $params['filter']['filters'][0]['value'];
+        $defects = $this->Defect->getEnabledByWorkstationAndType($workstationId, $type);
+        $ds = array();
+        array_walk($defects, function($defect) use(&$ds) {
+            $text = '[' . $defect['code'] . '] ' . $defect['description'];
+            $ds[] = array('text' => $text, 'value' => $defect['id']);
+        });
+        $this->set(array('defects' => $ds, '_serialize' => 'defects'));
+        $this->viewClass = 'Json';
     }
 
 }
