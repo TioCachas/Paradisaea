@@ -154,6 +154,9 @@ function getLinesAndShifts(userId)
 function fnWnd(element, url, title)
 {
     var operationId = element.parent().attr('data-id');
+    var hStart = element.parent().attr('data-start');
+    var hEnd = element.parent().attr('data-end');
+    title += ' [' + hStart + ' - ' + hEnd + ']';
     element.find('span').addClass('hidden');
     element.find('.fa-spin').removeClass('hidden');
     url = url + '/' + operationId;

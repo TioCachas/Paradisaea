@@ -3,12 +3,7 @@ $(document).ready(function() {
         transport: {
             create: {
                 url: appBosch.crud.create,
-                dataType: "json",
-                statusCode: {
-                    404: function() {
-                        alert("El nombre de la estación de trabajo no está disponible");
-                    }
-                }
+                dataType: "json"
             },
             read: {
                 url: appBosch.crud.read,
@@ -16,12 +11,7 @@ $(document).ready(function() {
             },
             update: {
                 url: appBosch.crud.update,
-                dataType: "json",
-                statusCode: {
-                    404: function() {
-                        alert("El nombre de la estación de trabajo no está disponible");
-                    }
-                }
+                dataType: "json"
             },
             destroy: {
                 url: appBosch.crud.destroy,
@@ -46,6 +36,9 @@ $(document).ready(function() {
         },
         batch: true,
         pageSize: 10,
+        aggregate: [
+            {field: "value", aggregate: "count"},
+            {field: "value", aggregate: "sum"}],
         schema: {
             model: {
                 id: "id",
@@ -60,12 +53,20 @@ $(document).ready(function() {
                     workstation_id: {
                         field: "workstation_id",
                         editable: true,
-                        nullable: false
+                        nullable: false,
+                        defaultValue: appBosch.workstationsByLine[0].value,
+                        validation: {
+                            required: true
+                        }
                     },
                     defect_id: {
                         field: "defect_id",
                         editable: true,
-                        nullable: false
+                        nullable: false,
+                        defaultValue: appBosch.defectsByLine[0].value,
+                        validation: {
+                            required: true
+                        }
                     }
                 }
             }
@@ -74,49 +75,63 @@ $(document).ready(function() {
     $("#grid").kendoGrid({
         dataSource: dataSource,
         pageable: false,
+        scrollable: true,
+        filterable: true,
+        selectable: true,
+        navigatable: true,
         height: '100%',
         toolbar: [{name: "create", text: "Agregar pérdida técnica"}],
         columns: [
-            {field: "value", title: "Valor", width: "80px"},
+            {
+                field: "value",
+                title: "Valor",
+                width: "80px",
+                footerTemplate: "#=sum # min"
+            },
             {
                 field: "workstation_id",
                 title: "Estación de trabajo",
-                id: 'workstations',
                 editor: workstationDropDownEditor,
-                values: appBosch.workstations,
-                defaultValue: appBosch.workstations[0].value,
+                values: appBosch.workstationsByLine,
                 width: "150px"
             },
-            {field: "defect_id", title: "Código de pérdida", editor: defectDropDownEditor, values: appBosch.defects, width: "350px"},
-            {command: [
+            {
+                field: "defect_id",
+                title: "Código de pérdida",
+                editor: defectDropDownEditor,
+                values: appBosch.defectsByLine,
+                width: "350px"
+            },
+            {
+                command: [
                     {
                         name: "edit",
                         text: {
                             edit: "",
                             update: "",
                             cancel: ""
-                        },
+                        }
                     },
                     {
                         name: "destroy",
                         text: ""
-                    }], title: "&nbsp;"}],
+                    }
+                ],
+                title: "&nbsp;"
+            }
+        ],
         editable: {
-            confirmation: "¿Estas seguro que deseas eliminar está estación de trabajo?",
-            mode: "inline",
+            confirmation: "¿Estas seguro que deseas eliminar está pérdida técnica?",
+            mode: "inline"
         }
     });
 });
-
 function workstationDropDownEditor(container, options) {
     $('<input id="workstations" required data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '"/>')
             .appendTo(container)
             .kendoDropDownList({
-                autoBind: true,
-                dataSource: appBosch.workstations,
-                dataBound: function(){
-                    this.select(0);
-                }
+                autoBind: false,
+                dataSource: appBosch.workstationsByLine,
             });
 }
 

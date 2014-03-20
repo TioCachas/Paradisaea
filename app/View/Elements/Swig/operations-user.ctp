@@ -4,7 +4,7 @@ $urlProductions = $this->Html->url(array(
 $symbolHtmlUnits = Units::symbolHtml(Units::UNITS);
 $symbolHtmlminutes = Units::symbolHtml(Units::MINUTES);
 ?>
-<tr data-id="{{ oId }}" class="bosch">
+<tr data-id="{{ oId }}" class="bosch" data-start="{{hStart}}" data-end="{{hEnd}}">
     <td>{{ hStart }}</td>
     <td>{{ hEnd }}</td>
     <td>{{ models }}</td>
