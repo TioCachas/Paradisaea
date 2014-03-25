@@ -78,7 +78,7 @@ class TechnicalsController extends CrudController {
         $m = $this->_model;
         return array(
             'operation_id' => $this->Session->read('operationId'),
-            'value' => $model->value,
+            'value' => (int)$model->value,
             'workstation_id' => $model->workstation_id,
             'defect_id' => $model->defect_id,
             'status' => $m::STATUS_ENABLED,
@@ -92,7 +92,7 @@ class TechnicalsController extends CrudController {
      */
     protected function u($model) {
         return array(
-            'value' => $model->value,
+            'value' => (int)$model->value,
             'workstation_id' => $model->workstation_id,
             'defect_id' => $model->defect_id,
         );
