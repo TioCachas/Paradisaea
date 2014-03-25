@@ -29,7 +29,7 @@ abstract class CrudController extends AppController {
             switch ($exc->getCode()) {
                 case 23000:
                     $this->response->statusCode(404);
-                //break;
+                    break;
                 default:
                     throw $exc;
             }

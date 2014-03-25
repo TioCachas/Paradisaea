@@ -32,7 +32,7 @@ class TechnicalsController extends CrudController {
                         $text = '[' . $defect['code'] . '] ' . $defect['description'];
                         $o = array('text' => $text, 'value' => $defect['id']);
                         $dsl[] = $o;
-                        if ($defect['workstation_id'] == $firstWorkstationId){
+                        if ($defect['workstation_id'] == $firstWorkstationId) {
                             $defectsByFirstWorkstation[] = $o;
                         }
                     }
@@ -42,6 +42,16 @@ class TechnicalsController extends CrudController {
                     $appBosch->defectsByLine = $dsl; // Defectos por linea
                     $appBosch->defectsByFirstWorkstation = $defectsByFirstWorkstation;
                     $appBosch->type = Defect::TYPE_TECHNICAL;
+                    /**
+                     * Esta variable permite bloquear la acción de actualizar una 
+                     * operación. Esto puede ocurrir por las siguientes razones:
+                     * 1) No se ha cargado la lista de defectos
+                     * 2) No se ha seleccionado un defecto
+                     * Revisar los comentarios en JS para cada uso para entender 
+                     * el funcionamiento general de esta variable.
+                     * Boolean
+                     */
+                    $appBosch->blockEdit = false;
                     $this->set('appBosch', $appBosch);
                 }
             }

@@ -1,17 +1,12 @@
-/**
- * Esta variable global permite bloquear la acción de actualizar una operación.
- * Esto puede ocurrir por las siguientes razones:
- * 1) No se ha cargado la lista de defectos
- * 2) No se ha seleccionado un defecto
- * Revisar los comentarios en cada uso para entender el funcionamiento general
- * de esta variable.
- * @type Boolean|Boolean|Boolean
- */
-var blockUpdate = false;
-
 $(document).ready(function() {
     dataSource = new kendo.data.DataSource({
         transport: {
+            /**
+             * TIP!
+             * Las objetos CREATE, READ, UPDATE y DESTROY corresponden aun objeto
+             * que se invoca utilizando $.ajax
+             * https://api.jquery.com/jQuery.ajax/
+             */
             create: {
                 url: appBosch.crud.create,
                 dataType: "json"
@@ -21,12 +16,12 @@ $(document).ready(function() {
                 dataType: "json"
             },
             update: {
-                beforeSend: function(){
+                beforeSend: function() {
                     /**
                      * Si blockUpdate === false el ajax no se ejecuta. Decimos 
                      * que la operacion UPDATE esta bloqueada.
                      */
-                    return blockUpdate;
+                    return appBosch.blockEdit;
                 },
                 url: appBosch.crud.update,
                 dataType: "json"
@@ -35,18 +30,26 @@ $(document).ready(function() {
                 url: appBosch.crud.destroy,
                 dataType: "json"
             },
+            /**
+             * Esta funcion permite especificar como se envia el modelo dependiendo
+             * del tipo de operacion que se invoca.
+             */
             parameterMap: function(options, operation) {
                 var params = {};
                 switch (operation)
                 {
                     case 'create':
+                        /// Arreglo de modelos
                         params = {models: kendo.stringify(options.models)};
                     case 'read':
+                        /// Sin parametros
                         break;
                     case 'update':
+                        /// Arreglo de modelos
                         params = {models: kendo.stringify(options.models)};
                         break;
                     case 'destroy':
+                        /// Id del modelo a eliminar
                         params = {id: options.models[0].id};
                 }
                 return params;
@@ -67,7 +70,7 @@ $(document).ready(function() {
                             required: true,
                             min: 1
                         },
-                        format: "0 min",
+                        format: "0 min"
                     },
                     workstation_id: {
                         field: "workstation_id",
@@ -148,6 +151,15 @@ $(document).ready(function() {
         editable: {
             confirmation: "¿Estas seguro que deseas eliminar está pérdida técnica?",
             mode: "inline"
+        },
+        edit: function() {
+            /**
+             * En UPDATE o CREATE bloqueamos. Se desbloquea cuando se cargan los
+             * defectos.
+             * Esta funcion se manda llamar cuando se da clic en el boton de nuevo
+             * o editar.
+             */
+            appBosch.blockEdit = false;
         }
     });
 });
@@ -155,43 +167,53 @@ function workstationDropDownEditor(container, options) {
     $('<input id="workstations" required data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '"/>')
             .appendTo(container)
             .kendoDropDownList({
-        autoBind: false,
-        dataSource: appBosch.workstationsByLine,
-        change: function(){
-            /**
-             * Si cambiamos una estación de trabajo bloqueamos la operación de
-             * CREATE o UPDATE. Se desbloquea hasta que se cargan los defectos
-             * asociados a la estación de trabajo que se ha seleccionado.
-             */
-            blockUpdate = false;
-        }
-    });
+                autoBind: false,
+                dataSource: appBosch.workstationsByLine,
+                change: function() {
+                    /**
+                     * Si cambiamos una estación de trabajo bloqueamos la operación de
+                     * CREATE o UPDATE. Se desbloquea hasta que se cargan los defectos
+                     * asociados a la estación de trabajo que se ha seleccionado.
+                     */
+                    appBosch.blockEdit = false;
+                }
+            });
 }
 
 function defectDropDownEditor(container, options) {
     $('<input required data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '"/>')
             .appendTo(container)
             .kendoDropDownList({
-        cascadeFrom: "workstations",
-        autoBind: false,
-        dataBound: function(){
-            /**
-             * Se ha terminado de cargar los defectos, desbloqueamos la operación
-             * UPDATE o CREATE.
-             */
-            blockUpdate = true;
-        },
-        dataSource: {
-            type: "json",
-            serverFiltering: true,
-            transport: {
-                read: {
-                    url: appBosch.urlDefects,
-                    data: {
-                        type: appBosch.type
+                cascadeFrom: "workstations",
+                autoBind: false,
+                dataBound: function() {
+                    /**
+                     * Cuando se termina la carga de los defectos, colocamos el
+                     * primer defecto como default.
+                     */
+                    options.model.defect_id = this.dataSource.at(0).value;
+                    /**
+                     * Se ha terminado de cargar los defectos, desbloqueamos la operación
+                     * UPDATE o CREATE.
+                     */
+                    appBosch.blockEdit = true;
+                },
+                dataSource: {
+                    type: "json",
+                    /**
+                     * IMPORTANTE!!!
+                     * En TRUE envia la estacion de trabajo que desencadeno este
+                     * evento.
+                     */
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            url: appBosch.urlDefects,
+                            data: {
+                                type: appBosch.type
+                            }
+                        }
                     }
                 }
-            }
-        }
-    });
+            });
 }
