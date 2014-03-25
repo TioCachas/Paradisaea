@@ -16,7 +16,7 @@ class TechnicalsController extends CrudController {
         if (isset($operation['Operation']) === true) {
             $lineId = $operation['Operation']['line_id'];
             $this->loadModel('Workstation');
-            $workstationsByLine = $this->Workstation->getEnabledByLine($lineId);
+            $workstationsByLine = $this->Workstation->getEnabledByLineAndType($lineId, Workstation::TYPE_TECHNICAL);
             if (count($workstationsByLine) > 0) {
                 $wsl = array();
                 foreach ($workstationsByLine as $workstation) {
@@ -41,7 +41,7 @@ class TechnicalsController extends CrudController {
                     $appBosch->workstationsByLine = $wsl; // Estaciones de trabajo en la linea
                     $appBosch->defectsByLine = $dsl; // Defectos por linea
                     $appBosch->defectsByFirstWorkstation = $defectsByFirstWorkstation;
-                    $appBosch->type = Defect::TYPE_TECHNICAL;
+                    $appBosch->type = Workstation::TYPE_TECHNICAL;
                     /**
                      * Esta variable permite bloquear la acción de actualizar una 
                      * operación. Esto puede ocurrir por las siguientes razones:

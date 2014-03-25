@@ -41,7 +41,7 @@ class QualitiesController extends CrudController {
                     $appBosch->workstationsByLine = $wsl; // Estaciones de trabajo en la linea
                     $appBosch->defectsByLine = $dsl; // Defectos por linea
                     $appBosch->defectsByFirstWorkstation = $defectsByFirstWorkstation;
-                    $appBosch->type = Defect::TYPE_QUALITY;
+                    $appBosch->type = Workstation::TYPE_QUALITY;
                     /**
                      * Esta variable permite bloquear la acción de actualizar una 
                      * operación. Esto puede ocurrir por las siguientes razones:

@@ -41,7 +41,7 @@ class OrganizationalsController extends CrudController {
                     $appBosch->workstationsByLine = $wsl; // Estaciones de trabajo en la linea
                     $appBosch->defectsByLine = $dsl; // Defectos por linea
                     $appBosch->defectsByFirstWorkstation = $defectsByFirstWorkstation;
-                    $appBosch->type = Defect::TYPE_ORGANIZATIONAL;
+                    $appBosch->type = Workstation::TYPE_ORGANIZATIONAL;
                     /**
                      * Esta variable permite bloquear la acción de actualizar una 
                      * operación. Esto puede ocurrir por las siguientes razones:

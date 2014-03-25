@@ -14,7 +14,7 @@ $urlChangeoverCapture = $this->Html->url(array('controller' => 'Changeovers', 'a
 $urlTechnicalCapture = $this->Html->url(array('controller' => 'Technicals', 'action' => 'admin'));
 $urlOrganizationalCapture = $this->Html->url(array('controller' => 'Organizationals', 'action' => 'admin'));
 $urlQualityCapture = $this->Html->url(array('controller' => 'Qualities', 'action' => 'admin'));
-$urlPerformanceCapture = $this->Html->url(array('controller' => 'Performance', 'action' => 'capture'));
+$urlPerformanceCapture = $this->Html->url(array('controller' => 'Performance', 'action' => 'admin'));
 $urlCapture = array(
     'productions' => $urlProductionsCapture,
     'scrap' => $urlScrapCapture,
