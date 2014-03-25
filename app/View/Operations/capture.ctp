@@ -13,7 +13,7 @@ $urlReworkCapture = $this->Html->url(array('controller' => 'Reworks', 'action' =
 $urlChangeoverCapture = $this->Html->url(array('controller' => 'Changeovers', 'action' => 'capture'));
 $urlTechnicalCapture = $this->Html->url(array('controller' => 'Technicals', 'action' => 'admin'));
 $urlOrganizationalCapture = $this->Html->url(array('controller' => 'Organizationals', 'action' => 'admin'));
-$urlQualityCapture = $this->Html->url(array('controller' => 'Qualities', 'action' => 'capture'));
+$urlQualityCapture = $this->Html->url(array('controller' => 'Qualities', 'action' => 'admin'));
 $urlPerformanceCapture = $this->Html->url(array('controller' => 'Performance', 'action' => 'capture'));
 $urlCapture = array(
     'productions' => $urlProductionsCapture,
