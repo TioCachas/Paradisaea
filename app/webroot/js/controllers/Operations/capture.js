@@ -93,16 +93,16 @@ $(document).ready(function()
         fnWnd($(this), urlCapture.changeover, "Cambio de modelo");
     });
     target.on('click', 'tr.bosch td.technicalValue', function() {
-        fnWnd($(this), urlCapture.technical, "Pérdidas técnicas");
+        fnWnd($(this), urlCapture.technical, "Pérdidas técnicas", "techicalLosses");
     });
     target.on('click', 'tr.bosch td.organizationalValue', function() {
-        fnWnd($(this), urlCapture.organizational, "Pérdidas organizacionales");
+        fnWnd($(this), urlCapture.organizational, "Pérdidas organizacionales", "organizationalLosses");
     });
     target.on('click', 'tr.bosch td.qualityValue', function() {
-        fnWnd($(this), urlCapture.quality, "Pérdidas de calidad");
+        fnWnd($(this), urlCapture.quality, "Pérdidas de calidad", "qualityLosses");
     });
     target.on('click', 'tr.bosch td.performanceValue', function() {
-        fnWnd($(this), urlCapture.performance, "Pérdidas de desempeño");
+        fnWnd($(this), urlCapture.performance, "Pérdidas de desempeño", "performanceLosses");
     });
 });
 
@@ -151,7 +151,7 @@ function getLinesAndShifts(userId)
     });
 }
 
-function fnWnd(element, url, title)
+function fnWnd(element, url, title, classCss)
 {
     var operationId = element.parent().attr('data-id');
     var hStart = element.parent().attr('data-start');
@@ -172,7 +172,13 @@ function fnWnd(element, url, title)
                 "Close"
             ],
             visible: false,
-            close: getOperations,
+            close: function() {
+                getOperations();
+                wndCapture.parent().find('div.k-window-titlebar').removeClass(classCss);
+            },
+            open: function() {
+                wndCapture.parent().find('div.k-window-titlebar').addClass(classCss);
+            },
             refresh: function() {
                 this.center().open();
             }

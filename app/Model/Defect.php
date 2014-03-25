@@ -15,6 +15,8 @@ class Defect extends Crud {
     const TYPE_PERFORMANCE = 3;
     const TYPE_ORGANIZATIONAL = 4;
     const TYPE_QUALITY = 5;
+    const TYPE_SCRAP = 6;
+    const TYPE_RETRABAJO = 7;
 
     /**
      * Creamos un arreglo con los tipos de pérdida
@@ -29,6 +31,8 @@ class Defect extends Crud {
             self::TYPE_PERFORMANCE => __('Pérdida de desempeño'),
             self::TYPE_ORGANIZATIONAL => __('Pérdida organizacional'),
             self::TYPE_QUALITY => __('Pérdida de calidad'),
+            self::TYPE_SCRAP => __('Scrap'),
+            self::TYPE_RETRABAJO => __('Retrabajo'),
         );
         return $types;
     }
@@ -47,6 +51,8 @@ class Defect extends Crud {
             array('value' => self::TYPE_PERFORMANCE, 'text' => __('Pérdida de desempeño')),
             array('value' => self::TYPE_ORGANIZATIONAL, 'text' => __('Pérdida organizacional')),
             array('value' => self::TYPE_QUALITY, 'text' => __('Pérdida de calidad')),
+            array('value' => self::TYPE_SCRAP, 'text' => __('Scrap')),
+            array('value' => self::TYPE_RETRABAJO, 'text' => __('Retrabajo')),
         );
         return $types;
     }
