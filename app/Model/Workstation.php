@@ -2,26 +2,54 @@
 
 App::uses('Crud', 'Model');
 
-class Workstation extends Crud
-{
+class Workstation extends Crud {
+
     /**
      * Al Agregar/eliminar/actualizar las constantes de los modelos implica ir
      * y actualizar los comentarios en los campos de la tabla asociada a este modelo.
      */
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
+    /**
+     * Tipos de estacion
+     */
+    const TYPE_CHANGEOVER = 1;
+    const TYPE_TECHNICAL = 2;
+    const TYPE_PERFORMANCE = 3;
+    const TYPE_ORGANIZATIONAL = 4;
+    const TYPE_QUALITY = 5;
+    const TYPE_SCRAP = 6;
+    const TYPE_REWORK = 7;
 
     /**
      * Obtenemos los estaciones de trabajo activas para una linea de produccion
      * @param integer $lineId
      * @return array
      */
-    public function getEnabledByLine($lineId)
-    {
+    public function getEnabledByLine($lineId) {
         $order = array('name' => 'ASC');
         $workstations = $this->findAllByStatusAndLineId(self::STATUS_ENABLED, $lineId, array(
                 ), $order);
         return $this->flatArray($workstations);
+    }
+    
+    /**
+     * Obtenemos las estaciones de trabajo activas por tipo
+     * @param type $lineId
+     * @param type $type
+     * @return type
+     */
+    public function getEnabledByLineAndType($lineId, $type) {
+        $filters = array(
+            'conditions' => array(
+                'status' => self::STATUS_ENABLED,
+                'line_id' => $lineId,
+                'type' => $type,
+            ),
+            'order' => 'name ASC',
+        );
+        $records = $this->find('all', $filters);
+        return $this->flatArray($records);
     }
 
     /**
@@ -29,8 +57,7 @@ class Workstation extends Crud
      * @param string $lineId
      * @return array
      */
-    public function getByLine($lineId)
-    {
+    public function getByLine($lineId) {
         $order = array('name' => 'ASC');
         $workstations = $this->findAllByLineId($lineId, array(), $order);
         return $workstations;
@@ -40,8 +67,7 @@ class Workstation extends Crud
      * Obtenemos las estaciones de trabajo de una linea con detalles sobre la linea
      * @param string $lineId
      */
-    public function getEnabledByLineDetail($lineId)
-    {
+    public function getEnabledByLineDetail($lineId) {
         $params = array(
             'lId' => $lineId,
         );

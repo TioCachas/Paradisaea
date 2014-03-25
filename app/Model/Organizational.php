@@ -1,9 +1,9 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 
-class Organizational extends AppModel
-{
+class Organizational extends Crud {
+
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
 
@@ -13,8 +13,7 @@ class Organizational extends AppModel
      * disabled => enabled
      * @param string $id
      */
-    public function toggleStatus($id)
-    {
+    public function toggleStatus($id) {
         $this->query('
             UPDATE organizationals
             SET status = IF(status = 1, ' . self::STATUS_DISABLED . ', ' . self::STATUS_ENABLED . ')
@@ -29,37 +28,16 @@ class Organizational extends AppModel
      * @param type $statusArray
      * @return type
      */
-    public function getByOperationId($operationId, $statusArray = array(self::STATUS_ENABLED,
-        self::STATUS_DISABLED))
-    {
-        $params = array($operationId);
-        $operations = $this->query("
-            SELECT 
-                id olId
-              , value olValue
-              , comment olComment
-            FROM organizationals
-            WHERE operation_id = ? AND status IN (" . implode(',', $statusArray) . ")
-            ORDER BY creation_date DESC", $params);
-        return $this->flatArray($operations);
-    }
-
-    /**
-     * Insertamos un registro
-     * @param type $operationId
-     * @param type $value
-     * @param type $comment
-     * @return array
-     */
-    public function insert($operationId, $value, $comment)
-    {
-        $data = array();
-        $data['operation_id'] = $operationId;
-        $data['value'] = $value;
-        $data['comment'] = $comment;
-        $data['status'] = self::STATUS_ENABLED;
-        $newRecord = $this->save($data);
-        return $newRecord['Organizational'];
+    public function getEnabledByOperationId($operationId) {
+        $filters = array(
+            'conditions' => array(
+                'status' => self::STATUS_ENABLED,
+                'operation_id' => $operationId,
+            ),
+            'order' => 'creation_date DESC',
+        );
+        $records = $this->find('all', $filters);
+        return $this->flatArray($records);
     }
 
 }
