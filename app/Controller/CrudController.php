@@ -5,6 +5,7 @@ App::uses('AppController', 'Controller');
 abstract class CrudController extends AppController {
 
     public $_model;
+    public $prueba;
 
     public function beforeFilter() {
         $this->Security->validatePost = false;
