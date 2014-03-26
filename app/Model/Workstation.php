@@ -1,9 +1,10 @@
 <?php
 
 App::uses('Crud', 'Model');
+App::uses('Defect', 'Model');
 
-class Workstation extends Crud {
-
+class Workstation extends Crud
+{
     /**
      * Al Agregar/eliminar/actualizar las constantes de los modelos implica ir
      * y actualizar los comentarios en los campos de la tabla asociada a este modelo.
@@ -26,20 +27,22 @@ class Workstation extends Crud {
      * @param integer $lineId
      * @return array
      */
-    public function getEnabledByLine($lineId) {
+    public function getEnabledByLine($lineId)
+    {
         $order = array('name' => 'ASC');
         $workstations = $this->findAllByStatusAndLineId(self::STATUS_ENABLED, $lineId, array(
                 ), $order);
         return $this->flatArray($workstations);
     }
-    
+
     /**
      * Obtenemos las estaciones de trabajo activas por tipo
      * @param type $lineId
      * @param type $type
      * @return type
      */
-    public function getEnabledByLineAndType($lineId, $type) {
+    public function getEnabledByLineAndType($lineId, $type)
+    {
         $filters = array(
             'conditions' => array(
                 'status' => self::STATUS_ENABLED,
@@ -52,12 +55,40 @@ class Workstation extends Crud {
         return $this->flatArray($records);
     }
 
+    public function getEnabledByLineAndType2($lineId, $type)
+    {
+        $filters = array(
+            'joins' => array(
+                array('table' => 'defects',
+                    'alias' => 'Defect',
+                    'type' => 'INNER',
+                    'conditions' => array(
+                        'Workstation.id = Defect.workstation_id',
+                        'Defect.status = '.Defect::STATUS_ENABLED,
+                        'Defect.type = '.$type
+                    )
+                )
+            ),
+            'conditions' => array(
+                'Workstation.status' => self::STATUS_ENABLED,
+                'Workstation.line_id' => $lineId,
+            ),
+            'group' => array(
+                'Workstation.id'
+            ),
+            'order' => 'name ASC',
+        );
+        $records = $this->find('all', $filters);
+        return $this->flatArray($records);
+    }
+
     /**
      * Obtenemos las estaciones de trabajo de una linea
      * @param string $lineId
      * @return array
      */
-    public function getByLine($lineId) {
+    public function getByLine($lineId)
+    {
         $order = array('name' => 'ASC');
         $workstations = $this->findAllByLineId($lineId, array(), $order);
         return $workstations;
@@ -67,7 +98,8 @@ class Workstation extends Crud {
      * Obtenemos las estaciones de trabajo de una linea con detalles sobre la linea
      * @param string $lineId
      */
-    public function getEnabledByLineDetail($lineId) {
+    public function getEnabledByLineDetail($lineId)
+    {
         $params = array(
             'lId' => $lineId,
         );

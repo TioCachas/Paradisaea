@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 
-class Scrap extends AppModel
+class Scrap extends Crud
 {
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
@@ -21,7 +21,7 @@ class Scrap extends AppModel
             WHERE id = ?', array(
             $id));
     }
-
+    
     /**
      * Obtenemos los registros asociados a una operacion y que cumplan con los 
      * requisitos de estatus (activos, inactivos o activos e inactivos juntos).
@@ -29,37 +29,16 @@ class Scrap extends AppModel
      * @param type $statusArray
      * @return type
      */
-    public function getByOperationId($operationId, $statusArray = array(self::STATUS_ENABLED,
-        self::STATUS_DISABLED))
-    {
-        $params = array($operationId);
-        $operations = $this->query("
-            SELECT 
-                s.id sId
-              , s.value sValue
-              , s.comment sComment
-            FROM scraps s
-            WHERE s.operation_id = ? AND s.status IN (" . implode(',', $statusArray) . ")
-            ORDER BY s.creation_date DESC", $params);
-        return $this->flatArray($operations);
-    }
-
-    /**
-     * Insertamos un registro
-     * @param type $operationId
-     * @param type $value
-     * @param type $comment
-     * @return array
-     */
-    public function insert($operationId, $value, $comment)
-    {
-        $data = array();
-        $data['operation_id'] = $operationId;
-        $data['value'] = $value;
-        $data['comment'] = $comment;
-        $data['status'] = self::STATUS_ENABLED;
-        $newRecord = $this->save($data);
-        return $newRecord['Scrap'];
+    public function getEnabledByOperationId($operationId) {
+        $filters = array(
+            'conditions' => array(
+                'status' => self::STATUS_ENABLED,
+                'operation_id' => $operationId,
+            ),
+            'order' => 'creation_date DESC',
+        );
+        $records = $this->find('all', $filters);
+        return $this->flatArray($records);
     }
 
 }

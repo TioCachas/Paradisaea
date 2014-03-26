@@ -8,7 +8,7 @@ $urlList = $this->Html->url(array('controller' => 'Operations', 'action' => 'get
 $urlListSingle = $this->Html->url(array('controller' => 'Operations', 'action' => 'getDashboardCaptureSingle'));
 $urlGetLinesAndShifts = $this->Html->url(array('controller' => 'Users', 'action' => 'getLinesAndShifts'));
 $urlProductionsCapture = $this->Html->url(array('controller' => 'Productions', 'action' => 'capture'));
-$urlScrapCapture = $this->Html->url(array('controller' => 'Scraps', 'action' => 'capture'));
+$urlScrapCapture = $this->Html->url(array('controller' => 'Scraps', 'action' => 'admin'));
 $urlReworkCapture = $this->Html->url(array('controller' => 'Reworks', 'action' => 'capture'));
 $urlChangeoverCapture = $this->Html->url(array('controller' => 'Changeovers', 'action' => 'capture'));
 $urlTechnicalCapture = $this->Html->url(array('controller' => 'Technicals', 'action' => 'admin'));
