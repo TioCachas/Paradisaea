@@ -1,8 +1,8 @@
 <?php
 
-App::uses('AppModel', 'Model');
+App::uses('Crud', 'Model');
 
-class Rework extends AppModel
+class Rework extends Crud
 {
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
@@ -29,37 +29,17 @@ class Rework extends AppModel
      * @param type $statusArray
      * @return type
      */
-    public function getByOperationId($operationId, $statusArray = array(self::STATUS_ENABLED,
-        self::STATUS_DISABLED))
+    public function getEnabledByOperationId($operationId)
     {
-        $params = array($operationId);
-        $operations = $this->query("
-            SELECT 
-                id rId
-              , value rValue
-              , comment rComment
-            FROM reworks
-            WHERE operation_id = ? AND status IN (" . implode(',', $statusArray) . ")
-            ORDER BY creation_date DESC", $params);
-        return $this->flatArray($operations);
-    }
-
-    /**
-     * Insertamos un registro
-     * @param type $operationId
-     * @param type $value
-     * @param type $comment
-     * @return array
-     */
-    public function insert($operationId, $value, $comment)
-    {
-        $data = array();
-        $data['operation_id'] = $operationId;
-        $data['value'] = $value;
-        $data['comment'] = $comment;
-        $data['status'] = self::STATUS_ENABLED;
-        $newRecord = $this->save($data);
-        return $newRecord['Rework'];
+        $filters = array(
+            'conditions' => array(
+                'status' => self::STATUS_ENABLED,
+                'operation_id' => $operationId,
+            ),
+            'order' => 'creation_date DESC',
+        );
+        $records = $this->find('all', $filters);
+        return $this->flatArray($records);
     }
 
 }

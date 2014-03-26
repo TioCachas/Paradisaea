@@ -1,68 +1,113 @@
 <?php
 
-App::uses('AppController', 'Controller');
+App::uses('CrudController', 'Controller');
+App::uses('Rework', 'Model');
 
-class ReworksController extends AppController {
+class ReworksController extends CrudController {
 
-    public function beforeFilter() {
-        $this->Security->validatePost = false;
-        $this->Security->csrfCheck = false;
-        parent::beforeFilter();
-    }
+     /// --------------I N I C I O   C R U D-------------------------------------
+    public $_model = 'Rework';
 
-    /**
-     * Listamos y capturas registros de piezas OK para captura
-     * @param string $operationId
-     */
-    public function capture($operationId) {
-        $this->layout = 'empty';
+    public function admin($operationId)
+    {
         $this->request->onlyAllow('get');
         $this->loadModel('Operation');
         $this->Operation->id = $operationId;
         $operation = $this->Operation->read();
-        if (isset($operation['Operation']) === true) {
-            $reworks = $this->Rework->getByOperationId($operationId, array(Rework::STATUS_ENABLED));
-            $this->set('operation', $operation['Operation']);
-            $this->set('reworks', $reworks);
+        if (isset($operation['Operation']) === true)
+        {
+            $lineId = $operation['Operation']['line_id'];
+            $this->loadModel('Workstation');
+            $workstationsByLine = $this->Workstation->getEnabledByLineAndType2($lineId, Workstation::TYPE_REWORK);
+            if (count($workstationsByLine) > 0)
+            {
+                $wsl = array();
+                foreach ($workstationsByLine as $workstation)
+                {
+                    $wsl[] = array('text' => $workstation['name'], 'value' => $workstation['id']);
+                }
+                $this->loadModel('Defect');
+                $defectsByLine = $this->Defect->getEnabledByLineId($lineId);
+                if (count($defectsByLine) > 0)
+                {
+                    $dsl = array();
+                    $defectsByFirstWorkstation = array();
+                    $firstWorkstationId = $workstationsByLine[0]['id'];
+                    foreach ($defectsByLine as $defect)
+                    {
+                        $text = '[' . $defect['code'] . '] ' . $defect['description'];
+                        $o = array('text' => $text, 'value' => $defect['id']);
+                        $dsl[] = $o;
+                        if ($defect['workstation_id'] == $firstWorkstationId)
+                        {
+                            $defectsByFirstWorkstation[] = $o;
+                        }
+                    }
+                    $this->Session->write('operationId', $operationId);
+                    $appBosch = new stdClass();
+                    $appBosch->workstationsByLine = $wsl; // Estaciones de trabajo en la linea
+                    $appBosch->defectsByLine = $dsl; // Defectos por linea
+                    $appBosch->defectsByFirstWorkstation = $defectsByFirstWorkstation;
+                    $appBosch->type = Workstation::TYPE_REWORK;
+                    /**
+                     * Esta variable permite bloquear la acción de actualizar una 
+                     * operación. Esto puede ocurrir por las siguientes razones:
+                     * 1) No se ha cargado la lista de defectos
+                     * 2) No se ha seleccionado un defecto
+                     * Revisar los comentarios en JS para cada uso para entender 
+                     * el funcionamiento general de esta variable.
+                     * Boolean
+                     */
+                    $appBosch->blockEdit = false;
+                    $this->set('appBosch', $appBosch);
+                }
+            }
         }
+        $this->layout = 'empty';
     }
 
     /**
-     * Creamos un nuevo registro.
-     * AJAX
-     * @return JSON con el registro creado
+     * Definimos como extrae los datos para READ
      */
-    public function create() {
-        $this->request->onlyAllow('get');
-        $params = $this->request->query;
-        $newRecord = false;
-        if (isset($params['o']) && isset($params['v']) && isset($params['c'])) {
-            $value = $params['v'];
-            $operationId = $params['o'];
-            $comment = $params['c'];
-            $newRecord = $this->Rework->insert($operationId, $value, $comment);
-        }
-        $this->set(array('record' => $newRecord, '_serialize' => 'record'));
-        $this->viewClass = 'Json';
+    protected function getRecords()
+    {
+        $operationId = $this->Session->read('operationId');
+        $m = $this->_model;
+        $records = $this->$m->getEnabledByOperationId($operationId);
+        return $records;
     }
 
     /**
-     * Eliminamos logicamente un registro
-     * AJAX
-     * @return JSON true si el registro se elimino correctamente, false en otros 
-     * casos
+     * Definimos como crear un record nuevo para CREATE
+     * @param array $model
+     * @return array
      */
-    public function delete() {
-        $this->request->onlyAllow('get');
-        $params = $this->request->query;
-        $success = false;
-        if (isset($params['i'])) {
-            $pId = $params['i'];
-            $this->Rework->toggleStatus($pId);
-            $success = true;
-        }
-        $this->set(array('success' => $success, '_serialize' => 'success'));
-        $this->viewClass = 'Json';
+    protected function c($model)
+    {
+        $m = $this->_model;
+        return array(
+            'operation_id' => $this->Session->read('operationId'),
+            'value' => (int) $model->value,
+            'workstation_id' => $model->workstation_id,
+            'defect_id' => $model->defect_id,
+            'status' => $m::STATUS_ENABLED,
+        );
     }
+
+    /**
+     * Definimos como actualizar un registro para UPDATE
+     * @param array $model
+     * @return array
+     */
+    protected function u($model)
+    {
+        return array(
+            'value' => (int) $model->value,
+            'workstation_id' => $model->workstation_id,
+            'defect_id' => $model->defect_id,
+        );
+    }
+
+    /// ------------------F I N   C R U D---------------------------------------
 
 }
