@@ -3,8 +3,8 @@
 App::uses('AppModel', 'Model');
 App::uses('Line', 'Model');
 
-class UserLine extends AppModel
-{
+class UserLine extends AppModel {
+
     public $useTable = 'users_lines';
 
     const STATUS_DISABLED = 0;
@@ -15,21 +15,30 @@ class UserLine extends AppModel
      * @param string $userId
      * @return array
      */
-    public function getByUser($userId)
-    {
-        $mls = $this->query('
-            SELECT 
-                  l.name lName
-                , l.id lId
-            FROM users_lines ul
-            INNER JOIN production_lines l ON ul.line_id = l.id
-            WHERE 
-                    ul.user_id = ?
-                AND ul.status = ' . self::STATUS_ENABLED . '
-                AND l.status = '.Line::STATUS_ENABLED.'
-            ORDER BY l.name ASC', array(
-            $userId));
-        return $this->flatArray($mls);
+    public function getByUser($userId) {
+        $filters = array(
+            'fields' => array(
+                'Line.name as lName',
+                'Line.id as lId',
+            ),
+            'joins' => array(
+                array('table' => 'lines',
+                    'alias' => 'Line',
+                    'type' => 'INNER',
+                    'conditions' => array(
+                        'UserLine.line_id = Line.id',
+                        'Line.status' => Line::STATUS_ENABLED,
+                    )
+                )
+            ),
+            'conditions' => array(
+                'UserLine.user_id' => $userId,
+                'UserLine.status' => self::STATUS_ENABLED,
+            ),
+            'order' => 'Line.name ASC',
+        );
+        $records = $this->find('all', $filters);
+        return $this->flatArray($records);
     }
 
 }

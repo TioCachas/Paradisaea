@@ -128,34 +128,46 @@ class Operation extends AppModel {
     public function getDashboardCapture($lineId, $shiftId, $workDate) {
         $operations = $this->query('
             SELECT 
-                  o.id oId
-                , o.work_date oWorkDate
-                , DATE_FORMAT(h.start, "%H:%i") hStart 
-                , DATE_FORMAT(h.end, "%H:%i") hEnd
-                , o.production oProduction
-                , o.scrap oScrap
-                , o.rework oRework
-                , o.changeover oChangeover
-                , o.technical_losses oTechnicalLosses
-                , o.organizational_losses oOrganizationalLosses
-                , o.quality_losses oQualityLosses
-                , o.performance_losses oPerformanceLosses
-                , o.planed_operating_time oPot
-                , h.id hId
-                , o.target oTarget
-                , IFNULL(GROUP_CONCAT(DISTINCT m.name),"") models
+                o.id oId
+              , o.work_date oWorkDate
+              , h.start_time
+              , h.end_time
+              , o.production oProduction
+              , o.scrap oScrap
+              , o.rework oRework
+              , o.changeover oChangeover
+              , o.technical_losses oTechnicalLosses
+              , o.organizational_losses oOrganizationalLosses
+              , o.quality_losses oQualityLosses
+              , o.performance_losses oPerformanceLosses
+              , o.planed_operating_time oPot
+              , h.id hId
+              , o.target oTarget
+              , \'\' models
             FROM operations o
             INNER JOIN hours h ON h.id = o.hour_id
-            LEFT JOIN productions p ON p.operation_id = o.id
-            LEFT JOIN models m ON p.model_id = m.id AND p.status = '.Production::STATUS_ENABLED.'
             WHERE 
-                    o.status = ' . self::STATUS_ENABLED . '
+                    h.shift_id = ?
                 AND o.line_id = ?
-                AND h.shift_id = ?
-                AND o.work_date = ?        
-            GROUP BY o.id
-            ORDER BY h.number ASC', array(
-            $lineId, $shiftId, $workDate));
+                AND o.work_date = ?
+            GROUP BY 
+                  o.id
+                , o.work_date
+                , o.production
+                , o.scrap
+                , o.rework
+                , o.changeover
+                , o.technical_losses
+                , o.organizational_losses
+                , o.quality_losses
+                , o.performance_losses
+                , o.planed_operating_time
+                , o.target
+                , h.start_time
+                , h.end_time
+                , h.id
+                , h.number
+            ORDER BY h.number ASC', array($shiftId, $lineId, $workDate));
         return $this->flatArray($operations);
     }
 
@@ -336,24 +348,21 @@ class Operation extends AppModel {
             ':user' => $userId,
         );
         $this->query("
-            INSERT INTO operations(id, user_id, line_id, hour_id, target, work_date, planed_operating_time, status)
+            INSERT INTO operations(id, user_id, line_id, hour_id, target, work_date, planed_operating_time)
             SELECT 
-                UUID()
-              , :user
-              , :line 
+                NEWID()
+              , '" . $userId . "'
+              , '" . $lineId . "'
               , h.id
-              , cl.target
-              , :workDate
-              , (TIME_TO_SEC(h.end) - TIME_TO_SEC(h.start))/60
-              , " . self::STATUS_ENABLED . "
+              , 0
+              , '" . $workDate . "'
+              , 0
             FROM hours h 
-            INNER JOIN config_lines cl ON cl.line_id = :line
-                AND cl.hour_id = h.id
             LEFT JOIN operations o ON 
                     o.hour_id = h.id 
-                AND o.work_date = :workDate 
-                AND o.line_id = :line
-            WHERE o.id IS NULL", $params);
+                AND o.work_date = '" . $workDate . "'
+                AND o.line_id = '" . $lineId . "'
+            WHERE o.id IS NULL");
     }
 
 }

@@ -29,8 +29,7 @@ App::uses('Model', 'Model');
  *
  * @package       app.Model
  */
-class AppModel extends Model
-{
+class AppModel extends Model {
 
     /**
      * Aplanamos un array con los resultados de la execución de una query
@@ -40,16 +39,15 @@ class AppModel extends Model
      * @param array $collection
      * @return array
      */
-    protected function flatArray($collection)
-    {
+    protected function flatArray($collection) {
         $flatArray = array();
-        array_walk($collection, function($record) use (&$flatArray) {
-                    $flatRecord = array();
-                    array_walk($record, function($element) use (&$flatRecord) {
-                                $flatRecord = array_merge($flatRecord, $element);
-                            });
-                    $flatArray[] = $flatRecord;
-                });
+        foreach ($collection as $record) {
+            $flatRecord = array();
+            foreach ($record as $element) {
+                $flatRecord = array_merge($flatRecord, $element);
+            }
+            $flatArray[] = $flatRecord;
+        }
         return $flatArray;
     }
 
