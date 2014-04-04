@@ -2,7 +2,6 @@
 if (isset($appBosch) === true) {
     $this->Html->script('controllers/Qualities/admin', array('block' => 'scriptBottom'));
     $appBosch->crud = $this->TioCachas->urlsCRUD();
-    $appBosch->urlDefects = $this->Html->url(array('controller' => 'Defects', 'action' => 'getByWorkstationAndType'));
     ?>
     <div id="grid"></div>
     <?php $this->start('jsVars'); ?>
@@ -14,7 +13,7 @@ if (isset($appBosch) === true) {
 } else {
     ?>
     <div class="alert alert-info">
-        <?php echo __("No existen estaciones de trabajo y/o códigos de falla para pérdidas de calidad"); ?>
+        <?php echo __("La operación no es válida."); ?>
     </div>
     <?php
 }

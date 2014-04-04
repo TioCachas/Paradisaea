@@ -81,28 +81,28 @@ $(document).ready(function()
     });
     getLinesAndShiftsByFirstUser();
     target.on('click', 'tr.bosch td.productions', function() {
-        fnWnd($(this), urlCapture.productions, "Piezas OK");
+        fnWnd($(this), urlCapture.productions, "Piezas OK", true);
     });
     target.on('click', 'tr.bosch td.scrapValue', function() {
-        fnWnd($(this), urlCapture.scrap, "Scrap");
+        fnWnd($(this), urlCapture.scrap, "Scrap", "scrap", true);
     });
     target.on('click', 'tr.bosch td.reworkValue', function() {
-        fnWnd($(this), urlCapture.rework, "Retrabajo");
+        fnWnd($(this), urlCapture.rework, "Retrabajo", "rework", true);
     });
     target.on('click', 'tr.bosch td.changeoverValue', function() {
-        fnWnd($(this), urlCapture.changeover, "Cambio de modelo");
+        fnWnd($(this), urlCapture.changeover, "Cambio de modelo", true);
     });
     target.on('click', 'tr.bosch td.technicalValue', function() {
-        fnWnd($(this), urlCapture.technical, "Pérdidas técnicas", "techicalLosses");
+        fnWnd($(this), urlCapture.technical, "Pérdidas técnicas", "techicalLosses", true);
     });
     target.on('click', 'tr.bosch td.organizationalValue', function() {
-        fnWnd($(this), urlCapture.organizational, "Pérdidas organizacionales", "organizationalLosses");
+        fnWnd($(this), urlCapture.organizational, "Pérdidas organizacionales", "organizationalLosses", true);
     });
     target.on('click', 'tr.bosch td.qualityValue', function() {
-        fnWnd($(this), urlCapture.quality, "Pérdidas de calidad", "qualityLosses");
+        fnWnd($(this), urlCapture.quality, "Comentarios de pérdidas de calidad", "qualityLosses", false);
     });
     target.on('click', 'tr.bosch td.performanceValue', function() {
-        fnWnd($(this), urlCapture.performance, "Pérdidas de desempeño", "performanceLosses");
+        fnWnd($(this), urlCapture.performance, "Comentarios de pérdidas de desempeño", "performanceLosses", false);
     });
 });
 
@@ -151,14 +151,17 @@ function getLinesAndShifts(userId)
     });
 }
 
-function fnWnd(element, url, title, classCss)
+function fnWnd(element, url, title, classCss, reload)
 {
+    console.log(reload);
     var operationId = element.parent().attr('data-id');
     var hStart = element.parent().attr('data-start');
     var hEnd = element.parent().attr('data-end');
     title += ' [' + hStart + ' - ' + hEnd + ']';
-    element.find('span').addClass('hidden');
-    element.find('.fa-spin').removeClass('hidden');
+    if (reload === true) {
+        element.find('span').addClass('hidden');
+        element.find('.fa-spin').removeClass('hidden');
+    }
     url = url + '/' + operationId;
     if (!wndCapture.data("kendoWindow")) {
         wndCapture.kendoWindow({
@@ -173,7 +176,9 @@ function fnWnd(element, url, title, classCss)
             ],
             visible: false,
             close: function() {
-                getOperations();
+                if (reload === true) {
+                    getOperations();
+                }
                 wndCapture.parent().find('div.k-window-titlebar').removeClass(classCss);
             },
             open: function() {
@@ -255,7 +260,7 @@ function createChart() {
                 visible: true
             },
             seriesDefaults: {
-                type: "area",
+                type: "line",
                 style: "smooth",
                 labels: {
                     visible: true,
